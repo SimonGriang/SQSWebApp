@@ -1,0 +1,49 @@
+﻿@model WebApp.Models.Translation
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Translation</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Origin Language
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OriginalLanguage.Name)
+        </dd>
+
+        <dt class = "col-sm-2">
+            Origin Text
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OriginalText)
+        </dd>
+
+        <dt class="col-sm-2">
+            Translated Language
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TranslatedLanguage.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Translated Text
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TranslatedText)
+        </dd>
+        <dt class = "col-sm-2">
+            Translationdate
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.translated_at)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="History">Back to List</a>
+</div>
