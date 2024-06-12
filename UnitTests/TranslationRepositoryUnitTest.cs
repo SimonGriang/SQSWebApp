@@ -61,7 +61,7 @@ namespace WebApp.Tests
                 var repository = new TranslationRepository(context);
                 var translationIdToRemove = 1;
 
-                repository.RemoveTranslation(translationIdToRemove);
+                repository.DeleteTranslation(translationIdToRemove);
                 Assert.IsFalse(repository.TranslationExists(translationIdToRemove));
             }
         }
@@ -74,7 +74,7 @@ namespace WebApp.Tests
                 var repository = new TranslationRepository(context);
                 var translationId = 2;
 
-                var translation = repository.GetTranslation(translationId);
+                var translation = repository.GetTranslationById(translationId);
                 Assert.IsNotNull(translation);
                 Assert.AreEqual(translationId, translation!.ID);
             }
