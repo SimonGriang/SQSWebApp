@@ -37,7 +37,7 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-      - name: Install coverlet
+      - name: Install dotnet-coverage
         shell: powershell
         run: |
           dotnet tool install --global dotnet-coverage
@@ -50,6 +50,10 @@ jobs:
           cd WebApp
           ..\.sonar\scanner\dotnet-sonarscanner begin /k:"SimonGriang_SQSWebApp" /o:"simongriang" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           dotnet build
+          cd ..
+          cd UnitTests
           dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+          cd ..
+          cd WebApp
           ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           cd ..
