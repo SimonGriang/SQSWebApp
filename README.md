@@ -27,3 +27,5 @@ Update Database
 
 Anwendung Starten
     dotnet run
+
+Set up SonarCloud Pipeline
