@@ -44,13 +44,8 @@ jobs:
         shell: powershell
         run: |
           cd WebApp
-          ..\.sonar\scanner\dotnet-sonarscanner begin /k:"SimonGriang_SQSWebApp" /o:"simongriang" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=coverage.xml
+          ..\.sonar\scanner\dotnet-sonarscanner begin /k:"SimonGriang_SQSWebApp" /o:"simongriang" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build
-          coverlet .\CovExample.Tests\bin\Debug\net6.0\CovExample.Tests.dll
-          --target "dotnet" 
-          --targetargs "test --no-build"
-          -f=opencover 
-          -o="coverage.xml"
           ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           cd ..
           
