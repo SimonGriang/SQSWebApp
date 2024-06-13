@@ -1,16 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using WebApp.ViewModelHandler;
 using WebApp.Data;
 using WebApp.DBSeeding;
 using WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddTransient<TranslationService>();
+builder.Services.AddTransient<ITranslationService, TranslationService>();
 
-builder.Services.AddTransient<TranslationRepository>();
+builder.Services.AddTransient<ITranslationRepository, TranslationRepository>();
 
-builder.Services.AddTransient<LanguageRepository>();
+builder.Services.AddTransient<ILanguageRepository, LanguageRepository>();
+
+builder.Services.AddTransient<ICreateTranslationViewModelHandler, CreateTranslationViewModelHandler>();
 
 builder.Services.AddDbContext<WebAppContext>(options =>
     options.UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=mypassword"));

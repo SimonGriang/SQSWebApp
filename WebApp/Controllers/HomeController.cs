@@ -16,19 +16,21 @@ namespace WebApp.Controllers
         private readonly ITranslationService _translationService;
         private readonly ITranslationRepository _translationRepository;
         private readonly ILanguageRepository _languageReository;
+        private readonly ICreateTranslationViewModelHandler _createTranslationViewModelHandler;
 
-        public HomeController(ILogger<HomeController> logger, ITranslationService translationService, ILanguageRepository languageRepository, ITranslationRepository translationRepository)
+        public HomeController(ILogger<HomeController> logger, ITranslationService translationService, ILanguageRepository languageRepository, ITranslationRepository translationRepository, ICreateTranslationViewModelHandler createTranslationViewModelHandler)
         {
             _logger = logger;
             _translationService = translationService;
             _translationRepository = translationRepository;
             _languageReository = languageRepository;
+            _createTranslationViewModelHandler = createTranslationViewModelHandler;
         }
 
         // GET: Startpage
         public IActionResult Index()
         {
-            CreateTranslationViewModel viewModel = CreateTranslationViewModelHandler.createViewModel(_languageReository);
+            CreateTranslationViewModel viewModel = _createTranslationViewModelHandler.createViewModel();
             return View(viewModel);
         }
 
@@ -46,7 +48,7 @@ namespace WebApp.Controllers
             Language? languageFrom = _languageReository.GetLanguage(returnedViewModel.LanguageFrom);
 
 
-            CreateTranslationViewModel viewModel = CreateTranslationViewModelHandler.createViewModel(_languageReository);
+            CreateTranslationViewModel viewModel = _createTranslationViewModelHandler.createViewModel();
             viewModel.LanguageFrom = returnedViewModel.LanguageFrom;
             viewModel.LanguageTo = returnedViewModel.LanguageTo;
 

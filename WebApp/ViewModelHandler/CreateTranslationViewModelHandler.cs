@@ -5,9 +5,16 @@ using WebApp.ViewModels;
 
 namespace WebApp.ViewModelHandler
 {
-    public static class CreateTranslationViewModelHandler
+    public class CreateTranslationViewModelHandler : ICreateTranslationViewModelHandler
     {
-        public static CreateTranslationViewModel createViewModel(ILanguageRepository _languageRepository)
+        private readonly ILanguageRepository _languageRepository;
+
+        public CreateTranslationViewModelHandler(ILanguageRepository languageRepository)
+        {
+            _languageRepository = languageRepository;
+        }
+
+        public CreateTranslationViewModel createViewModel()
         {
             CreateTranslationViewModel viewModel = new CreateTranslationViewModel();
 
