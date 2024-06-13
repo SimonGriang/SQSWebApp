@@ -1,7 +1,7 @@
 namespace PlaywrightTests;
 
 [TestClass]
-public class UnitTest1
+public class PlaywrightTest
 {
     [TestMethod]
     public void TestMethod1()
