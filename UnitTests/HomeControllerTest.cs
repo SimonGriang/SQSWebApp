@@ -45,8 +45,39 @@ namespace WebApp.Tests
         [TestMethod]
         public void Index_ReturnsViewResult(){
              // Arrange
-            var viewModel = new CreateTranslationViewModel();
-            _languageRepositoryMock.Setup(repo => repo.GetAllLanguages()).Returns(new List<Language>());
+
+            var targetLanguageList = new List<Language>
+            {
+                new Language
+                {
+                    Abbreviation = "en",
+                    ID = 1,
+                    isOriginLanguage = true,
+                    isTargetLanguage = false,
+                    Name = "English"
+                }
+            };
+
+            var originLanguageList = new List<Language>
+            {
+            new Language
+                {
+                    Abbreviation = "de",
+                    ID = 2,
+                    isOriginLanguage = false,
+                    isTargetLanguage = true,
+                    Name = "German"
+                }
+            };
+
+            var languageList = new List<Language>();
+            languageList.AddRange(targetLanguageList);
+            languageList.AddRange(originLanguageList);
+
+            var viewModel = new CreateTranslationViewModel(){originLanguages = originLanguageList, targetLanguages = targetLanguageList};
+            _languageRepositoryMock.Setup(repo => repo.GetAllLanguages()).Returns(languageList);
+            _createTranslationViewModelHandlerMock.Setup(x => x.createViewModel()).Returns(viewModel);
+
 
             // Act
             var result = _controller.Index() as ViewResult;
