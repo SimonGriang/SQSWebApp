@@ -5,9 +5,9 @@ name: .NET
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -26,7 +26,7 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore WebApp/WebApp.sln
+      run: dotnet restore ./SQSWebApp.sln
     - name: Setup Code Coverage
       run: |
         sudo apt-get update && sudo apt-get install glibc-source libxml2 libxrender1 libfontconfig libxext6 libc6 -y
@@ -39,11 +39,11 @@ jobs:
         dotnet tool install --global dotnet-sonarscanner
         dotnet sonarscanner begin /k:"SimonGriang_SQSWebApp" /o:"simongriang" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
     - name: Build
-      run: dotnet build --no-restore --no-incremental WebApp/WebApp.sln
+      run: dotnet build --no-restore --no-incremental ./SQSWebApp.sln
 #    - name: Ensure browsers are installed
 #      run: pwsh WebApp/WebApp.UnitTests/bin/Debug/net8.0/playwright.ps1 install --with-deps # has to be modified for sure
     - name: Test
-      run: dotnet test --no-build --verbosity normal WebApp/WebApp.sln
+      run: dotnet test --no-build --verbosity normal ./SQSWebApp.sln
     - name: Coverage
       run: dotnet-coverage collect "dotnet test WebApp/WebApp.sln" -f xml -o "coverage.xml"
     - name: Sonarqube end
