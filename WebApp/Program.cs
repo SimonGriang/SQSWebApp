@@ -15,9 +15,6 @@ builder.Services.AddTransient<LanguageRepository>();
 builder.Services.AddDbContext<WebAppContext>(options =>
     options.UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=mypassword"));
 
-    //options.UseSqlServer(builder.Configuration.GetConnectionString("WebAppContext") ?? throw new InvalidOperationException("Connection string 'WebAppContext' not found.")));
-
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

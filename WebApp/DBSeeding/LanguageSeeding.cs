@@ -24,7 +24,7 @@ namespace WebApp.DBSeeding
                 }
 
                 List<Language> languages = new List<Language>();
-                TranslationService translationService = new TranslationService(context);
+                ITranslationService translationService = new TranslationService(context);
                 Task<List<Language>> allLanguages = translationService.getDeeplLanguages();
                 languages = allLanguages.GetAwaiter().GetResult();
 

@@ -14,6 +14,10 @@ namespace WebApp.Data
         {
         }
 
+        public WebAppContext()
+        {
+        }   
+
         public DbSet<WebApp.Models.Language> Language { get; set; } = default!;
         public DbSet<WebApp.Models.Translation> Translation { get; set; } = default!;
 

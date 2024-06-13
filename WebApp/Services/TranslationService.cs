@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using DeepL;
 using WebApp.Data;
@@ -9,34 +9,41 @@ using DeepL.Model;
 
 namespace WebApp.Services
 {
-    public class TranslationService
+    public class TranslationService : ITranslationService
     {
         private readonly WebAppContext _context;
-        private String authKey = "f2981bee-344a-4a1f-b65f-877950fa3855:fx";
+        private readonly String authKey = "f2981bee-344a-4a1f-b65f-877950fa3855:fx";
         private Translator translator;
 
         public TranslationService(WebAppContext context)
         {
             _context = context;
             translator = new Translator(authKey);
-
         }
 
         public async Task<CreateTranslationViewModel> TranslateTextAsync(CreateTranslationViewModel viewModel)
         {
-            TextResult? translatedText = null;
+            if (viewModel.Translation is null 
+                || viewModel.Translation.OriginalLanguage is null 
+                || viewModel.Translation.TranslatedLanguage is null 
+                || viewModel.Translation.OriginalText is null
+                || viewModel.Translation.TranslatedLanguage.Abbreviation is null)
+            {
+                throw new ArgumentNullException(nameof(viewModel.Translation));
+            }
 
+            TextResult? translatedText = null;
             WebApp.Models.Language languageTo = viewModel.Translation.TranslatedLanguage!;
             WebApp.Models.Language languageFrom = viewModel.Translation.OriginalLanguage!;
             string originalText = viewModel.Translation.OriginalText!;
 
-            if (viewModel.Translation.TranslatedLanguage!.Abbreviation == "DL")
+            if (viewModel.Translation.TranslatedLanguage!.Abbreviation == "DL" )
             {
                 translatedText = await translator.TranslateTextAsync(originalText, null, languageTo.Abbreviation);
             }
             else
             {
-                translatedText = await translator.TranslateTextAsync(originalText, languageFrom.Abbreviation, languageTo.Abbreviation);
+                translatedText = await translator.TranslateTextAsync(originalText, languageFrom.Abbreviation, languageTo.Abbreviation!);
             }
             viewModel.Translation.TranslatedText = translatedText?.Text;
             viewModel.Translation.translated_at =  DateTime.UtcNow;

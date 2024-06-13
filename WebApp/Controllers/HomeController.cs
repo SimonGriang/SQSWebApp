@@ -13,15 +13,13 @@ namespace WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly WebAppContext _context;
-        private readonly TranslationService _translationService;
-        private readonly TranslationRepository _translationRepository;
-        private readonly LanguageRepository _languageReository;
+        private readonly ITranslationService _translationService;
+        private readonly ITranslationRepository _translationRepository;
+        private readonly ILanguageRepository _languageReository;
 
-        public HomeController(ILogger<HomeController> logger, WebAppContext context, TranslationService translationService, LanguageRepository languageRepository, TranslationRepository translationRepository)
+        public HomeController(ILogger<HomeController> logger, ITranslationService translationService, ILanguageRepository languageRepository, ITranslationRepository translationRepository)
         {
             _logger = logger;
-            _context = context;
             _translationService = translationService;
             _translationRepository = translationRepository;
             _languageReository = languageRepository;

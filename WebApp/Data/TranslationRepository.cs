@@ -9,7 +9,7 @@ using WebApp.Data;
 
 namespace WebApp.Data
 {
-    public class TranslationRepository
+    public class TranslationRepository : ITranslationRepository
     {
         private readonly WebAppContext _context;
 

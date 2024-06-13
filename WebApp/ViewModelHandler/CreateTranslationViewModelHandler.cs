@@ -7,7 +7,7 @@ namespace WebApp.ViewModelHandler
 {
     public static class CreateTranslationViewModelHandler
     {
-        public static CreateTranslationViewModel createViewModel(LanguageRepository _languageRepository)
+        public static CreateTranslationViewModel createViewModel(ILanguageRepository _languageRepository)
         {
             CreateTranslationViewModel viewModel = new CreateTranslationViewModel();
 

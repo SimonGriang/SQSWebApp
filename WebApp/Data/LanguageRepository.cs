@@ -4,7 +4,7 @@ using WebApp.Models;
 
 namespace WebApp.Data
 {
-    public class LanguageRepository
+    public class LanguageRepository : ILanguageRepository
     {
         private readonly WebAppContext _context;
 

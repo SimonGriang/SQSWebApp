@@ -19,22 +19,20 @@ namespace WebApp.Tests
         private HomeController _controller;
         private Mock<ILogger<HomeController>> _loggerMock;
         private Mock<WebAppContext> _contextMock;
-        private Mock<TranslationService> _translationServiceMock;
-        private Mock<TranslationRepository> _translationRepositoryMock;
-        private Mock<LanguageRepository> _languageRepositoryMock;
+        private Mock<ITranslationService> _translationServiceMock;
+        private Mock<ITranslationRepository> _translationRepositoryMock;
+        private Mock<ILanguageRepository> _languageRepositoryMock;
 
         [TestInitialize]
         public void Setup()
         {
             _loggerMock = new Mock<ILogger<HomeController>>();
-            _contextMock = new Mock<WebAppContext>();
-            _translationServiceMock = new Mock<TranslationService>();
-            _translationRepositoryMock = new Mock<TranslationRepository>();
-            _languageRepositoryMock = new Mock<LanguageRepository>();
+            _translationServiceMock = new Mock<ITranslationService>();
+            _translationRepositoryMock = new Mock<ITranslationRepository>();
+            _languageRepositoryMock = new Mock<ILanguageRepository>();
 
             _controller = new HomeController(
                 _loggerMock.Object,
-                _contextMock.Object,
                 _translationServiceMock.Object,
                 _languageRepositoryMock.Object,
                 _translationRepositoryMock.Object
@@ -42,9 +40,8 @@ namespace WebApp.Tests
         }
 
         [TestMethod]
-        public void Index_ReturnsViewResult()
-        {
-            // Arrange
+        public void Index_ReturnsViewResult(){
+             // Arrange
             var viewModel = new CreateTranslationViewModel();
             _languageRepositoryMock.Setup(repo => repo.GetAllLanguages()).Returns(new List<Language>());
 
@@ -53,7 +50,7 @@ namespace WebApp.Tests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(viewModel, result.Model);
+            Assert.AreEqual(typeof(CreateTranslationViewModel), result.Model.GetType());
         }
 
         [TestMethod]
@@ -70,6 +67,7 @@ namespace WebApp.Tests
                     TranslatedText = "Hallo"
                 }
             };
+            
             var viewModel = new CreateTranslationViewModel();
             _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageTo)).Returns(true);
             _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageFrom)).Returns(true);
