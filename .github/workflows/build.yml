@@ -51,3 +51,59 @@ jobs:
           dotnet build WebApp/WebApp.sln
           dotnet-coverage collect "dotnet test WebApp/WebApp.sln" -f xml -o "coverage.xml"
           .sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+
+
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        distribution: 'zulu' # Alternative distribution options are available.
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore WebApp/WebApp.sln
+    - name: Setup Code Coverage
+      run: |
+        sudo apt-get update && sudo apt-get install glibc-source libxml2 libxrender1 libfontconfig libxext6 libc6 -y
+        dotnet tool install --global dotnet-coverage
+    - name: Sonarqube Begin
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: | 
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet sonarscanner begin /k:"SimonGriang_SQSWebApp" /o:"simongriang" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+    - name: Build
+      run: dotnet build --no-restore --no-incremental WebApp/WebApp.sln
+#    - name: Ensure browsers are installed
+#      run: pwsh WebApp/WebApp.UnitTests/bin/Debug/net8.0/playwright.ps1 install --with-deps # has to be modified for sure
+    - name: Test
+      run: dotnet test --no-build --verbosity normal WebApp/WebApp.sln
+    - name: Coverage
+      run: dotnet-coverage collect "dotnet test WebApp/WebApp.sln" -f xml -o "coverage.xml"
+    - name: Sonarqube end
+      run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
