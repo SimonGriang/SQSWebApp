@@ -22,6 +22,7 @@ namespace WebApp.Tests
         private Mock<ITranslationService> _translationServiceMock;
         private Mock<ITranslationRepository> _translationRepositoryMock;
         private Mock<ILanguageRepository> _languageRepositoryMock;
+        private Mock<ICreateTranslationViewModelHandler> _createTranslationViewModelHandlerMock;
 
         [TestInitialize]
         public void Setup()
@@ -30,12 +31,14 @@ namespace WebApp.Tests
             _translationServiceMock = new Mock<ITranslationService>();
             _translationRepositoryMock = new Mock<ITranslationRepository>();
             _languageRepositoryMock = new Mock<ILanguageRepository>();
+            _createTranslationViewModelHandlerMock = new Mock<ICreateTranslationViewModelHandler>();
 
             _controller = new HomeController(
                 _loggerMock.Object,
                 _translationServiceMock.Object,
                 _languageRepositoryMock.Object,
-                _translationRepositoryMock.Object
+                _translationRepositoryMock.Object,
+                _createTranslationViewModelHandlerMock.Object
             );
         }
 
@@ -52,6 +55,78 @@ namespace WebApp.Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(typeof(CreateTranslationViewModel), result.Model.GetType());
         }
+
+        [TestMethod]
+        public void Index_ReturnsNotFound_WhenOriginLanguagesIsNull()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel { originLanguages = null, targetLanguages = new List<Language>() };
+            _createTranslationViewModelHandlerMock.Setup(x => x.createViewModel()).Returns(viewModel);
+
+            // Act
+            var result = _controller.Index();
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        [TestMethod]
+        public void Index_ReturnsNotFound_WhenTargetLanguagesIsNull()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel { originLanguages = new List<Language>(), targetLanguages = null };
+            _createTranslationViewModelHandlerMock.Setup(x => x.createViewModel()).Returns(viewModel);
+
+            // Act
+            var result = _controller.Index();
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        [TestMethod]
+        public void Index_ReturnsNotFound_WhenOriginLanguagesIsEmpty()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel { originLanguages = new List<Language>(), targetLanguages = new List<Language> {new Language(){ 
+                    Abbreviation = "en",
+                    ID = 1,
+                    isOriginLanguage = false,
+                    isTargetLanguage = true,
+                    Name = "English"
+            }}};
+            _createTranslationViewModelHandlerMock.Setup(x => x.createViewModel()).Returns(viewModel);
+
+            // Act
+            var result = _controller.Index();
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        [TestMethod]
+        public void Index_ReturnsNotFound_WhenTargetLanguagesIsEmpty()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel { 
+                originLanguages = new List<Language> { new Language(){ 
+                    Abbreviation = "en",
+                    ID = 1,
+                    isOriginLanguage = true,
+                    isTargetLanguage = false,
+                    Name = "English"
+            } 
+            }, targetLanguages = new List<Language>() };
+            _createTranslationViewModelHandlerMock.Setup(x => x.createViewModel()).Returns(viewModel);
+
+            // Act
+            var result = _controller.Index();
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+
 
         [TestMethod]
         public async Task Index_WithValidViewModel_ReturnsViewResult()
@@ -73,6 +148,7 @@ namespace WebApp.Tests
             _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageFrom)).Returns(true);
             _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageTo)).Returns(new Language());
             _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageFrom)).Returns(new Language());
+            _createTranslationViewModelHandlerMock.Setup(handler => handler.createViewModel()).Returns(viewModel);
             _translationServiceMock.Setup(service => service.TranslateTextAsync(It.IsAny<CreateTranslationViewModel>())).ReturnsAsync(viewModel);
 
             // Act
@@ -80,7 +156,7 @@ namespace WebApp.Tests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(viewModel, result.Model);
+            Assert.AreEqual(typeof(CreateTranslationViewModel), result.Model.GetType());
         }
 
         [TestMethod]
@@ -112,6 +188,7 @@ namespace WebApp.Tests
             };
             _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageTo)).Returns(true);
             _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageFrom)).Returns(true);
+            _createTranslationViewModelHandlerMock.Setup(handler => handler.createViewModel()).Returns(new CreateTranslationViewModel());
 
             // Act
             var result = await _controller.Index(returnedViewModel) as ViewResult;
@@ -134,6 +211,7 @@ namespace WebApp.Tests
             };
             _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageTo)).Returns(true);
             _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageFrom)).Returns(true);
+            _createTranslationViewModelHandlerMock.Setup(handler => handler.createViewModel()).Returns(new CreateTranslationViewModel());
 
             // Act
             var result = await _controller.Index(returnedViewModel) as ViewResult;
@@ -165,6 +243,7 @@ namespace WebApp.Tests
             _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageFrom)).Returns(new Language());
             _translationServiceMock.Setup(service => service.TranslateTextAsync(It.IsAny<CreateTranslationViewModel>())).ReturnsAsync(viewModel);
             _controller.ModelState.AddModelError("", "Some error message");
+            _createTranslationViewModelHandlerMock.Setup(handler => handler.createViewModel()).Returns(new CreateTranslationViewModel());
 
             // Act
             var result = await _controller.Index(returnedViewModel) as ViewResult;

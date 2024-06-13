@@ -31,6 +31,10 @@ namespace WebApp.Controllers
         public IActionResult Index()
         {
             CreateTranslationViewModel viewModel = _createTranslationViewModelHandler.createViewModel();
+            if (viewModel.originLanguages is null || viewModel.targetLanguages is null || viewModel.originLanguages.Count == 0 || viewModel.targetLanguages.Count == 0)
+            {
+                return NotFound();
+            }
             return View(viewModel);
         }
 
