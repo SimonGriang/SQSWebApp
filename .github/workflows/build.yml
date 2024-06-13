@@ -45,7 +45,7 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal ./SQSWebApp.sln
     - name: Coverage
-      run: dotnet-coverage collect "dotnet test WebApp/WebApp.sln" -f xml -o "coverage.xml"
+      run: dotnet-coverage collect "dotnet test ./SQSWebApp.sln" -f xml -o "coverage.xml"
     - name: Sonarqube end
       run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       env:
