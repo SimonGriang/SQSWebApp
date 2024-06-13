@@ -17,11 +17,8 @@ namespace WebApp.DBSeeding
             serviceProvider.GetRequiredService<
                 DbContextOptions<WebAppContext>>()))
             {
-                // Look for any languages.
-                if (context.Language.Any())
-                {
-                    return;   // DB has been seeded
-                }
+                // Remove all existing languages
+                context.Language.RemoveRange(context.Language);
 
                 List<Language> languages = new List<Language>();
                 ITranslationService translationService = new TranslationService(context);
