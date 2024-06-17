@@ -40,8 +40,8 @@ jobs:
         dotnet sonarscanner begin /k:"SimonGriang_SQSWebApp" /o:"simongriang" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
     - name: Build
       run: dotnet build --no-restore --no-incremental WebApp/WebApp.sln
-#    - name: Ensure browsers are installed
-#      run: pwsh WebApp/WebApp.UnitTests/bin/Debug/net8.0/playwright.ps1 install --with-deps # has to be modified for sure
+    - name: Ensure browsers are installed
+      run: pwsh WebApp/WebApp.UnitTests/bin/Debug/net8.0/playwright.ps1 #install --with-deps # has to be modified for sure
     - name: Test
       run: dotnet test --no-build --verbosity normal WebApp/WebApp.sln
     - name: Coverage
