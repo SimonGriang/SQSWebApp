@@ -37,7 +37,7 @@ namespace WebApp.Services
             WebApp.Models.Language languageFrom = viewModel.Translation.OriginalLanguage!;
             string originalText = viewModel.Translation.OriginalText!;
 
-            if (viewModel.Translation.TranslatedLanguage!.Abbreviation == "DL" )
+            if (viewModel.Translation.OriginalLanguage!.Abbreviation == "DL" )
             {
                 translatedText = await translator.TranslateTextAsync(originalText, null, languageTo.Abbreviation);
             }

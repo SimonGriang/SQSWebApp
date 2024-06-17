@@ -37,7 +37,7 @@
             </select>
             <div class="form-group">
                 <label asp-for="Translation.OriginalText" class="control-label">Original</label>
-                <textarea asp-for="Translation.OriginalText" class="form-control" style="height: auto; min-height: 250px; overflow-y: auto;"></textarea>
+                <textarea asp-for="Translation.OriginalText" id="OriginalTextField" class="form-control" style="height: auto; min-height: 250px; overflow-y: auto;"></textarea>
                 <span asp-validation-for="Translation.OriginalText" class="text-danger"></span>
             </div>
         </div>
@@ -62,14 +62,14 @@
             </select>
             <div class="form-group">
                 <label asp-for="Translation.TranslatedText" class="control-label">Translation</label>
-                <div asp-for="Translation.TranslatedText" class="form-control"  style="height: auto; min-height: 250px; overflow-y: auto;" readonly>
+                <div asp-for="Translation.TranslatedText" id="TranslatedTextField" class="form-control"  style="height: auto; min-height: 250px; overflow-y: auto;" readonly>
                     @Model.Translation.TranslatedText
                 </div>
             </div>
         </div>
     </div>
     <div class="form-group">
-        <input type="submit" value="Translate" class="btn btn-primary" />
+        <input type="submit" id="TranslateButton" value="Translate" class="btn btn-primary" />
     </div>
 </form>
 
