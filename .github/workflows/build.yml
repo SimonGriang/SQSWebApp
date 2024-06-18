@@ -14,6 +14,17 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_PASSWORD: mypassword
+          POSTGRES_DB: mydatabase
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+
     steps:
     - name: Set up JDK 17
       uses: actions/setup-java@v3
@@ -26,7 +37,7 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore WebApp/WebApp.sln
+      run: dotnet restore WebApp/WebApp.sln 
     - name: Setup Code Coverage
       run: |
         sudo apt-get update && sudo apt-get install glibc-source libxml2 libxrender1 libfontconfig libxext6 libc6 -y
@@ -40,6 +51,22 @@ jobs:
         dotnet sonarscanner begin /k:"SimonGriang_SQSWebApp" /o:"simongriang" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
     - name: Build
       run: dotnet build --no-restore --no-incremental WebApp/WebApp.sln
+
+    - name: Apply database migrations
+      run: dotnet ef database update --project <path-to-your-project> -- --connection "Host=postgres;Port=5432;Database=mydatabase;Username=postgres;Password=mypassword"
+    - name: Start the server
+      run: dotnet run --project <path-to-your-project> &
+      env:
+        ASPNETCORE_ENVIRONMENT: Development
+        ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=mydatabase;Username=postgres;Password=mypassword"
+    - name: Wait for server to be ready
+      run: |
+        sudo apt-get install -y netcat
+        while ! nc -z localhost 5095; do
+          sleep 1
+        done
+
+
     - name: Ensure browsers are installed
       run: pwsh PlaywrightTests/bin/Debug/net8.0/playwright.ps1 install #pwsh WebApp/WebApp.UnitTests/bin/Debug/net8.0/playwright.ps1 install --with-deps # has to be modified for sure
     - name: Test
