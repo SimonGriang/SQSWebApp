@@ -56,9 +56,9 @@ jobs:
     - name: Install dotnet-ef tool
       run: dotnet tool install --global dotnet-ef
     - name: Apply database migrations
-      run: dotnet ef database update --project WebApp/WebApp -- --connection "Host=postgres;Port=5432;Database=mydatabase;Username=postgres;Password=mypassword"
+      run: dotnet ef database update --project WebApp -- --connection "Host=postgres;Port=5432;Database=mydatabase;Username=postgres;Password=mypassword"
     - name: Start the server
-      run: dotnet run --project WebApp/WebApp &
+      run: dotnet run --project WebApp &
       env:
         ASPNETCORE_ENVIRONMENT: Development
         ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=mydatabase;Username=postgres;Password=mypassword"
