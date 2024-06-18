@@ -52,6 +52,9 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --no-incremental WebApp/WebApp.sln
 
+
+    - name: Install dotnet-ef tool
+      run: dotnet tool install --global dotnet-ef
     - name: Apply database migrations
       run: dotnet ef database update --project WebApp/WebApp -- --connection "Host=postgres;Port=5432;Database=mydatabase;Username=postgres;Password=mypassword"
     - name: Start the server
