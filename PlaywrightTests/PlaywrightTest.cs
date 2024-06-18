@@ -44,19 +44,18 @@ public class PlaywrightTest
         string translatedTestText = "A test in another language";
 
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
+        await using var browser = await playwright.Chromium.LaunchAsync(); //(new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
         var page = await browser.NewPageAsync();
 
         // Webseite aufrufen
         await page.GotoAsync("http://localhost:5095/");
         
-        /*
         // Spanish auswählen
         await page.ClickAsync("[id=languageFromDropdown]");
         await page.SelectOptionAsync("[id=languageFromDropdown]", "8");
         // Text eingeben
         await page.ClickAsync("[id=OriginalTextField]");
-        await page.FillAsync("[id=OriginalTextField]", originalTextToFind);
+        await page.FillAsync("[id=OriginalTextField]", originalTestText);
         // Amerikanisch Englisch auswählen
         await page.ClickAsync("[id=languageToDropdown]");
         await page.SelectOptionAsync("[id=languageToDropdown]", "7");
@@ -70,8 +69,7 @@ public class PlaywrightTest
 
 
         string translatedText = await page.InnerTextAsync("[id='TranslatedTextField']");
-        Assert.AreEqual(translatedTextToFind, translatedText);
-        */
+        Assert.AreEqual(translatedTestText, translatedText);
 
         await page.ClickAsync("text=Back to List");    
 
