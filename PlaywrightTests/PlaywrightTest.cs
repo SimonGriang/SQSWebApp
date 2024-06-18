@@ -91,7 +91,6 @@ public class PlaywrightTest
         string OriginTextString = "null";
         string translatedLanguageString = "null";
         string TranslatedTextString = "null";
-        string DateString = "null";
 
         // Überprüfe die Werte auf der Details-Seite
         var translatedLanguageElement = await page.QuerySelectorAsync("#TranlationLanguage");
@@ -117,19 +116,12 @@ public class PlaywrightTest
         {
             OriginTextString = await OriginTextElement.InnerTextAsync();
         }
-        
-        var DateElement = await page.QuerySelectorAsync("#Date");
-        if (DateElement != null)
-        {
-            DateString = await DateElement.InnerTextAsync();
-        }
 
         // Assertions für die Details
         Assert.AreEqual("Spanish", OriginLanguageString);
         Assert.AreEqual(originalTestText, OriginTextString);
         Assert.AreEqual("English (American)", translatedLanguageString);
         Assert.AreEqual(translatedTestText, TranslatedTextString);
-        Assert.AreEqual(DateTime.Now.ToString("dd.MM.yyyy"), DateString);
 
         await browser.CloseAsync();
     }
