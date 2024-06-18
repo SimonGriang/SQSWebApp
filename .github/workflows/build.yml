@@ -53,7 +53,7 @@ jobs:
       run: dotnet build --no-restore --no-incremental WebApp/WebApp.sln
 
     - name: Apply database migrations
-      run: dotnet ef database update --project WebApp/WebApp -- --connection "Host=postgres;Port=5432;Database=mydatabase;Username=postgres;Password=mypassword"
+      run: dotnet ef database update --project WebApp/WebApp -- #--connection "Host=postgres;Port=5432;Database=mydatabase;Username=postgres;Password=mypassword"
     - name: Start the server
       run: dotnet run --project WebApp/WebApp &
       env:
