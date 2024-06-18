@@ -69,6 +69,22 @@ jobs:
           sleep 1
         done
 
+        - name: Install missing Playwright dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwoff1 \
+            libopus0 \
+            libvpx7 \
+            libevent-2.1-7 \
+            libgstreamer1.0-0 \
+            libgstreamer-plugins-base1.0-0 \
+            libgstreamer-gl1.0-0 \
+            libgstreamer-plugins-bad1.0-0 \
+            libharfbuzz-icu0 \
+            libhyphen0 \
+            libx264-160
+
     - name: Ensure browsers are installed
       run: pwsh PlaywrightTests/bin/Debug/net8.0/playwright.ps1 install #pwsh WebApp/WebApp.UnitTests/bin/Debug/net8.0/playwright.ps1 install --with-deps # has to be modified for sure
     - name: Test
