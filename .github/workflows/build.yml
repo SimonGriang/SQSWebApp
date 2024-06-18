@@ -66,7 +66,6 @@ jobs:
           sleep 1
         done
 
-
     - name: Ensure browsers are installed
       run: pwsh PlaywrightTests/bin/Debug/net8.0/playwright.ps1 install #pwsh WebApp/WebApp.UnitTests/bin/Debug/net8.0/playwright.ps1 install --with-deps # has to be modified for sure
     - name: Test
