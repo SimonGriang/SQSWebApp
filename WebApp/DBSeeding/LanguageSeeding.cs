@@ -17,7 +17,7 @@ namespace WebApp.DBSeeding
             serviceProvider.GetRequiredService<DbContextOptions<WebAppContext>>()))
             {
                 List<Language> allLanguages = new List<Language>();
-                ITranslationService translationService = new TranslationService(context);
+                ITranslationService translationService = serviceProvider.GetRequiredService<ITranslationService>();
                 Task<List<Language>> deeplLanguages = translationService.getDeeplLanguages();
                 allLanguages = deeplLanguages.GetAwaiter().GetResult();
                 allLanguages.Add(new Language

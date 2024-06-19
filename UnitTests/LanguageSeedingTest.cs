@@ -16,7 +16,7 @@ namespace WebApp.Tests
     public class LanguageSeedingTest
     {
         private WebAppContext _context;
-        private Mock<ITranslationService> _translationServiceMock;
+        private Mock<ITranslationService> _translationServiceMock = new Mock<ITranslationService>();
         private IServiceProvider _serviceProvider;
 
         [TestInitialize]
@@ -53,7 +53,7 @@ namespace WebApp.Tests
             LanguageSeeding.Initialize(_serviceProvider);
 
             // Assert
-            Assert.AreEqual(4, _context.Language.Count()); // Überprüfe, ob alle Sprachen korrekt hinzugefügt wurden
+            Assert.AreEqual(6, _context.Language.Count()); // Überprüfe, ob alle Sprachen korrekt hinzugefügt wurden
         }
     }
 }
