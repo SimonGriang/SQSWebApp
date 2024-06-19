@@ -44,6 +44,10 @@ namespace WebApp.Tests
 
             // Erhalte den WebAppContext aus dem ServiceProvider
             _context = _serviceProvider.GetRequiredService<WebAppContext>();
+
+            // Datenbank bereinigen
+            _context.Language.RemoveRange(_context.Language);
+            _context.SaveChanges();
         }
 
         [TestMethod]
