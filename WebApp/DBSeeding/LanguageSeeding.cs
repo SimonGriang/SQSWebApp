@@ -12,45 +12,45 @@ namespace WebApp.DBSeeding
     public class LanguageSeeding
     {
         public static void Initialize(IServiceProvider serviceProvider)
-        {
+        { // Change the DBSeeding class with code from chatgpt
             using (var context = new WebAppContext(
-            serviceProvider.GetRequiredService<
-                DbContextOptions<WebAppContext>>()))
+            serviceProvider.GetRequiredService<DbContextOptions<WebAppContext>>()))
             {
-                // Look for any languages.
-                if (context.Language.Any())
-                {
-                    return;   // DB has been seeded
-                }
-
-                List<Language> languages = new List<Language>();
+                List<Language> allLanguages = new List<Language>();
                 ITranslationService translationService = new TranslationService(context);
-                Task<List<Language>> allLanguages = translationService.getDeeplLanguages();
-                languages = allLanguages.GetAwaiter().GetResult();
-
-                // Add languages to the database
-                context.Language.AddRange(languages);
-
-                // Add additional languages
-                Language detectLanguage = new Language
+                Task<List<Language>> deeplLanguages = translationService.getDeeplLanguages();
+                allLanguages = deeplLanguages.GetAwaiter().GetResult();
+                allLanguages.Add(new Language
                 {
                     Name = "Detect Language",
                     Abbreviation = "DL",
                     isOriginLanguage = true,
                     isTargetLanguage = false
-                };
+                });
 
-                Language englishLanguage = new Language
+                allLanguages.Add(new Language
                 {
                     Name = "English",
                     Abbreviation = "en",
                     isOriginLanguage = true,
                     isTargetLanguage = false
-                };
+                });
 
-                context.Language.AddRange(detectLanguage, englishLanguage);
+                List<Language> languagesToAdd = new List<Language>();
 
-                context.SaveChanges();
+                foreach (var language in allLanguages)
+                {
+                    if (!context.Language.Any(l => l.Name == language.Name && l.Abbreviation == language.Abbreviation))
+                    {
+                        languagesToAdd.Add(language);
+                    }
+                }
+                
+                if (languagesToAdd.Any())
+                {
+                    context.Language.AddRange(languagesToAdd);
+                    context.SaveChanges();
+                }
             }
         }
     }
