@@ -29,13 +29,18 @@ namespace WebApp.Controllers
 
         // GET: Startpage
         public IActionResult Index()
-        {
-            CreateTranslationViewModel viewModel = _createTranslationViewModelHandler.createViewModel();
-            if (viewModel.originLanguages is null || viewModel.targetLanguages is null || viewModel.originLanguages.Count == 0 || viewModel.targetLanguages.Count == 0)
-            {
-                return NotFound();
-            }
-            return View(viewModel);
+        { // Exception Handling noch einfügen falls bei der Erstellung des ViewModels ein Fehler auftritt
+            try{
+                CreateTranslationViewModel viewModel = _createTranslationViewModelHandler.createViewModel();
+                if (viewModel is null || viewModel.originLanguages is null || viewModel.targetLanguages is null || viewModel.originLanguages.Count == 0 || viewModel.targetLanguages.Count == 0)
+                {
+                    return NotFound();
+                }
+                return View(viewModel);
+            } catch (Exception exception){
+                TempData["ErrorMessage"] = "Ein unerwarteter Fehler ist aufgetreten: " + exception.Message;
+                return View();
+            }  
         }
 
         // POST: Startpage

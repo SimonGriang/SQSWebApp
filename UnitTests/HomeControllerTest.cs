@@ -10,42 +10,44 @@ using WebApp.Models;
 using WebApp.Services;
 using WebApp.ViewModelHandler;
 using WebApp.ViewModels;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Http;
+using DeepL;
 
 namespace WebApp.Tests
 {
     [TestClass]
     public class HomeControllerTests
     {
-        private HomeController _controller;
-        private Mock<ILogger<HomeController>> _loggerMock;
-        private Mock<WebAppContext> _contextMock;
-        private Mock<ITranslationService> _translationServiceMock;
-        private Mock<ITranslationRepository> _translationRepositoryMock;
-        private Mock<ILanguageRepository> _languageRepositoryMock;
-        private Mock<ICreateTranslationViewModelHandler> _createTranslationViewModelHandlerMock;
+        public required HomeController _controller;
+        private Mock<ILogger<HomeController>> _loggerMock = new Mock<ILogger<HomeController>>();
+        private Mock<ITranslationService> _translationServiceMock = new Mock<ITranslationService>();
+        private Mock<ITranslationRepository> _translationRepositoryMock = new Mock<ITranslationRepository>();
+        private Mock<ILanguageRepository> _languageRepositoryMock = new Mock<ILanguageRepository>();
+        private Mock<ICreateTranslationViewModelHandler> _createTranslationViewModelHandlerMock = new Mock<ICreateTranslationViewModelHandler>();
+        private Mock<ITempDataDictionary> _tempDataMock = new Mock<ITempDataDictionary>();
+
 
         [TestInitialize]
         public void Setup()
         {
-            _loggerMock = new Mock<ILogger<HomeController>>();
-            _translationServiceMock = new Mock<ITranslationService>();
-            _translationRepositoryMock = new Mock<ITranslationRepository>();
-            _languageRepositoryMock = new Mock<ILanguageRepository>();
-            _createTranslationViewModelHandlerMock = new Mock<ICreateTranslationViewModelHandler>();
-
             _controller = new HomeController(
                 _loggerMock.Object,
                 _translationServiceMock.Object,
                 _languageRepositoryMock.Object,
                 _translationRepositoryMock.Object,
                 _createTranslationViewModelHandlerMock.Object
-            );
+            )
+            {
+                TempData = _tempDataMock.Object
+            };
+
         }
 
         [TestMethod]
         public void Index_ReturnsViewResult(){
-             // Arrange
-
+            
+            // Arrange
             var targetLanguageList = new List<Language>
             {
                 new Language
@@ -84,6 +86,7 @@ namespace WebApp.Tests
 
             // Assert
             Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Model);
             Assert.AreEqual(typeof(CreateTranslationViewModel), result.Model.GetType());
         }
 
@@ -113,6 +116,23 @@ namespace WebApp.Tests
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        [TestMethod]
+        public void Index_ReturnsErrorMessage_ExceptionIsThrown()
+        {
+            // Arrange
+            _createTranslationViewModelHandlerMock.Setup(x => x.createViewModel()).Throws(new System.Exception("Test Exception Message"));
+            var tempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+            _controller.TempData = tempData;
+
+            // Act
+            var result = _controller.Index();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(_controller.TempData.ContainsKey("ErrorMessage"));
+            Assert.AreEqual("Ein unerwarteter Fehler ist aufgetreten: " + "Test Exception Message", _controller.TempData["ErrorMessage"]);
         }
 
         [TestMethod]
@@ -173,20 +193,33 @@ namespace WebApp.Tests
                     TranslatedText = "Hallo"
                 }
             };
-            
-            var viewModel = new CreateTranslationViewModel();
+
+            var viewModel = new CreateTranslationViewModel
+            {
+                LanguageTo = 1,
+                LanguageFrom = 2,
+                Translation = new Translation
+                {
+                    OriginalText = "Hello",
+                    TranslatedText = "Hallo",
+                    OriginalLanguage = new Language(),
+                    TranslatedLanguage = new Language(),
+                }
+            };
+
             _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageTo)).Returns(true);
             _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageFrom)).Returns(true);
             _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageTo)).Returns(new Language());
             _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageFrom)).Returns(new Language());
             _createTranslationViewModelHandlerMock.Setup(handler => handler.createViewModel()).Returns(viewModel);
-            _translationServiceMock.Setup(service => service.TranslateTextAsync(It.IsAny<CreateTranslationViewModel>())).ReturnsAsync(viewModel);
+            _translationServiceMock.Setup(service => service.TranslateTextAsync(It.IsAny<CreateTranslationViewModel>())).ReturnsAsync(returnedViewModel);
 
             // Act
             var result = await _controller.Index(returnedViewModel) as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Model);
             Assert.AreEqual(typeof(CreateTranslationViewModel), result.Model.GetType());
         }
 
@@ -284,6 +317,158 @@ namespace WebApp.Tests
             Assert.IsFalse(result.ViewData.ModelState.IsValid);
             Assert.IsTrue(result.ViewData.ModelState.ContainsKey(""));
         }
+
+        [TestMethod]
+        public async Task Index_WithValidModelState_ThrowsDeeplConnectionException()
+        {
+            // Arrange
+            var returnedViewModel = new CreateTranslationViewModel
+            {
+                LanguageTo = 1,
+                LanguageFrom = 2,
+                Translation = new Translation
+                {
+                    OriginalText = "Hello",
+                    TranslatedText = "Hallo",
+                    OriginalLanguage = new Language(),
+                    TranslatedLanguage = new Language()
+                }
+            };
+
+            // Arrange
+            var viewModel = new CreateTranslationViewModel
+            {
+                LanguageTo = 1,
+                LanguageFrom = 2,
+                Translation = new Translation
+                {
+                    OriginalText = "Hello",
+                    TranslatedText = "Hallo",
+                    OriginalLanguage = new Language(),
+                    TranslatedLanguage = new Language()
+                }
+            };
+            _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageTo)).Returns(true);
+            _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageFrom)).Returns(true);
+            _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageTo)).Returns(new Language());
+            _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageFrom)).Returns(new Language());
+            _translationServiceMock.Setup(service => service.TranslateTextAsync(It.IsAny<CreateTranslationViewModel>())).Throws(new ConnectionException("Test Exception Message", new Exception()));
+            _createTranslationViewModelHandlerMock.Setup(handler => handler.createViewModel()).Returns(viewModel);
+
+            var tempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+            _controller.TempData = tempData;
+
+            // Act
+            var result = await _controller.Index(returnedViewModel) as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(_controller.TempData.ContainsKey("ErrorMessage"));
+            Assert.AreEqual("Es konnte keine Verbindung zum Webservice aufgerufen werden: " + "Test Exception Message", _controller.TempData["ErrorMessage"]);
+        }
+
+
+                [TestMethod]
+        public async Task Index_WithValidModelState_ThrowsDeeplQuotaExceededException()
+        {
+            // Arrange
+            var returnedViewModel = new CreateTranslationViewModel
+            {
+                LanguageTo = 1,
+                LanguageFrom = 2,
+                Translation = new Translation
+                {
+                    OriginalText = "Hello",
+                    TranslatedText = "Hallo",
+                    OriginalLanguage = new Language(),
+                    TranslatedLanguage = new Language()
+                }
+            };
+
+            // Arrange
+            var viewModel = new CreateTranslationViewModel
+            {
+                LanguageTo = 1,
+                LanguageFrom = 2,
+                Translation = new Translation
+                {
+                    OriginalText = "Hello",
+                    TranslatedText = "Hallo",
+                    OriginalLanguage = new Language(),
+                    TranslatedLanguage = new Language()
+                }
+            };
+            _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageTo)).Returns(true);
+            _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageFrom)).Returns(true);
+            _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageTo)).Returns(new Language());
+            _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageFrom)).Returns(new Language());
+            _translationServiceMock.Setup(service => service.TranslateTextAsync(It.IsAny<CreateTranslationViewModel>())).Throws(new QuotaExceededException("Test Exception Message"));
+            _createTranslationViewModelHandlerMock.Setup(handler => handler.createViewModel()).Returns(viewModel);
+
+            var tempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+            _controller.TempData = tempData;
+
+            // Act
+            var result = await _controller.Index(returnedViewModel) as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(_controller.TempData.ContainsKey("ErrorMessage"));
+            Assert.AreEqual("Das Kontigent an möglichen Übersetzungen der Software ist ereicht: " + "Test Exception Message", _controller.TempData["ErrorMessage"]);
+        }
+
+
+        [TestMethod]    
+        public async Task Index_WithValidModelState_ThrowsDeeplException()
+        {
+            // Arrange
+            var returnedViewModel = new CreateTranslationViewModel
+            {
+                LanguageTo = 1,
+                LanguageFrom = 2,
+                Translation = new Translation
+                {
+                    OriginalText = "Hello",
+                    TranslatedText = "Hallo",
+                    OriginalLanguage = new Language(),
+                    TranslatedLanguage = new Language()
+                }
+            };
+
+            // Arrange
+            var viewModel = new CreateTranslationViewModel
+            {
+                LanguageTo = 1,
+                LanguageFrom = 2,
+                Translation = new Translation
+                {
+                    OriginalText = "Hello",
+                    TranslatedText = "Hallo",
+                    OriginalLanguage = new Language(),
+                    TranslatedLanguage = new Language()
+                }
+            };
+            _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageTo)).Returns(true);
+            _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageFrom)).Returns(true);
+            _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageTo)).Returns(new Language());
+            _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageFrom)).Returns(new Language());
+            _translationServiceMock.Setup(service => service.TranslateTextAsync(It.IsAny<CreateTranslationViewModel>())).Throws(new DeepLException("Test Exception Message"));
+            _createTranslationViewModelHandlerMock.Setup(handler => handler.createViewModel()).Returns(viewModel);
+
+            var tempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+            _controller.TempData = tempData;
+
+            // Act
+            var result = await _controller.Index(returnedViewModel) as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(_controller.TempData.ContainsKey("ErrorMessage"));
+            Assert.AreEqual("Fehlerhafte Sprachkombination angegeben: " + "Test Exception Message", _controller.TempData["ErrorMessage"]);
+        }
+
+
+
 
         [TestMethod]
         public void History_ReturnsViewResultWithTranslations()
