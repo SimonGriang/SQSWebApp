@@ -55,5 +55,43 @@ namespace WebApp.Tests
             // Assert
             Assert.AreEqual(6, _context.Language.Count()); // Überprüfe, ob alle Sprachen korrekt hinzugefügt wurden
         }
+
+        [TestMethod]
+        public void Initialize_ShouldNotSeedLanguagesIfTheyAlreadyExist()
+        {
+            // Arrange
+            _context.Language.AddRange(new List<Language>
+            {
+                new Language { Name = "German", Abbreviation = "de", isTargetLanguage = true, isOriginLanguage = false },
+                new Language { Name = "English", Abbreviation = "en-US", isTargetLanguage = true, isOriginLanguage = false },
+                new Language { Name = "Detect Language", Abbreviation = "DL", isTargetLanguage = false, isOriginLanguage = true },
+                new Language { Name = "English", Abbreviation = "en", isTargetLanguage = false, isOriginLanguage = true }
+            });
+            _context.SaveChanges();
+
+            // Act
+            LanguageSeeding.Initialize(_serviceProvider);
+
+            // Assert
+            Assert.AreEqual(4, _context.Language.Count()); // Überprüfe, ob keine weiteren Sprachen hinzugefügt wurden
+        }
+
+        [TestMethod]
+        public void Initialize_ShouldSeedLanguagesIfTheyPartiallyExist()
+        {
+            // Arrange
+            _context.Language.AddRange(new List<Language>
+            {
+                new Language { Name = "German", Abbreviation = "de", isTargetLanguage = true, isOriginLanguage = false },
+                new Language { Name = "English", Abbreviation = "en-US", isTargetLanguage = true, isOriginLanguage = false }
+            });
+            _context.SaveChanges();
+
+            // Act
+            LanguageSeeding.Initialize(_serviceProvider);
+
+            // Assert
+            Assert.AreEqual(6, _context.Language.Count()); // Überprüfe, ob die fehlenden Sprachen hinzugefügt wurden
+        }
     }
 }
