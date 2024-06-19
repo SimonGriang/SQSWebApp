@@ -44,7 +44,7 @@ public class PlaywrightTest
         string translatedTestText = "A test in another language";
 
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
+        await using var browser = await playwright.Chromium.LaunchAsync(); //(new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
         var page = await browser.NewPageAsync();
 
         // Webseite aufrufen
