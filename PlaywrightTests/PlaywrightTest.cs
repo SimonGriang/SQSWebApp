@@ -44,7 +44,7 @@ public class PlaywrightTest
         string translatedTestText = "A test in another language";
 
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(); //(new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
+        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
         var page = await browser.NewPageAsync();
 
         // Webseite aufrufen
@@ -52,13 +52,13 @@ public class PlaywrightTest
         
         // Spanish auswählen
         await page.ClickAsync("[id=languageFromDropdown]");
-        await page.SelectOptionAsync("[id=languageFromDropdown]", "8");
+        await page.SelectOptionAsync("[id=languageFromDropdown]", new [] { "Spanish" });
         // Text eingeben
         await page.ClickAsync("[id=OriginalTextField]");
         await page.FillAsync("[id=OriginalTextField]", originalTestText);
         // Amerikanisch Englisch auswählen
         await page.ClickAsync("[id=languageToDropdown]");
-        await page.SelectOptionAsync("[id=languageToDropdown]", "7");
+        await page.SelectOptionAsync("[id=languageToDropdown]", new [] { "English (American)" });
         // Übersetzen
         await page.ClickAsync("[id=TranslateButton]");
 

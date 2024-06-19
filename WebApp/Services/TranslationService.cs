@@ -11,12 +11,11 @@ namespace WebApp.Services
 {
     public class TranslationService : ITranslationService
     {
-        private readonly String authKey = "f2981bee-344a-4a1f-b65f-877950fa3855:fx";
-        private Translator translator;
+        private ITranslatorWrapper _translator;
 
-        public TranslationService()
+        public TranslationService(ITranslatorWrapper translatorWrapper)
         {
-            translator = new Translator(authKey);
+            _translator = translatorWrapper;
         }
 
         public async Task<CreateTranslationViewModel> TranslateTextAsync(CreateTranslationViewModel viewModel)
@@ -37,11 +36,11 @@ namespace WebApp.Services
 
             if (viewModel.Translation.OriginalLanguage!.Abbreviation == "DL" )
             {
-                translatedText = await translator.TranslateTextAsync(originalText, null, languageTo.Abbreviation);
+                translatedText = await _translator.TranslateTextAsync(originalText, null, languageTo.Abbreviation);
             }
             else
             {
-                translatedText = await translator.TranslateTextAsync(originalText, languageFrom.Abbreviation, languageTo.Abbreviation!);
+                translatedText = await _translator.TranslateTextAsync(originalText, languageFrom.Abbreviation, languageTo.Abbreviation!);
             }
             viewModel.Translation.TranslatedText = translatedText?.Text;
             viewModel.Translation.translated_at =  DateTime.UtcNow;
@@ -53,7 +52,7 @@ namespace WebApp.Services
             List<WebApp.Models.Language> languages = new List<WebApp.Models.Language>();
             List<WebApp.Models.Language> finallanguages = new List<WebApp.Models.Language>();
 
-            var sourceLanguages = await translator.GetSourceLanguagesAsync();
+            var sourceLanguages = await _translator.GetSourceLanguagesAsync();
 
             foreach (var lang in sourceLanguages)
             {
@@ -63,7 +62,7 @@ namespace WebApp.Services
             }
 
 
-            var targetLanguages = await translator.GetTargetLanguagesAsync();
+            var targetLanguages = await _translator.GetTargetLanguagesAsync();
 
             foreach (var lang in targetLanguages)
             {
@@ -72,12 +71,21 @@ namespace WebApp.Services
                 WebApp.Models.Language createlan = new WebApp.Models.Language(lang.Name, lang.Code);
                 foreach (WebApp.Models.Language lan in languages)
                 {
-                    if (createlan.Abbreviation == (lan.Abbreviation))
+                    if (createlan.Abbreviation == lan.Abbreviation)
                     {
                         lan.isTargetLanguage = true;
+                        lan.isOriginLanguage = true;
                         finallanguages.Add(lan);
                         languageFound = true;
                         break;
+                    } else {
+                        if (finallanguages.Contains(lan) == false)
+                        {
+                            lan.isOriginLanguage = true;
+                            lan.isTargetLanguage = false;
+                            languageFound = false;
+                            finallanguages.Add(lan);
+                        }
                     }
                 }
                 if (languageFound == false)

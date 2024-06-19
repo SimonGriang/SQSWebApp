@@ -9,6 +9,10 @@ using DeepL;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var authKey = "f2981bee-344a-4a1f-b65f-877950fa3855:fx";
+
+builder.Services.AddTransient<ITranslatorWrapper>(sp => new TranslatorWrapper(authKey));
+
 builder.Services.AddTransient<ITranslationService, TranslationService>();
 
 builder.Services.AddTransient<ITranslationRepository, TranslationRepository>();

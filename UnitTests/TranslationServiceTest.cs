@@ -16,14 +16,20 @@ namespace WebApp.Tests
     [TestClass]
     public class TranslationServiceTests
     {
-        private Mock<ITranslator> _translatorMock = new Mock<ITranslator>();
-        private ITranslationService _translationService = new TranslationService();
+        private Mock<ITranslatorWrapper> _translatorMock;
+        private ITranslationService _translationService;
+
+        public TranslationServiceTests()
+        {
+            _translatorMock = new Mock<ITranslatorWrapper>();
+            _translationService = new TranslationService(_translatorMock.Object);
+        }
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _translatorMock = new Mock<ITranslator>();
-            _translationService = new TranslationService();
+            _translatorMock = new Mock<ITranslatorWrapper>();
+            _translationService = new TranslationService(_translatorMock.Object);
         }
 
         [TestMethod]
@@ -41,7 +47,7 @@ namespace WebApp.Tests
             };
 
             var textResult = new TextResult("Hallo", "en");
-            _translatorMock.Setup(t => t.TranslateTextAsync("Hello", It.IsAny<string>(), "de", It.IsAny<TextTranslateOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync(textResult);
+            _translatorMock.Setup(t => t.TranslateTextAsync("Hello", It.IsAny<string>(), "de")).ReturnsAsync(textResult);
 
             // Act
             var resultViewModel = await _translationService.TranslateTextAsync(viewModel);
@@ -58,26 +64,27 @@ namespace WebApp.Tests
             // Arrange
             var sourceLanguages = new List<SourceLanguage>
             {
-                new SourceLanguage ("English", "en"),
-                new SourceLanguage ("German", "de")
+                new SourceLanguage ( "en", "English"),
+                new SourceLanguage ( "de", "German")
             };
             var targetLanguages = new List<TargetLanguage>
             {
-                new TargetLanguage ("German", "de", false),
-                new TargetLanguage ("French", "fr", false),
+                new TargetLanguage ("de", "German", false),
+                new TargetLanguage ("fr" ,"French", false),
             };
 
-            _translatorMock.Setup(t => t.GetSourceLanguagesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(sourceLanguages.ToArray());
-            _translatorMock.Setup(t => t.GetTargetLanguagesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(targetLanguages.ToArray());
+            _translatorMock.Setup(t => t.GetSourceLanguagesAsync()).ReturnsAsync(sourceLanguages.ToArray());
+            _translatorMock.Setup(t => t.GetTargetLanguagesAsync()).ReturnsAsync(targetLanguages.ToArray());
 
             // Act
-            var resultLanguages = await _translationService.getDeeplLanguages();
+            List<Models.Language> resultLanguages = await _translationService.getDeeplLanguages();
 
             // Assert
-            Assert.AreEqual(2, resultLanguages.Count); // Gesamte Anzahl der Sprachen
-            Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "en"));
-            Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "de"));
-            Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "fr"));
+            Assert.AreEqual(3, resultLanguages.Count); // Gesamte Anzahl der Sprachen
+            Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "en" && l.isOriginLanguage && !l.isTargetLanguage));
+            Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "de" && l.isOriginLanguage && l.isTargetLanguage));
+            Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "fr" && !l.isOriginLanguage && l.isTargetLanguage));
+
         }
     }
 }
