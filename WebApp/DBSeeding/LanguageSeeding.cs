@@ -12,7 +12,7 @@ namespace WebApp.DBSeeding
     public class LanguageSeeding
     {
         public static void Initialize(IServiceProvider serviceProvider)
-        { // Change the DBSeeding class with code from chatgpt
+        {
             using (var context = new WebAppContext(
             serviceProvider.GetRequiredService<DbContextOptions<WebAppContext>>()))
             {
