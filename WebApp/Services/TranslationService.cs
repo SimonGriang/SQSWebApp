@@ -11,13 +11,11 @@ namespace WebApp.Services
 {
     public class TranslationService : ITranslationService
     {
-        private readonly WebAppContext _context;
         private readonly String authKey = "f2981bee-344a-4a1f-b65f-877950fa3855:fx";
         private Translator translator;
 
-        public TranslationService(WebAppContext context)
+        public TranslationService()
         {
-            _context = context;
             translator = new Translator(authKey);
         }
 

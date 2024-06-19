@@ -5,6 +5,7 @@ using WebApp.ViewModelHandler;
 using WebApp.Data;
 using WebApp.DBSeeding;
 using WebApp.Services;
+using DeepL;
 
 var builder = WebApplication.CreateBuilder(args);
 
