@@ -29,16 +29,16 @@ namespace WebApp.Tests
             // Arrange
             var newLanguages = new List<Language>
             {
-                new Language { ID = 11, Name = "Portuguese", Abbreviation = "pt" },
-                new Language { ID = 12, Name = "Dutch", Abbreviation = "nl", isOriginLanguage = false },
-                new Language { ID = 13, Name = "Greek", isTargetLanguage = false },
-                new Language { ID = 14, Name = "Swedish", Abbreviation = "sv", isOriginLanguage = false, isTargetLanguage = false },
-                new Language { ID = 15, Name = "Danish" },
-                new Language { ID = 16, Name = "Finnish", Abbreviation = "fi", isOriginLanguage = true },
-                new Language { ID = 17, Name = "Norwegian", Abbreviation = "no", isTargetLanguage = true },
-                new Language { ID = 18, Name = "Polish", Abbreviation = "pl", isOriginLanguage = true, isTargetLanguage = true },
-                new Language { ID = 19, Name = "Hungarian", isOriginLanguage = true },
-                new Language { ID = 20, Name = "Czech", isTargetLanguage = true }
+                new Language { ID = 1111, Name = "Portuguese", Abbreviation = "pt" },
+                new Language { ID = 1112, Name = "Dutch", Abbreviation = "nl", isOriginLanguage = false },
+                new Language { ID = 1113, Name = "Greek", isTargetLanguage = false },
+                new Language { ID = 1114, Name = "Swedish", Abbreviation = "sv", isOriginLanguage = false, isTargetLanguage = false },
+                new Language { ID = 1115, Name = "Danish" },
+                new Language { ID = 1116, Name = "Finnish", Abbreviation = "fi", isOriginLanguage = true },
+                new Language { ID = 1117, Name = "Norwegian", Abbreviation = "no", isTargetLanguage = true },
+                new Language { ID = 1118, Name = "Polish", Abbreviation = "pl", isOriginLanguage = true, isTargetLanguage = true },
+                new Language { ID = 1119, Name = "Hungarian", isOriginLanguage = true },
+                new Language { ID = 1120, Name = "Czech", isTargetLanguage = true }
             };
 
             foreach (var newLanguage in newLanguages)
@@ -55,7 +55,7 @@ namespace WebApp.Tests
         public void RemoveLanguage_ShouldRemoveLanguageFromDatabase()
         {
             // Arrange
-            var languageIdsToRemove = new List<int> { 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
+            var languageIdsToRemove = new List<int> { 1111, 1112, 1113, 1114, 1115, 1116, 1117, 1118, 1119, 1120 };
     
             foreach (var languageId in languageIdsToRemove)
             {
@@ -159,8 +159,8 @@ namespace WebApp.Tests
         public void GetLanguage_ShouldReturnCorrectLanguage()
         {
             // Arrange
-            var languageId = 30;
-            var expectedLanguage = new Language { ID = 30, Abbreviation = "testOrigin", Name = "testOrigin" };
+            var languageId = 1130;
+            var expectedLanguage = new Language { ID = 1130, Abbreviation = "testOrigin", Name = "testOrigin" };
 
             // Act
             _repository.AddLanguage(expectedLanguage);
