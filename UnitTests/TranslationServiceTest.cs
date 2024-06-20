@@ -85,8 +85,8 @@ namespace WebApp.Tests
             Assert.AreEqual("Hallo", resultViewModel.Translation.TranslatedText);
         }
 
-                [TestMethod]
-        public async Task TranslateTextAsync_WithInvalidInput_ShouldThrowArgumentNullException()
+        [TestMethod]
+        public async Task TranslateTextAsync_WithInvalidInputNoTranslatedLanguage_ShouldThrowArgumentNullException()
         {
             // Arrange
             var viewModel = new CreateTranslationViewModel
@@ -97,6 +97,91 @@ namespace WebApp.Tests
                     TranslatedLanguage = null,
                     OriginalText = "Hello"
                 }
+            };
+
+            // Assert & Act
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _translationService.TranslateTextAsync(viewModel));
+        }
+
+        [TestMethod]
+        public async Task TranslateTextAsync_WithInvalidInputNoOriginalText_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel
+            {
+                Translation = new Translation
+                {
+                    OriginalLanguage = new Models.Language { Name = "English", Abbreviation = "en" },
+                    TranslatedLanguage = new Models.Language { Name = "German", Abbreviation = "de" },
+                    OriginalText = null
+                }
+            };
+
+            // Assert & Act
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _translationService.TranslateTextAsync(viewModel));
+        }
+
+        [TestMethod]
+        public async Task TranslateTextAsync_WithInvalidInputNoOriginalLanguage_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel
+            {
+                Translation = new Translation
+                {
+                    TranslatedLanguage = new Models.Language { Name = "English", Abbreviation = "en" },
+                    OriginalLanguage = null,
+                    OriginalText = "Hello"
+                }
+            };
+
+            // Assert & Act
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _translationService.TranslateTextAsync(viewModel));
+        }
+
+        [TestMethod]
+        public async Task TranslateTextAsync_WithInvalidInputNoOriginalLanguageAbbreviation_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel
+            {
+                Translation = new Translation
+                {
+                    TranslatedLanguage = new Models.Language { Name = "English", Abbreviation = null },
+                    OriginalLanguage = new Models.Language { Name = "German", Abbreviation = "de" },
+                    OriginalText = "Hello"
+                }
+            };
+
+            // Assert & Act
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _translationService.TranslateTextAsync(viewModel));
+        }
+
+        [TestMethod]
+        public async Task TranslateTextAsync_WithInvalidInputNoTranslatedLanguageAbbreviation_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel
+            {
+                Translation = new Translation
+                {
+                    TranslatedLanguage = new Models.Language { Name = "English", Abbreviation = "en" },
+                    OriginalLanguage = new Models.Language { Name = "German", Abbreviation = null },
+                    OriginalText = "Hello"
+                }
+            };
+
+            // Assert & Act
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _translationService.TranslateTextAsync(viewModel));
+        }
+
+                [TestMethod]
+        public async Task TranslateTextAsync_WithInvalidInputNoTranslation_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel
+            {
+                Translation = null
             };
 
             // Assert & Act

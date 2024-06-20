@@ -24,14 +24,15 @@ namespace WebApp.Services
                 || viewModel.Translation.OriginalLanguage is null 
                 || viewModel.Translation.TranslatedLanguage is null 
                 || viewModel.Translation.OriginalText is null
-                || viewModel.Translation.TranslatedLanguage.Abbreviation is null)
+                || viewModel.Translation.TranslatedLanguage.Abbreviation is null
+                || viewModel.Translation.OriginalLanguage.Abbreviation is null)
             {
                 throw new ArgumentNullException(nameof(viewModel.Translation));
             }
 
-            TextResult? translatedText = null;
-            WebApp.Models.Language languageTo = viewModel.Translation.TranslatedLanguage!;
-            WebApp.Models.Language languageFrom = viewModel.Translation.OriginalLanguage!;
+            TextResult translatedText;
+            WebApp.Models.Language languageTo = viewModel.Translation.TranslatedLanguage;
+            WebApp.Models.Language languageFrom = viewModel.Translation.OriginalLanguage;
             string originalText = viewModel.Translation.OriginalText!;
 
             if (viewModel.Translation.OriginalLanguage!.Abbreviation == "DL" )
@@ -40,9 +41,9 @@ namespace WebApp.Services
             }
             else
             {
-                translatedText = await _translator.TranslateTextAsync(originalText, languageFrom.Abbreviation, languageTo.Abbreviation!);
+                translatedText = await _translator.TranslateTextAsync(originalText, languageFrom.Abbreviation, languageTo.Abbreviation);
             }
-            viewModel.Translation.TranslatedText = translatedText?.Text;
+            viewModel.Translation.TranslatedText = translatedText.Text;
             viewModel.Translation.translated_at =  DateTime.UtcNow;
             return viewModel;
         }
