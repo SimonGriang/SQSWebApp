@@ -85,12 +85,8 @@ namespace WebApp.Controllers
                     {
                         _translationRepository.AddTranslation(viewModel.Translation);
                     }
-                    return View(viewModel);
                 }
-                else
-                {
-                    return View(viewModel);
-                }
+                throw new Exception("Modelstate ist not valid or Translation is null.");
             }
             catch (ConnectionException connectionException)
             {

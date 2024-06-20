@@ -13,6 +13,7 @@ using WebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Http;
 using DeepL;
+using System.Diagnostics;
 
 namespace WebApp.Tests
 {
@@ -178,7 +179,19 @@ namespace WebApp.Tests
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
+        [TestMethod]
+        public void Index_ReturnsNotFound_WhenTargetViewModelIsNull()
+        {
+            // Arrange
+            CreateTranslationViewModel viewModel = null;
+            _createTranslationViewModelHandlerMock.Setup(x => x.createViewModel()).Returns(viewModel);
 
+            // Act
+            var result = _controller.Index();
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
 
         [TestMethod]
         public async Task Index_WithValidViewModel_ReturnsViewResult()
@@ -222,6 +235,48 @@ namespace WebApp.Tests
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Model);
             Assert.AreEqual(typeof(CreateTranslationViewModel), result.Model.GetType());
+        }
+
+        [TestMethod]
+        public async Task Index_WithValidViewModel_ThrowsExceptionInternalError()
+        {
+            // Arrange
+            var returnedViewModel = new CreateTranslationViewModel
+            {
+                LanguageTo = 1,
+                LanguageFrom = 2,
+                Translation = null
+            };
+
+            var viewModel = new CreateTranslationViewModel
+            {
+                LanguageTo = 1,
+                LanguageFrom = 2,
+                Translation = new Translation
+                {
+                    OriginalText = "Hello",
+                    TranslatedText = "Hallo",
+                    OriginalLanguage = new Language(),
+                    TranslatedLanguage = new Language(),
+                }
+            };
+
+            _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageTo)).Returns(true);
+            _languageRepositoryMock.Setup(repo => repo.LanguageExists(returnedViewModel.LanguageFrom)).Returns(true);
+            _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageTo)).Returns(new Language());
+            _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageFrom)).Returns(new Language());
+            _createTranslationViewModelHandlerMock.Setup(handler => handler.createViewModel()).Returns(viewModel);
+            _translationServiceMock.Setup(service => service.TranslateTextAsync(It.IsAny<CreateTranslationViewModel>())).ReturnsAsync(returnedViewModel);
+            var tempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+            _controller.TempData = tempData;
+
+            // Act
+            var result = await _controller.Index(returnedViewModel) as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(_controller.TempData.ContainsKey("ErrorMessage"));
+            Assert.AreEqual("Ein unerwarteter Fehler ist aufgetreten: " + "Modelstate ist not valid or Translation is null.", _controller.TempData["ErrorMessage"]);
         }
 
         [TestMethod]
@@ -368,8 +423,7 @@ namespace WebApp.Tests
             Assert.AreEqual("Es konnte keine Verbindung zum Webservice aufgerufen werden: " + "Test Exception Message", _controller.TempData["ErrorMessage"]);
         }
 
-
-                [TestMethod]
+        [TestMethod]
         public async Task Index_WithValidModelState_ThrowsDeeplQuotaExceededException()
         {
             // Arrange
@@ -469,6 +523,32 @@ namespace WebApp.Tests
         }
 
 
+        [TestMethod]
+        public void Error_ReturnsViewResultWithErrorViewModel()
+        {
+            // Arrange
+            var httpContext = new DefaultHttpContext();
+            _controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext
+            };
+
+            using (var activity = new Activity("TestActivity"))
+            {
+                activity.Start();
+                
+                // Act
+                var result = _controller.Error() as ViewResult;
+
+                // Assert
+                Assert.IsNotNull(result);
+                var model = result.Model as ErrorViewModel;
+                Assert.IsNotNull(model);
+                Assert.IsNotNull(model.RequestId);
+
+                activity.Stop();
+            }
+        }
 
 
         [TestMethod]
