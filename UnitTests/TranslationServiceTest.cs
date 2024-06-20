@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 namespace WebApp.Tests
 {
     [TestClass]
+    [TestCategory("UnitTests")]
     public class TranslationServiceTests
     {
         private Mock<ITranslatorWrapper> _translatorMock;

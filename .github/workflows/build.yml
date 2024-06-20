@@ -87,8 +87,12 @@ jobs:
 
     - name: Ensure browsers are installed
       run: pwsh PlaywrightTests/bin/Debug/net8.0/playwright.ps1 install #pwsh WebApp/WebApp.UnitTests/bin/Debug/net8.0/playwright.ps1 install --with-deps # has to be modified for sure
-    - name: Test
-      run: dotnet test --no-build --verbosity normal WebApp/WebApp.sln
+    - name: UnitTest
+      run: dotnet test --no-build --verbosity normal --filter Category=UnitTests WebApp/WebApp.sln
+    - name: IntegrationTest
+      run: dotnet test --no-build --verbosity normal --filter Category=IntegrationTests WebApp/WebApp.sln
+    - name: End-to-End Test
+      run: dotnet test --no-build --verbosity normal --filter Category=PlaywrightTests WebApp/WebApp.sln
     - name: Coverage
       run: dotnet-coverage collect "dotnet test WebApp/WebApp.sln" -f xml -o "coverage.xml"
     - name: Sonarqube end

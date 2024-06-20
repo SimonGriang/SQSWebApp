@@ -8,6 +8,7 @@ using WebApp.Models;
 namespace WebApp.Tests
 {
     [TestClass]
+    [TestCategory("UnitTests")]
     public class LanguageRepositoryTests
     {
         private DbContextOptions<WebAppContext> _options = new DbContextOptionsBuilder<WebAppContext>()

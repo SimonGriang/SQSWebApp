@@ -7,6 +7,7 @@ using WebApp.Models;
 namespace WebApp.Tests
 {
     [TestClass]
+    [TestCategory("IntegrationTest")]
     public class LanuguageRepositoryIntegrationTest
     {
         private static WebAppContext _context = new WebAppContext(new DbContextOptionsBuilder<WebAppContext>().UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=mypassword").Options);

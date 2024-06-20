@@ -17,6 +17,7 @@ using DeepL;
 namespace WebApp.Tests
 {
     [TestClass]
+    [TestCategory("UnitTests")]
     public class HomeControllerTests
     {
         public required HomeController _controller;

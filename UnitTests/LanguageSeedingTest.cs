@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace WebApp.Tests
 {
     [TestClass]
+    [TestCategory("UnitTests")]
     public class LanguageSeedingTest
     {
         private WebAppContext _context;

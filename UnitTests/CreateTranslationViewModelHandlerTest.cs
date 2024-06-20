@@ -8,6 +8,7 @@ using WebApp.ViewModels;
 namespace WebApp.Tests
 {
     [TestClass]
+    [TestCategory("UnitTests")]
     public class CreateTranslationViewModelHandlerTest
     {
         private Mock<ILanguageRepository> _languageRepositoryMock = new Mock<ILanguageRepository>();

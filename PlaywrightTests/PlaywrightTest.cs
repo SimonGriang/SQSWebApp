@@ -2,6 +2,7 @@ using Microsoft.Playwright;
 using System.Threading.Tasks;
 
 [TestClass]
+[TestCategory("PlaywrightTests")]
 public class PlaywrightTest
 {
     [TestMethod]
