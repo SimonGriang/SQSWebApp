@@ -188,5 +188,39 @@ namespace WebApp.Tests
                 Assert.IsFalse(languageExists);
             }
         }
+
+        [TestMethod]
+        public void LanguageExistsByAbbreviation_ShouldReturnTrueIfExists()
+        {
+            // Arrange
+            using (var context = new WebAppContext(_options))
+            {
+                var repository = new LanguageRepository(context);
+                var existingLanguageId = "de";
+
+                // Act
+                var languageExists = repository.LanguageExistsByAbbreviation(existingLanguageId);
+
+                // Assert
+                Assert.IsTrue(languageExists);
+            }
+        }
+
+        [TestMethod]
+        public void LanguageExistsByAbbreviation_ShouldReturnFalseIfNotExists()
+        {
+            // Arrange
+            using (var context = new WebAppContext(_options))
+            {
+                var repository = new LanguageRepository(context);
+                var nonExistingLanguageId = "xx";
+
+                // Act
+                var languageExists = repository.LanguageExistsByAbbreviation(nonExistingLanguageId);
+
+                // Assert
+                Assert.IsFalse(languageExists);
+            }
+        }
     }
 }

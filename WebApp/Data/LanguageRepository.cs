@@ -43,5 +43,15 @@ namespace WebApp.Data
         {
             return _context.Language.Any(l => l.ID == id);
         }
+
+        public bool LanguageExistsByAbbreviation(string abbreviation)
+        {
+            return _context.Language.Any(l => l.Abbreviation == abbreviation);
+        }
+
+        public Language? returnLanguageByAbbreviation(string abbreviation)
+        {
+            return _context.Language.FirstOrDefault(l => l.Abbreviation == abbreviation);
+        }
     }
 }
