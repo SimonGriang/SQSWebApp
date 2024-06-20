@@ -5,9 +5,9 @@ Software Qualitätssicherung
 
 Benötigte Tests:
 
-- Integration Test
-- Unit Test
-- E2E Test
+- Integration Test -> in progress
+- Unit Test -> check
+- E2E Test -> in progress
 - Lasttest 
 - Akzeptanztest
 - Dependency Security Checks (Github Action)
