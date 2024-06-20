@@ -10,15 +10,13 @@ namespace WebApp.Tests
     [TestClass]
     public class LanguageRepositoryTests
     {
-        private DbContextOptions<WebAppContext> _options;
+        private DbContextOptions<WebAppContext> _options = new DbContextOptionsBuilder<WebAppContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
 
         [TestInitialize]
         public void Initialize()
         {
-            _options = new DbContextOptionsBuilder<WebAppContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
-
             using (var context = new WebAppContext(_options))
             {
                 context.Language.AddRange(new List<Language>
@@ -220,6 +218,52 @@ namespace WebApp.Tests
 
                 // Assert
                 Assert.IsFalse(languageExists);
+            }
+        }
+
+        [TestMethod]
+        public void ReturnLanguageByAbbreviation_ShouldReturnCorrectLanguage()
+        {
+            using (var context = new WebAppContext(_options))
+            {
+                var repository = new LanguageRepository(context);
+                // Arrange
+                var abbreviation = "en";
+                var expectedLanguage = new Language { ID = 2, Name = "English", Abbreviation = "en", isOriginLanguage = false };
+
+                // Act
+                var result = repository.returnLanguageByAbbreviation(abbreviation);
+
+                // Assert
+                Assert.IsNotNull(result);
+                Assert.AreEqual(expectedLanguage.ID, result!.ID);
+                Assert.AreEqual(expectedLanguage.Name, result.Name);
+                Assert.AreEqual(expectedLanguage.Abbreviation, result.Abbreviation);
+                Assert.AreEqual(expectedLanguage.isOriginLanguage, result.isOriginLanguage);
+                Assert.AreEqual(expectedLanguage.isTargetLanguage, result.isTargetLanguage);
+            }
+        }
+
+        [TestMethod]
+        public void GetLanguage_ShouldReturnCorrectLanguage()
+        {
+
+            using (var context = new WebAppContext(_options))
+            {
+                var repository = new LanguageRepository(context);
+                // Arrange
+                var languageId = 30;
+                var expectedLanguage = new Language { ID = 30, Abbreviation = "EN", Name = "English" };
+
+                // Act
+                repository.AddLanguage(expectedLanguage);
+                var result = repository.GetLanguage(languageId);
+
+                // Assert
+                Assert.IsNotNull(result);
+                Assert.AreEqual(expectedLanguage.ID, result.ID);
+                Assert.AreEqual(expectedLanguage.Abbreviation, result.Abbreviation);
+                Assert.AreEqual(expectedLanguage.Name, result.Name);
             }
         }
     }
