@@ -5,17 +5,6 @@ using System.Threading.Tasks;
 public class PlaywrightTest
 {
     [TestMethod]
-    public async Task TestMethod1()
-    {
-        using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync();
-        var page = await browser.NewPageAsync();
-        await page.GotoAsync("https://www.example.com");
-        var title = await page.TitleAsync();
-        Assert.AreEqual("Example Domain", title);
-    }
-
-    [TestMethod]
     public async Task TranslateEngGerTest()
     {
         using var playwright = await Playwright.CreateAsync();

@@ -1,13 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 using WebApp.Data;
 using WebApp.Models;
 
 namespace WebApp.Tests
 {
     [TestClass]
-    public class TranslationRepositoryIntegrationTests
+    public class TranslationRepositoryIntegrationTest
     {
         private static WebAppContext _context = new WebAppContext(new DbContextOptionsBuilder<WebAppContext>().UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=mypassword").Options);
         private static ILanguageRepository _LanguageRepository = new LanguageRepository(_context);
@@ -111,6 +109,7 @@ namespace WebApp.Tests
         public static void Cleanup()
         {
             // Clean up test data from the database
+            _context.Language.RemoveRange(_context.Language);
             _context.Translation.RemoveRange(_context.Translation);
             _context.SaveChanges();
         }

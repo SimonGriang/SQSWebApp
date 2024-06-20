@@ -7,7 +7,6 @@ public interface ILanguageRepository
     Language? GetLanguage(int id);
     List<Language> GetAllLanguages();
     bool LanguageExists(int id);
-
     bool LanguageExistsByAbbreviation(string abbreviation);
     Language? returnLanguageByAbbreviation(string abbreviation);
 }
