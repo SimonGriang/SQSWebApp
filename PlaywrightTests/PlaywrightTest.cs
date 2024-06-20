@@ -1,4 +1,5 @@
 using Microsoft.Playwright;
+using System.Reflection;
 using System.Threading.Tasks;
 
 [TestClass]
@@ -28,13 +29,13 @@ public class PlaywrightTest
 
     [TestMethod]
     [Obsolete]
-    public async Task CheckIfTranslationSaved()
+    public async Task CheckApplicationWorkflow()
     {
         string originalTestText = "Un test en otro idioma";
         string translatedTestText = "A test in another language";
 
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(); //(new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
+        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
         var page = await browser.NewPageAsync();
 
         // Webseite aufrufen
@@ -112,6 +113,62 @@ public class PlaywrightTest
         Assert.AreEqual(originalTestText, OriginTextString);
         Assert.AreEqual("English (American)", translatedLanguageString);
         Assert.AreEqual(translatedTestText, TranslatedTextString);
+
+        // Klicke auf den Zurück-Link
+        await page.ClickAsync("text=Back to List");
+
+        // Überprüfe, ob der Originaltext in der Tabelle angezeigt wird
+        originalTextFound = await page.QuerySelectorAsync($".table tbody td:has-text(\"{originalTestText}\")");
+        Assert.IsNotNull(originalTextFound);
+
+        // Überprüfe, ob der übersetzte Text in der Tabelle angezeigt wird
+        translatedTextFound = await page.QuerySelectorAsync($".table tbody td:has-text(\"{translatedTestText}\")");
+        Assert.IsNotNull(translatedTextFound);
+
+        // Klicke auf den Löschen-Link der erstellten Übersetzung
+        var deleteLink = await originalTextFound.QuerySelectorAsync("xpath=ancestor::tr//a[contains(@href, '/Delete')]");
+        Assert.IsNotNull(deleteLink);
+        await deleteLink.ClickAsync();
+
+        // Überprüfe die Werte auf der Details-Seite
+        var deleteOriginTextElement = await page.QuerySelectorAsync("#OriginText");
+        if (deleteOriginTextElement != null)
+        {
+            OriginTextString = await deleteOriginTextElement.InnerTextAsync();
+        }
+        var deleteTranslatedTextElement = await page.QuerySelectorAsync("#TranslatedText");
+        if (deleteTranslatedTextElement != null)
+        {
+            TranslatedTextString = await deleteTranslatedTextElement.InnerTextAsync();
+        }
+        Assert.AreEqual(translatedTestText, TranslatedTextString);
+        Assert.AreEqual(originalTestText, OriginTextString);
+
+        // Klicke auf den Löschen-Button
+        await page.ClickAsync("[value=Delete]");
+
+        // Check if the home page is displayed
+        var titleElement = await page.QuerySelectorAsync("title");
+        if (titleElement != null)
+        {
+            string title = await titleElement.InnerTextAsync();
+            Assert.AreEqual("Translate - WebApp", title);
+        } 
+        else 
+        {
+            Assert.Fail("Title element not found");
+        }
+
+        // Überprüfe, ob der Originaltext in der Tabelle nicht mehr angezeigt wird
+        await page.ClickAsync("text=Back to List");
+
+        // Überprüfe, ob der Originaltext in der Tabelle angezeigt wird
+        originalTextFound = await page.QuerySelectorAsync($".table tbody td:has-text(\"{originalTestText}\")");
+        Assert.IsNull(originalTextFound);
+
+        // Überprüfe, ob der übersetzte Text in der Tabelle angezeigt wird
+        translatedTextFound = await page.QuerySelectorAsync($".table tbody td:has-text(\"{translatedTestText}\")");
+        Assert.IsNull(translatedTextFound);
 
         await browser.CloseAsync();
     }
