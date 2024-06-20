@@ -9,7 +9,6 @@ namespace WebApp.Data
         List<Translation> GetAllTranslations();
         bool TranslationExists(int id);
         Translation? GetTranslationById(int id);
-        void UpdateTranslation(Translation translation);
         void DeleteTranslation(int id);
     }
 }

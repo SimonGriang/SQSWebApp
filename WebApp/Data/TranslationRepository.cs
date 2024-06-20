@@ -39,12 +39,6 @@ namespace WebApp.Data
             return _context.Translation.Include(t => t.OriginalLanguage).Include(t => t.TranslatedLanguage).SingleOrDefault(t => t.ID == id);
         }
 
-        public void UpdateTranslation(Translation translation)
-        {
-            _context.Translation.Update(translation);
-            _context.SaveChanges();
-        }
-
         public void DeleteTranslation(int id)
         {
             var translation = _context.Translation.FirstOrDefault(t => t.ID == id);
