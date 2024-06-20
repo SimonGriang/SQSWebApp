@@ -59,6 +59,50 @@ namespace WebApp.Tests
         }
 
         [TestMethod]
+        public async Task TranslateTextAsync_WithValidInputDL_ShouldTranslateAndReturnViewModel()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel
+            {
+                Translation = new Translation
+                {
+                    OriginalLanguage = new Models.Language { Name = "Detected Language", Abbreviation = "DL" },
+                    TranslatedLanguage = new Models.Language { Name = "German", Abbreviation = "de" },
+                    OriginalText = "Hello"
+                }
+            };
+
+            var textResult = new TextResult("Hallo", "en");
+            _translatorMock.Setup(t => t.TranslateTextAsync("Hello", It.IsAny<string>(), "de")).ReturnsAsync(textResult);
+
+            // Act
+            var resultViewModel = await _translationService.TranslateTextAsync(viewModel);
+
+            // Assert
+            Assert.IsNotNull(resultViewModel);
+            Assert.IsNotNull(resultViewModel.Translation);
+            Assert.AreEqual("Hallo", resultViewModel.Translation.TranslatedText);
+        }
+
+                [TestMethod]
+        public async Task TranslateTextAsync_WithInvalidInput_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel
+            {
+                Translation = new Translation
+                {
+                    OriginalLanguage = new Models.Language { Name = "English", Abbreviation = "en" },
+                    TranslatedLanguage = null,
+                    OriginalText = "Hello"
+                }
+            };
+
+            // Assert & Act
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _translationService.TranslateTextAsync(viewModel));
+        }
+
+        [TestMethod]
         public async Task getDeeplLanguages_ShouldReturnAllLanguages()
         {
             // Arrange
@@ -84,7 +128,6 @@ namespace WebApp.Tests
             Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "en" && l.isOriginLanguage && !l.isTargetLanguage));
             Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "de" && l.isOriginLanguage && l.isTargetLanguage));
             Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "fr" && !l.isOriginLanguage && l.isTargetLanguage));
-
         }
     }
 }
