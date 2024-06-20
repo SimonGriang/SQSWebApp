@@ -7,14 +7,19 @@ using System.Threading.Tasks;
 public class PlaywrightTest
 {
     [TestMethod]
-    public async Task TranslateEngGerTest()
+    public async Task TranslationWithoutLanguageChange()
     {
+        string originalTestText = "Example Test";
+        string translatedTestText = "Beispiel Test";
+        string OriginTextString = "null";
+        string TranslatedTextString = "null";
+
         using var playwright = await Playwright.CreateAsync();
         await using var browser = await playwright.Chromium.LaunchAsync();//(new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
         var page = await browser.NewPageAsync();
         await page.GotoAsync("http://localhost:5095/");
         await page.ClickAsync("[id=OriginalTextField]");
-        await page.FillAsync("[id=OriginalTextField]", "Example Test");
+        await page.FillAsync("[id=OriginalTextField]", originalTestText);
         await page.ClickAsync("[id=TranslateButton]");
 
         await page.WaitForSelectorAsync("[id='TranslatedTextField']", new PageWaitForSelectorOptions { State = WaitForSelectorState.Visible });
@@ -24,18 +29,69 @@ public class PlaywrightTest
 
 
         string translatedText = await page.InnerTextAsync("[id='TranslatedTextField']");
-        Assert.AreEqual("Beispiel Test", translatedText);
+        Assert.AreEqual(translatedTestText, translatedText);
+
+        await page.ClickAsync("text=Back to List");    
+
+        var originalTextFound = await page.QuerySelectorAsync($".table tbody td:has-text(\"{originalTestText}\")");
+        Assert.IsNotNull(originalTextFound);
+
+        // Klicke auf den Löschen-Link der erstellten Übersetzung
+        var deleteLink = await originalTextFound.QuerySelectorAsync("xpath=ancestor::tr//a[contains(@href, '/Delete')]");
+        Assert.IsNotNull(deleteLink);
+        await deleteLink.ClickAsync();
+
+        // Überprüfe die Werte auf der Details-Seite
+        var deleteOriginTextElement = await page.QuerySelectorAsync("#OriginText");
+        if (deleteOriginTextElement != null)
+        {
+            OriginTextString = await deleteOriginTextElement.InnerTextAsync();
+        }
+        var deleteTranslatedTextElement = await page.QuerySelectorAsync("#TranslatedText");
+        if (deleteTranslatedTextElement != null)
+        {
+            TranslatedTextString = await deleteTranslatedTextElement.InnerTextAsync();
+        }
+        Assert.AreEqual(translatedTestText, TranslatedTextString);
+        Assert.AreEqual(originalTestText, OriginTextString);
+
+        // Klicke auf den Löschen-Button
+        await page.ClickAsync("[value=Delete]");
+
+        // Check if the home page is displayed
+        var titleElement = await page.QuerySelectorAsync("title");
+        if (titleElement != null)
+        {
+            string title = await titleElement.InnerTextAsync();
+            Assert.AreEqual("Translate - WebApp", title);
+        } 
+        else 
+        {
+            Assert.Fail("Title element not found");
+        }
+
+        // Überprüfe, ob der Originaltext in der Tabelle nicht mehr angezeigt wird
+        await page.ClickAsync("text=Back to List");
+
+        // Überprüfe, ob der Originaltext in der Tabelle angezeigt wird
+        originalTextFound = await page.QuerySelectorAsync($".table tbody td:has-text(\"{originalTestText}\")");
+        Assert.IsNull(originalTextFound);
+
+        // Überprüfe, ob der übersetzte Text in der Tabelle angezeigt wird
+        var translatedTextFound = await page.QuerySelectorAsync($".table tbody td:has-text(\"{translatedTestText}\")");
+        Assert.IsNull(translatedTextFound);
+
+        await browser.CloseAsync();
     }
 
     [TestMethod]
-    [Obsolete]
-    public async Task CheckApplicationWorkflow()
+    public async Task TranslationWithLanguageChange()
     {
         string originalTestText = "Un test en otro idioma";
         string translatedTestText = "A test in another language";
 
         using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
+        await using var browser = await playwright.Chromium.LaunchAsync();//new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
         var page = await browser.NewPageAsync();
 
         // Webseite aufrufen
