@@ -1,8 +1,11 @@
 using DeepL.Model;
 
-public interface ITranslatorWrapper
+namespace WebApp.Services
 {
-    public Task<TextResult> TranslateTextAsync(string text, string sourceLang, string targetLang);
-    public Task<SourceLanguage[]> GetSourceLanguagesAsync();
-    public Task<TargetLanguage[]> GetTargetLanguagesAsync();
+    public interface ITranslatorWrapper
+    {
+        public Task<TextResult> TranslateTextAsync(string text, string sourceLang, string targetLang);
+        public Task<SourceLanguage[]> GetSourceLanguagesAsync();
+        public Task<TargetLanguage[]> GetTargetLanguagesAsync();
+    }
 }
