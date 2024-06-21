@@ -50,52 +50,50 @@ namespace WebApp.Services
 
         public async Task<List<WebApp.Models.Language>> getDeeplLanguages()
         {
-            List<WebApp.Models.Language> languages = new List<WebApp.Models.Language>();
+            List<WebApp.Models.Language> languagesTarget = new List<WebApp.Models.Language>();
+            List<WebApp.Models.Language> languagesSource = new List<WebApp.Models.Language>();
             List<WebApp.Models.Language> finallanguages = new List<WebApp.Models.Language>();
 
-            var sourceLanguages = await _translator.GetSourceLanguagesAsync();
 
+            var sourceLanguages = await _translator.GetSourceLanguagesAsync();
             foreach (var lang in sourceLanguages)
             {
                 WebApp.Models.Language createlan = new WebApp.Models.Language(lang.Name, lang.Code);
                 createlan.isOriginLanguage = true;
                 createlan.isTargetLanguage = false;
-                languages.Add(createlan);
+                languagesSource.Add(createlan);
             }
 
 
             var targetLanguages = await _translator.GetTargetLanguagesAsync();
-
             foreach (var lang in targetLanguages)
             {
-                bool languageFound = false;
-
                 WebApp.Models.Language createlan = new WebApp.Models.Language(lang.Name, lang.Code);
-                foreach (WebApp.Models.Language lan in languages)
-                {
-                    if (createlan.Abbreviation == lan.Abbreviation)
-                    {
-                        lan.isTargetLanguage = true;
-                        lan.isOriginLanguage = true;
-                        finallanguages.Add(lan);
-                        languageFound = true;
-                        break;
-                    } else {
-                        if (finallanguages.Contains(lan))
-                        {
-                            lan.isOriginLanguage = true;
-                            lan.isTargetLanguage = false;
-                            languageFound = false;
-                            finallanguages.Add(lan);
-                        }
-                    }
+                createlan.isOriginLanguage = true;
+                createlan.isTargetLanguage = false;
+                languagesTarget.Add(createlan);
+            }
+
+            foreach (WebApp.Models.Language language in languagesSource)
+            {
+                if (languagesTarget.Exists(l => l.Abbreviation == language.Abbreviation)){
+                    language.isTargetLanguage = true;
+                    language.isOriginLanguage = true;
+                    finallanguages.Add(language);
+                } else {
+                    language.isOriginLanguage = true;
+                    language.isTargetLanguage = false;
+                    finallanguages.Add(language);
                 }
-                if (languageFound)
-                {
-                    createlan.isOriginLanguage = false;
-                    createlan.isTargetLanguage = true;
-                    finallanguages.Add(createlan);
-                }
+            }
+
+            foreach (WebApp.Models.Language language in languagesTarget)
+            {
+                if (!finallanguages.Exists(l => l.Abbreviation == language.Abbreviation)){
+                    language.isOriginLanguage = false;
+                    language.isTargetLanguage = true;
+                    finallanguages.Add(language);
+                } 
             }
             return finallanguages;
         }

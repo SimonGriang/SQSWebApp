@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using WebApp.Data;
 using WebApp.Models;
 using WebApp.ViewModelHandler;
 using WebApp.ViewModels;

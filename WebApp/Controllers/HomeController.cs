@@ -47,7 +47,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(CreateTranslationViewModel returnedViewModel)
         {
-            if (returnedViewModel.LanguageTo == 0 || returnedViewModel.LanguageFrom == 0 || _languageReository.LanguageExists(returnedViewModel.LanguageTo)|| _languageReository.LanguageExists(returnedViewModel.LanguageFrom))
+            if (returnedViewModel.LanguageTo == 0 || returnedViewModel.LanguageFrom == 0 || _languageReository.LanguageExists(returnedViewModel.LanguageTo) == false || _languageReository.LanguageExists(returnedViewModel.LanguageFrom) == false)
             {
                 ModelState.AddModelError("", "Ungültige Sprachauswahl. Bitte wählen Sie gültige Sprachen aus.");
                 return View(returnedViewModel);
@@ -78,31 +78,33 @@ namespace WebApp.Controllers
             {
                 viewModel = await _translationService.TranslateTextAsync(viewModel);
 
-                if (ModelState.IsValid && viewModel.Translation is not null)
+                if (ModelState.IsValid)
                 {
-                    _translationRepository.AddTranslation(viewModel.Translation);
-                    return View(viewModel);
+                    if (viewModel.Translation is not null)
+                    {
+                        _translationRepository.AddTranslation(viewModel.Translation);
+                    }
                 }
-                throw new ArgumentException("Modelstate ist not valid or Translation is null.");
+                throw new Exception("Modelstate ist not valid or Translation is null.");
             }
             catch (ConnectionException connectionException)
             {
-                TempData[errorMessage] = "Es konnte keine Verbindung zum Webservice aufgerufen werden: " + connectionException.Message;
+                TempData["ErrorMessage"] = "Es konnte keine Verbindung zum Webservice aufgerufen werden: " + connectionException.Message;
                 return View();
             }
             catch (QuotaExceededException quotaExceededException)
             {
-                TempData[errorMessage] = "Das Kontigent an möglichen Übersetzungen der Software ist ereicht: " + quotaExceededException.Message;
+                TempData["ErrorMessage"] = "Das Kontigent an möglichen Übersetzungen der Software ist ereicht: " + quotaExceededException.Message;
                 return View(viewModel);
             }
             catch (DeepLException deeplException)
             {
-                TempData[errorMessage] = "Fehlerhafte Sprachkombination angegeben: " + deeplException.Message;
+                TempData["ErrorMessage"] = "Fehlerhafte Sprachkombination angegeben: " + deeplException.Message;
                 return View(viewModel);
             }
             catch (Exception exception)
             {
-                TempData[errorMessage] = "Ein unerwarteter Fehler ist aufgetreten: " + exception.Message;
+                TempData["ErrorMessage"] = "Ein unerwarteter Fehler ist aufgetreten: " + exception.Message;
                 return View(viewModel);
             }
         }
@@ -122,11 +124,11 @@ namespace WebApp.Controllers
         // GET: Home/Details/X
         public IActionResult Details(int? id)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return NotFound();
             }
-            if (id == null || _translationRepository.TranslationExists(id.Value))
+            if (id == null || !_translationRepository.TranslationExists(id.Value))
             {
                 return NotFound();
             }
@@ -143,11 +145,11 @@ namespace WebApp.Controllers
         // GET: Home/Delete/5
         public IActionResult Delete(int? id)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return NotFound();
             }
-            if (id == null || _translationRepository.TranslationExists(id.Value))
+            if (id is null || !_translationRepository.TranslationExists(id.Value))
             {
                 return NotFound();
             }
@@ -167,7 +169,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return NotFound();
             }
@@ -176,8 +178,12 @@ namespace WebApp.Controllers
             if (translation != null)
             {
                 _translationRepository.DeleteTranslation(id);
+                return RedirectToAction(nameof(History));
             }
-            return RedirectToAction(nameof(Index));
+            else 
+            {
+                return NotFound();
+            }
         }
     }
 }

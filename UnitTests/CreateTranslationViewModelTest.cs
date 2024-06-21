@@ -25,7 +25,7 @@ namespace WebApp.Tests
             EnglishUS = 2,
             EnglishGB = 3,
             German = 4,
-            DetectLanguage = 5
+            DetectLanguage = 5,
         };
 
 
@@ -58,7 +58,6 @@ namespace WebApp.Tests
         public void ValidateOriginLanguages_ValidLanguage_ReturnsSuccess()
         {
             viewModel.LanguageFrom = 4;
-            var validationResults = new List<ValidationResult>();
             var validationContext = new ValidationContext(viewModel);
             var result = viewModel.ValidateOriginLanguages(validationContext);
 

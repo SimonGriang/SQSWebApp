@@ -13,10 +13,10 @@ namespace WebApp.ViewModels
         public Translation? Translation { get; set; }
 
         [Required(ErrorMessage = "LanguageFrom darf nicht 0 sein")]
-        public int? LanguageFrom { get; set; }
+        public int LanguageFrom { get; set; }
 
         [Required(ErrorMessage = "LanguageTo darf nicht 0 sein")]
-        public int? LanguageTo { get; set; }
+        public int LanguageTo { get; set; }
 
         public int? English { get; set; }
         public int? EnglishUS { get; set; }
@@ -27,29 +27,32 @@ namespace WebApp.ViewModels
         // Benutzerdefinierte Validierungsmethode für LanguageTo
         public ValidationResult ValidateLanguageTo(ValidationContext validationContext)
         {
-            if (targetLanguages == null || !targetLanguages.Any())
+            if (targetLanguages == null || !targetLanguages.Exists(l => true))
             {
-                return ValidationResult.Success!; // Wenn keine Sprachen vorhanden sind, überspringe die Validierung
+                return new ValidationResult("Keine Sprachen vorhanden, Validierung übersprungen.");
             }
 
-            if (LanguageTo <= 0 || targetLanguages.Count(l => l.ID == LanguageTo) > 0)
+            if (LanguageTo <= 0 || !targetLanguages.Exists(l => l.ID == LanguageTo))
             {
                 return new ValidationResult("Bitte wählen Sie eine gültige Zielsprache aus.");
             }
+
             return ValidationResult.Success!;
         }
 
+
         public ValidationResult ValidateOriginLanguages(ValidationContext validationContext)
         {
-            if (originLanguages == null || !originLanguages.Exists(l => l.isOriginLanguage))
+            if (originLanguages == null || !originLanguages.Exists(l => true))
             {
-                return ValidationResult.Success!; // Wenn keine Sprachen vorhanden sind, überspringe die Validierung
+                return new ValidationResult("Keine Sprachen vorhanden, Validierung übersprungen.");
             }
 
-            if (LanguageFrom <= 0 || originLanguages.Count(l => l.ID == LanguageFrom) > 0)
+            if (LanguageFrom <= 0 || !originLanguages.Exists(l => l.ID == LanguageFrom))
             {
                 return new ValidationResult("Bitte wählen Sie eine gültige Ausgangssprache aus.");
             }
+
             return ValidationResult.Success!;
         }
     }

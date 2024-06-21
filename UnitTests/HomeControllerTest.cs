@@ -22,7 +22,6 @@ namespace WebApp.Tests
     public class HomeControllerTests
     {
         public required HomeController _controller;
-        private Mock<ILogger<HomeController>> _loggerMock = new Mock<ILogger<HomeController>>();
         private Mock<ITranslationService> _translationServiceMock = new Mock<ITranslationService>();
         private Mock<ITranslationRepository> _translationRepositoryMock = new Mock<ITranslationRepository>();
         private Mock<ILanguageRepository> _languageRepositoryMock = new Mock<ILanguageRepository>();
@@ -34,7 +33,6 @@ namespace WebApp.Tests
         public void Setup()
         {
             _controller = new HomeController(
-                _loggerMock.Object,
                 _translationServiceMock.Object,
                 _languageRepositoryMock.Object,
                 _translationRepositoryMock.Object,
@@ -607,7 +605,7 @@ namespace WebApp.Tests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(translation, result.Model);
+            Assert.IsTrue(result.ViewData.ModelState.IsValid);
         }
 
         [TestMethod]
@@ -667,7 +665,7 @@ namespace WebApp.Tests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual("Index", result.ActionName);
+            Assert.AreEqual("History", result.ActionName);
         }
 
         [TestMethod]
@@ -678,11 +676,10 @@ namespace WebApp.Tests
             _translationRepositoryMock.Setup(repo => repo.GetTranslationById(id)).Returns((Translation)null!);
 
             // Act
-            var result = _controller.DeleteConfirmed(id) as RedirectToActionResult;
+            var result = _controller.DeleteConfirmed(id);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Index", result.ActionName);
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
     }
 }

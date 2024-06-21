@@ -22,7 +22,7 @@ namespace WebApp.PlaywrightTest
             string TranslatedTextString = "null";
 
             using var playwright = await Playwright.CreateAsync();
-            await using var browser = await playwright.Chromium.LaunchAsync();//(new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
+            await using var browser = await playwright.Chromium.LaunchAsync();//new BrowserTypeLaunchOptions { Headless = false, SlowMo = 1000 });
             var page = await browser.NewPageAsync();
             await page.GotoAsync("http://localhost:5095/");
             await page.ClickAsync("[id=OriginalTextField]");
@@ -70,15 +70,14 @@ namespace WebApp.PlaywrightTest
             if (titleElement != null)
             {
                 string title = await titleElement.InnerTextAsync();
-                Assert.AreEqual("Translate - WebApp", title);
+                Assert.AreEqual("History - WebApp", title);
             } 
             else 
             {
                 Assert.Fail("Title element not found");
             }
 
-            // Überprüfe, ob der Originaltext in der Tabelle nicht mehr angezeigt wird
-            await page.ClickAsync("text=Back to List");
+ 
 
             // Überprüfe, ob der Originaltext in der Tabelle angezeigt wird
             originalTextFound = await page.QuerySelectorAsync($".table tbody td:has-text(\"{originalTestText}\")");
@@ -215,15 +214,14 @@ namespace WebApp.PlaywrightTest
             if (titleElement != null)
             {
                 string title = await titleElement.InnerTextAsync();
-                Assert.AreEqual("Translate - WebApp", title);
+                Assert.AreEqual("History - WebApp", title);
             } 
             else 
             {
                 Assert.Fail("Title element not found");
             }
 
-            // Überprüfe, ob der Originaltext in der Tabelle nicht mehr angezeigt wird
-            await page.ClickAsync("text=Back to List");
+ 
 
             // Überprüfe, ob der Originaltext in der Tabelle angezeigt wird
             originalTextFound = await page.QuerySelectorAsync($".table tbody td:has-text(\"{originalTestText}\")");
@@ -362,15 +360,14 @@ namespace WebApp.PlaywrightTest
             if (titleElement != null)
             {
                 string title = await titleElement.InnerTextAsync();
-                Assert.AreEqual("Translate - WebApp", title);
+                Assert.AreEqual("History - WebApp", title);
             } 
             else 
             {
                 Assert.Fail("Title element not found");
             }
 
-            // Überprüfe, ob der Originaltext in der Tabelle nicht mehr angezeigt wird
-            await page.ClickAsync("text=Back to List");
+ 
 
             // Überprüfe, ob der Originaltext in der Tabelle angezeigt wird
             originalTextFound = await page.QuerySelectorAsync($".table tbody td:has-text(\"{originalTestText}\")");
