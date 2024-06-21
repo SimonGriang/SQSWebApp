@@ -21,8 +21,10 @@ builder.Services.AddTransient<ILanguageRepository, LanguageRepository>();
 
 builder.Services.AddTransient<ICreateTranslationViewModelHandler, CreateTranslationViewModelHandler>();
 
+
+var dbPassword = Environment.GetEnvironmentVariable("DATABASE_PASSWORD");
 builder.Services.AddDbContext<WebAppContext>(options =>
-    options.UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=mypassword"));
+    options.UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password={dbPassword}"));
 
 builder.Services.AddControllersWithViews();
 
