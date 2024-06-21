@@ -16,36 +16,19 @@ namespace WebApp.ViewModelHandler
 
         public CreateTranslationViewModel createViewModel()
         {
-            CreateTranslationViewModel viewModel = new CreateTranslationViewModel();
-
-            viewModel.Translation = new Translation();
-            List<Language> allLanguages = _languageRepository.GetAllLanguages();
-
-            List<Language> originLanguages = new List<Language>();
-            List<Language> targetLanguages = new List<Language>();
-
-            foreach (Language lan in allLanguages)
+            var viewModel = new CreateTranslationViewModel
             {
-                if (lan.isTargetLanguage == true)
-                {
-                    targetLanguages.Add(lan);
-                    if (lan.Abbreviation == "de")
-                        viewModel.German = lan.ID;
-                    if (lan.Abbreviation == "en-US")
-                        viewModel.EnglishUS = lan.ID;
-                    if (lan.Abbreviation == "en-GB")
-                        viewModel.EnglishGB = lan.ID;
-                }
+                Translation = new Translation()
+            };
 
-                if (lan.isOriginLanguage == true)
-                {
-                    originLanguages.Add(lan);
-                    if (lan.Abbreviation == "DL")
-                        viewModel.DetectLanguage = lan.ID;
-                    if (lan.Abbreviation == "en")
-                        viewModel.English = lan.ID;
-                }
+            var allLanguages = _languageRepository.GetAllLanguages();
+            var originLanguages = new List<Language>();
+            var targetLanguages = new List<Language>();
 
+            foreach (var lan in allLanguages)
+            {
+                ProcessTargetLanguage(lan, viewModel, targetLanguages);
+                ProcessOriginLanguage(lan, viewModel, originLanguages);
             }
 
             viewModel.originLanguages = originLanguages;
@@ -53,5 +36,43 @@ namespace WebApp.ViewModelHandler
 
             return viewModel;
         }
+
+        private void ProcessTargetLanguage(Language lan, CreateTranslationViewModel viewModel, List<Language> targetLanguages)
+        {
+            if (lan.isTargetLanguage)
+            {
+                targetLanguages.Add(lan);
+                switch (lan.Abbreviation)
+                {
+                    case "de":
+                        viewModel.German = lan.ID;
+                        break;
+                    case "en-US":
+                        viewModel.EnglishUS = lan.ID;
+                        break;
+                    case "en-GB":
+                        viewModel.EnglishGB = lan.ID;
+                        break;
+                }
+            }
+        }
+
+        private void ProcessOriginLanguage(Language lan, CreateTranslationViewModel viewModel, List<Language> originLanguages)
+        {
+            if (lan.isOriginLanguage)
+            {
+                originLanguages.Add(lan);
+                switch (lan.Abbreviation)
+                {
+                    case "DL":
+                        viewModel.DetectLanguage = lan.ID;
+                        break;
+                    case "en":
+                        viewModel.English = lan.ID;
+                        break;
+                }
+            }
+        }
+
     }
 }

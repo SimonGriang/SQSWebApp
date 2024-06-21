@@ -183,8 +183,8 @@ namespace WebApp.Tests
         public void Index_ReturnsNotFound_WhenTargetViewModelIsNull()
         {
             // Arrange
-            CreateTranslationViewModel viewModel = null;
-            _createTranslationViewModelHandlerMock.Setup(x => x.createViewModel()).Returns(viewModel);
+            CreateTranslationViewModel? viewModel = null;
+            _createTranslationViewModelHandlerMock.Setup(x => x.createViewModel()).Returns(viewModel!);
 
             // Act
             var result = _controller.Index();
@@ -675,7 +675,7 @@ namespace WebApp.Tests
         {
             // Arrange
             int id = 1;
-            _translationRepositoryMock.Setup(repo => repo.GetTranslationById(id)).Returns((Translation)null);
+            _translationRepositoryMock.Setup(repo => repo.GetTranslationById(id)).Returns((Translation)null!);
 
             // Act
             var result = _controller.DeleteConfirmed(id) as RedirectToActionResult;

@@ -11,7 +11,7 @@ namespace WebApp.Services
 {
     public class TranslationService : ITranslationService
     {
-        private ITranslatorWrapper _translator;
+        private readonly ITranslatorWrapper _translator;
 
         public TranslationService(ITranslatorWrapper translatorWrapper)
         {
@@ -27,7 +27,7 @@ namespace WebApp.Services
                 || viewModel.Translation.TranslatedLanguage.Abbreviation is null
                 || viewModel.Translation.OriginalLanguage.Abbreviation is null)
             {
-                throw new ArgumentNullException(nameof(viewModel.Translation));
+                throw new ArgumentNullException("Translationkomponenten sind nicht vollständig.");
             }
 
             TextResult translatedText;
@@ -37,7 +37,7 @@ namespace WebApp.Services
 
             if (viewModel.Translation.OriginalLanguage!.Abbreviation == "DL" )
             {
-                translatedText = await _translator.TranslateTextAsync(originalText, null, languageTo.Abbreviation);
+                translatedText = await _translator.TranslateTextAsync(originalText, null!, languageTo.Abbreviation);
             }
             else
             {
@@ -59,6 +59,7 @@ namespace WebApp.Services
             {
                 WebApp.Models.Language createlan = new WebApp.Models.Language(lang.Name, lang.Code);
                 createlan.isOriginLanguage = true;
+                createlan.isTargetLanguage = false;
                 languages.Add(createlan);
             }
 
@@ -80,7 +81,7 @@ namespace WebApp.Services
                         languageFound = true;
                         break;
                     } else {
-                        if (finallanguages.Contains(lan) == false)
+                        if (finallanguages.Contains(lan))
                         {
                             lan.isOriginLanguage = true;
                             lan.isTargetLanguage = false;
@@ -89,7 +90,7 @@ namespace WebApp.Services
                         }
                     }
                 }
-                if (languageFound == false)
+                if (languageFound)
                 {
                     createlan.isOriginLanguage = false;
                     createlan.isTargetLanguage = true;

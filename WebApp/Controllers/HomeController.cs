@@ -12,15 +12,14 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ITranslationService _translationService;
         private readonly ITranslationRepository _translationRepository;
         private readonly ILanguageRepository _languageReository;
         private readonly ICreateTranslationViewModelHandler _createTranslationViewModelHandler;
+        private readonly String errorMessage = "ErrorMessage";
 
-        public HomeController(ILogger<HomeController> logger, ITranslationService translationService, ILanguageRepository languageRepository, ITranslationRepository translationRepository, ICreateTranslationViewModelHandler createTranslationViewModelHandler)
+        public HomeController(ITranslationService translationService, ILanguageRepository languageRepository, ITranslationRepository translationRepository, ICreateTranslationViewModelHandler createTranslationViewModelHandler)
         {
-            _logger = logger;
             _translationService = translationService;
             _translationRepository = translationRepository;
             _languageReository = languageRepository;
@@ -38,7 +37,7 @@ namespace WebApp.Controllers
                 }
                 return View(viewModel);
             } catch (Exception exception){
-                TempData["ErrorMessage"] = "Ein unerwarteter Fehler ist aufgetreten: " + exception.Message;
+                TempData[errorMessage] = "Ein unerwarteter Fehler ist aufgetreten: " + exception.Message;
                 return View();
             }  
         }
@@ -48,7 +47,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(CreateTranslationViewModel returnedViewModel)
         {
-            if (returnedViewModel.LanguageTo == 0 || returnedViewModel.LanguageFrom == 0 || _languageReository.LanguageExists(returnedViewModel.LanguageTo) == false || _languageReository.LanguageExists(returnedViewModel.LanguageFrom) == false)
+            if (returnedViewModel.LanguageTo == 0 || returnedViewModel.LanguageFrom == 0 || _languageReository.LanguageExists(returnedViewModel.LanguageTo)|| _languageReository.LanguageExists(returnedViewModel.LanguageFrom))
             {
                 ModelState.AddModelError("", "Ungültige Sprachauswahl. Bitte wählen Sie gültige Sprachen aus.");
                 return View(returnedViewModel);
@@ -79,33 +78,31 @@ namespace WebApp.Controllers
             {
                 viewModel = await _translationService.TranslateTextAsync(viewModel);
 
-                if (ModelState.IsValid)
+                if (ModelState.IsValid && viewModel.Translation is not null)
                 {
-                    if (viewModel.Translation is not null)
-                    {
-                        _translationRepository.AddTranslation(viewModel.Translation);
-                    }
+                    _translationRepository.AddTranslation(viewModel.Translation);
+                    return View(viewModel);
                 }
-                throw new Exception("Modelstate ist not valid or Translation is null.");
+                throw new ArgumentException("Modelstate ist not valid or Translation is null.");
             }
             catch (ConnectionException connectionException)
             {
-                TempData["ErrorMessage"] = "Es konnte keine Verbindung zum Webservice aufgerufen werden: " + connectionException.Message;
+                TempData[errorMessage] = "Es konnte keine Verbindung zum Webservice aufgerufen werden: " + connectionException.Message;
                 return View();
             }
             catch (QuotaExceededException quotaExceededException)
             {
-                TempData["ErrorMessage"] = "Das Kontigent an möglichen Übersetzungen der Software ist ereicht: " + quotaExceededException.Message;
+                TempData[errorMessage] = "Das Kontigent an möglichen Übersetzungen der Software ist ereicht: " + quotaExceededException.Message;
                 return View(viewModel);
             }
             catch (DeepLException deeplException)
             {
-                TempData["ErrorMessage"] = "Fehlerhafte Sprachkombination angegeben: " + deeplException.Message;
+                TempData[errorMessage] = "Fehlerhafte Sprachkombination angegeben: " + deeplException.Message;
                 return View(viewModel);
             }
             catch (Exception exception)
             {
-                TempData["ErrorMessage"] = "Ein unerwarteter Fehler ist aufgetreten: " + exception.Message;
+                TempData[errorMessage] = "Ein unerwarteter Fehler ist aufgetreten: " + exception.Message;
                 return View(viewModel);
             }
         }
@@ -125,7 +122,11 @@ namespace WebApp.Controllers
         // GET: Home/Details/X
         public IActionResult Details(int? id)
         {
-            if (id == null || _translationRepository.TranslationExists(id.Value) == false)
+            if (ModelState.IsValid)
+            {
+                return NotFound();
+            }
+            if (id == null || _translationRepository.TranslationExists(id.Value))
             {
                 return NotFound();
             }
@@ -142,7 +143,11 @@ namespace WebApp.Controllers
         // GET: Home/Delete/5
         public IActionResult Delete(int? id)
         {
-            if (id == null || _translationRepository.TranslationExists(id.Value) == false)
+            if (ModelState.IsValid)
+            {
+                return NotFound();
+            }
+            if (id == null || _translationRepository.TranslationExists(id.Value))
             {
                 return NotFound();
             }
@@ -162,6 +167,10 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
+            if (ModelState.IsValid)
+            {
+                return NotFound();
+            }
             var translation = _translationRepository.GetTranslationById(id);
 
             if (translation != null)

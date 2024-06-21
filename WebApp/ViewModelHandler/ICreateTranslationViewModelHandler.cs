@@ -1,6 +1,9 @@
 using WebApp.ViewModels;
 
-public interface ICreateTranslationViewModelHandler
-{       
-    public CreateTranslationViewModel createViewModel();
+namespace WebApp.ViewModelHandler
+{
+    public interface ICreateTranslationViewModelHandler
+    {       
+        public CreateTranslationViewModel createViewModel();
+    }
 }

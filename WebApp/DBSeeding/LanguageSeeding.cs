@@ -9,17 +9,16 @@ using WebApp.Services;
 
 namespace WebApp.DBSeeding
 {
-    public class LanguageSeeding
+    public static class LanguageSeeding
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
             using (var context = new WebAppContext(
             serviceProvider.GetRequiredService<DbContextOptions<WebAppContext>>()))
             {
-                List<Language> allLanguages = new List<Language>();
                 ITranslationService translationService = serviceProvider.GetRequiredService<ITranslationService>();
                 Task<List<Language>> deeplLanguages = translationService.getDeeplLanguages();
-                allLanguages = deeplLanguages.GetAwaiter().GetResult();
+                List<Language> allLanguages = deeplLanguages.GetAwaiter().GetResult();
                 allLanguages.Add(new Language
                 {
                     Name = "Detect Language",
@@ -46,7 +45,7 @@ namespace WebApp.DBSeeding
                     }
                 }
                 
-                if (languagesToAdd.Any())
+                if (languagesToAdd.Count > 0)
                 {
                     context.Language.AddRange(languagesToAdd);
                     context.SaveChanges();

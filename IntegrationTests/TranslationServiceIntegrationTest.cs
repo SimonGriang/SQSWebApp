@@ -10,7 +10,7 @@ namespace WebApp.Tests
     [TestCategory("IntegrationTests")]
     public class TranslationServiceIntegrationTest
     {
-        private static ITranslationService _TranslationService = new TranslationService(new TranslatorWrapper("f2981bee-344a-4a1f-b65f-877950fa3855:fx")); 
+        private static TranslationService _TranslationService = new TranslationService(new TranslatorWrapper("f2981bee-344a-4a1f-b65f-877950fa3855:fx")); 
 
         [TestMethod]
         public async Task TranslateTextAsync_ShouldTranslateText_WithOriginLanguage()

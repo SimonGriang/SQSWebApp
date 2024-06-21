@@ -18,7 +18,7 @@ namespace WebApp.Tests
     public class TranslationServiceTests
     {
         private Mock<ITranslatorWrapper> _translatorMock;
-        private ITranslationService _translationService;
+        private TranslationService _translationService;
 
         public TranslationServiceTests()
         {

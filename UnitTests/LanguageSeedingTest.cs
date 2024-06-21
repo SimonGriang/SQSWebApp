@@ -16,8 +16,8 @@ namespace WebApp.Tests
     [TestCategory("UnitTests")]
     public class LanguageSeedingTest
     {
-        private WebAppContext _context;
         private Mock<ITranslationService> _translationServiceMock = new Mock<ITranslationService>();
+        private WebAppContext _context;
         private IServiceProvider _serviceProvider;
 
         [TestInitialize]

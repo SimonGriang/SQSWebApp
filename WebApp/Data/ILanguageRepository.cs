@@ -1,12 +1,15 @@
 using WebApp.Models;
 
-public interface ILanguageRepository
+namespace WebApp.Data
 {
-    void AddLanguage(Language language);
-    void RemoveLanguage(int id);
-    Language? GetLanguage(int id);
-    List<Language> GetAllLanguages();
-    bool LanguageExists(int id);
-    bool LanguageExistsByAbbreviation(string abbreviation);
-    Language? returnLanguageByAbbreviation(string abbreviation);
+    public interface ILanguageRepository
+    {
+        void AddLanguage(Language language);
+        void RemoveLanguage(int id);
+        Language? GetLanguage(int id);
+        List<Language> GetAllLanguages();
+        bool LanguageExists(int id);
+        bool LanguageExistsByAbbreviation(string abbreviation);
+        Language? returnLanguageByAbbreviation(string abbreviation);
+    }
 }

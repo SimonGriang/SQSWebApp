@@ -1,27 +1,31 @@
 using DeepL;
 using DeepL.Model;
 
-public class TranslatorWrapper : ITranslatorWrapper
+
+namespace WebApp.Services
 {
-    private readonly Translator _translator;
-
-    public TranslatorWrapper(string authKey)
+    public class TranslatorWrapper : ITranslatorWrapper
     {
-        _translator = new Translator(authKey);
-    }
+        private readonly Translator _translator;
 
-    public async Task<TextResult> TranslateTextAsync(string text, string sourceLang, string targetLang)
-    {
-        return await _translator.TranslateTextAsync(text, sourceLang, targetLang);
-    }
+        public TranslatorWrapper(string authKey)
+        {
+            _translator = new Translator(authKey);
+        }
 
-    public async Task<SourceLanguage[]> GetSourceLanguagesAsync()
-    {
-        return await _translator.GetSourceLanguagesAsync();
-    }
+        public async Task<TextResult> TranslateTextAsync(string text, string sourceLang, string targetLang)
+        {
+            return await _translator.TranslateTextAsync(text, sourceLang, targetLang);
+        }
 
-    public async Task<TargetLanguage[]> GetTargetLanguagesAsync()
-    {
-        return await _translator.GetTargetLanguagesAsync();
+        public async Task<SourceLanguage[]> GetSourceLanguagesAsync()
+        {
+            return await _translator.GetSourceLanguagesAsync();
+        }
+
+        public async Task<TargetLanguage[]> GetTargetLanguagesAsync()
+        {
+            return await _translator.GetTargetLanguagesAsync();
+        }
     }
 }

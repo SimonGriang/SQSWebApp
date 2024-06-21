@@ -13,7 +13,7 @@ namespace WebApp.Models
         public string? TranslatedText { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime translated_at { get; set; }
+        public DateTime? translated_at { get; set; }
 
 
         public Language? OriginalLanguage { get; set; }
