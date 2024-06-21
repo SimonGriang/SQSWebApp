@@ -53,6 +53,10 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --no-incremental WebApp/WebApp.sln
 
+    - name: Debug - Print Environment Variables
+      run: echo "POSTGRES_PASSWORD=${{ secrets.DATABASE_PASSWORD }}"
+
+
 
     - name: Install dotnet-ef tool
       run: dotnet tool install --global dotnet-ef
