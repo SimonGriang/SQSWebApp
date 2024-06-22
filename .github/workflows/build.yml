@@ -57,8 +57,8 @@ jobs:
       run: echo "POSTGRES_PASSWORD=${{ secrets.DATABASE_PASSWORD }}"
     - name: Wait for PostgreSQL
       run: |
-        sudo apt-get install -y netcat
-        while ! nc -z postgres 5432; do
+        sudo apt-get install -y postgresql-client
+        until pg_isready -h localhost -p 5432; do
           echo "Waiting for PostgreSQL to be ready..."
           sleep 1
         done
@@ -67,12 +67,12 @@ jobs:
     - name: Install dotnet-ef tool
       run: dotnet tool install --global dotnet-ef
     - name: Apply database migrations
-      run: dotnet ef database update --project WebApp -- --connection "Host=postgres;Port=5432;Database=postgres;Username=postgres;Password=${{ secrets.DATABASE_PASSWORD }}"
+      run: dotnet ef database update --project WebApp -- --connection "Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=${{ secrets.DATABASE_PASSWORD }}"
     - name: Start the server
       run: dotnet run --project WebApp &
       env:
         ASPNETCORE_ENVIRONMENT: Development
-        ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=postgres;Username=postgres;Password=${{ secrets.DATABASE_PASSWORD }}"
+        ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=${{ secrets.DATABASE_PASSWORD }}"
 
     - name: Install missing Playwright dependencies
       run: |
