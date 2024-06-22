@@ -62,6 +62,7 @@ jobs:
       run: dotnet run --project WebApp &
       env:
         ASPNETCORE_ENVIRONMENT: Development
+        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
         ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=${{ secrets.DATABASE_PASSWORD }}"
 
     - name: Install missing Playwright dependencies
