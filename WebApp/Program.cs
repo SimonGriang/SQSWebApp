@@ -27,7 +27,7 @@ if (string.IsNullOrEmpty(dbPassword))
 {
     throw new InvalidOperationException("DATABASE_PASSWORD environment variable is not set.");
 }
-connectionString = $"Host=localhost;Port=5432;Database=postgres;Username=postgres;Password={dbPassword}";
+var connectionString = $"Host=localhost;Port=5432;Database=postgres;Username=postgres;Password={dbPassword}";
 builder.Services.AddDbContext<WebAppContext>(options =>
     options.UseNpgsql(connectionString));
 
