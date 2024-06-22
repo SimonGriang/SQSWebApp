@@ -39,7 +39,7 @@ namespace WebApp.Controllers
             } catch (Exception exception){
                 TempData[errorMessage] = "Ein unerwarteter Fehler ist aufgetreten: " + exception.Message;
                 return View();
-            }  
+            }
         }
 
         // POST: Startpage

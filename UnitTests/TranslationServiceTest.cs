@@ -73,8 +73,7 @@ namespace WebApp.Tests
                 }
             };
 
-            var textResult = new TextResult("Hallo", "en");
-            _translatorMock.Setup(t => t.TranslateTextAsync("Hello", It.IsAny<string>(), "de")).ReturnsAsync(textResult);
+            _translatorMock.Setup(t => t.TranslateTextAsync("Hello", It.IsAny<string>(), "de")).ReturnsAsync(new TextResult("Hallo", "en"));
 
             // Act
             var resultViewModel = await _translationService.TranslateTextAsync(viewModel);
