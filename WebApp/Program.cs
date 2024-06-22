@@ -23,8 +23,13 @@ builder.Services.AddTransient<ICreateTranslationViewModelHandler, CreateTranslat
 
 
 var dbPassword = Environment.GetEnvironmentVariable("DATABASE_PASSWORD");
+if (string.IsNullOrEmpty(dbPassword))
+{
+    throw new InvalidOperationException("DATABASE_PASSWORD environment variable is not set.");
+}
+connectionString = $"Host=localhost;Port=5432;Database=postgres;Username=postgres;Password={dbPassword}";
 builder.Services.AddDbContext<WebAppContext>(options =>
-    options.UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password={dbPassword}"));
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddControllersWithViews();
 
