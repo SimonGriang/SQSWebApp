@@ -55,6 +55,8 @@ jobs:
     - name: Install dotnet-ef tool
       run: dotnet tool install --global dotnet-ef
     - name: Apply database migrations
+      env: 
+        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       run: dotnet ef database update --project WebApp -- --connection "Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=${{ secrets.DATABASE_PASSWORD }}"
     - name: Start the server
       run: dotnet run --project WebApp &
