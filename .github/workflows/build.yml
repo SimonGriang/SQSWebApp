@@ -18,9 +18,8 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: mypassword
+          POSTGRES_DB: mydatabase
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -53,26 +52,16 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --no-incremental WebApp/WebApp.sln
 
-    - name: Debug - Print Environment Variables
-      run: echo "POSTGRES_PASSWORD=${{ secrets.DATABASE_PASSWORD }}"
-    - name: Wait for PostgreSQL
-      run: |
-        sudo apt-get install -y postgresql-client
-        until pg_isready -h localhost -p 5432; do
-          echo "Waiting for PostgreSQL to be ready..."
-          sleep 1
-        done
-
 
     - name: Install dotnet-ef tool
       run: dotnet tool install --global dotnet-ef
     - name: Apply database migrations
-      run: dotnet ef database update --project WebApp -- --connection "Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=${{ secrets.DATABASE_PASSWORD }}"
+      run: dotnet ef database update --project WebApp -- --connection "Host=postgres;Port=5432;Database=mydatabase;Username=postgres;Password=mypassword"
     - name: Start the server
       run: dotnet run --project WebApp &
       env:
         ASPNETCORE_ENVIRONMENT: Development
-        ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=${{ secrets.DATABASE_PASSWORD }}"
+        ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=mydatabase;Username=postgres;Password=mypassword"
 
     - name: Install missing Playwright dependencies
       run: |
