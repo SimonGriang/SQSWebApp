@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
 using WebApp.Models;
 
-namespace WebApp.Tests
+namespace WebApp.IntegrationTests
 {
     [TestClass]
     [TestCategory("IntegrationTests")]

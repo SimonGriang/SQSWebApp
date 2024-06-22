@@ -4,7 +4,7 @@ using WebApp.Models;
 using WebApp.Services;
 using WebApp.ViewModels;
 
-namespace WebApp.Tests
+namespace WebApp.IntegrationTests
 {
     [TestClass]
     [TestCategory("IntegrationTests")]
