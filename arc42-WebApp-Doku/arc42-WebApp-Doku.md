@@ -22,13 +22,14 @@ Die folgend aufgeführten Qualitätsziele nach ISO 25010 sind: Functional Suitab
 
 ## Stakeholder {#_stakeholder}
 
-+-----------------+-----------------+-----------------------------------+
-| Rolle           | Kontakt         | Erwartungshaltung                 |
-+=================+=================+===================================+
-| *Student *    | *simon.goettsberge@stud.th-rosenheim.de*  | *Eigener Lernerfolg*|
-+-----------------+-----------------+-----------------------------------+
-| *Dozent*    | *mario-leander.reimer@th-rosenheim.de*  | *Umsetzung einer fundierten und professionellen Software-Qualitätssicherung* |
-+-----------------+-----------------+-----------------------------------+
++-----------------+-------------------------------------------+----------------------------------------------+
+| Rolle           | Kontakt                                   | Erwartungshaltung                            |
++=================+===========================================+==============================================+
+| *Student *      | *simon.goettsberge@stud.th-rosenheim.de*  | *Eigener Lernerfolg*                         | 
++-----------------+-------------------------------------------+----------------------------------------------+
+| *Dozent*        | *mario-leander.reimer@th-rosenheim.de*    | *Umsetzung einer fundierten und              |
+|                 |                                           | professionellen Software-Qualitätssicherung* |
++-----------------+-------------------------------------------+----------------------------------------------+
 
 # Randbedingungen {#section-architecture-constraints}
 Die Randbedingungen dieses Projektes werden ausschließlich durch die mündlich kommunizierten Anforderungen bestimmt. Dabei gilt es eine Software zu entwerfen die gezielt entworfen wird. Dabei muss die Software eine externe API, als auch eine Datenbank verwenden. Weitere Details sind alleine dem Studenten überlassen, solange die Software, nach Einschätzung des Dozenten, angemessenen Aufwand qualitätssichernde Maßnahmen genutzt werden. 
@@ -44,10 +45,14 @@ Die durchgeführten Übersetzungen werden auf einer relationalen Datenbank gespe
 
 ## Fachlicher Kontext {#_fachlicher_kontext}
 
-**\<Diagramm und/oder Tabelle>**
-
-**\<optional: Erläuterung der externen fachlichen Schnittstellen>**
-
+|    Element   |                                                          Description                                                         |
+|:------------:|:----------------------------------------------------------------------------------------------------------------------------:|
+|     User     | Der User führt Eingaben bezüglich der gewünschten  Sprache und des zu übersetzenden Textes durch.                            |
+|    WebApp    | Die .Net Core MVC Web Anwedung nimmt die ausgewählten Parameter entgegen und führt darauf die Übersetzung des Textes durch.  |
+| Build System | .Net                                                                                                                         |
+|     DeepL    | DeepL ist der externe Übersetzungsdienst der für die tatsächliche Durchführung der Übersetzung verwendet wird.               |
+|   Datenbank  | Die verwendete Datenbank speichert die durchgeführten Übersetzungen ab.                                                      |
++--------------+------------------------------------------------------------------------------------------------------------------------------+
 ## Technischer Kontext {#_technischer_kontext}
 
 **\<Diagramm oder Tabelle>**

@@ -9,7 +9,7 @@ namespace WebApp.Tests
     [TestCategory("IntegrationTests")]
     public class TranslationRepositoryIntegrationTest
     {
-        private static WebAppContext _context = new WebAppContext(new DbContextOptionsBuilder<WebAppContext>().UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=mypassword").Options);
+        private static WebAppContext _context = new WebAppContext(new DbContextOptionsBuilder<WebAppContext>().UseNpgsql("Host=localhost;Port=5431;Database=postgresIntegration;Username=postgres;Password=mypassword").Options);
         private static ILanguageRepository _LanguageRepository = new LanguageRepository(_context);
         private static ITranslationRepository _TranslationRepository = new TranslationRepository(_context);
 
