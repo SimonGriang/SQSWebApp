@@ -23,14 +23,6 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      postgresIntegrationTest:
-        image: postgres:latest
-        env:
-          POSTGRES_PASSWORD: mypassword
-          POSTGRES_DB: postgresIntegration
-        ports:
-          - 5431:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
     - name: Set up JDK 17
@@ -66,11 +58,7 @@ jobs:
       env: 
         DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       run: dotnet ef database update --project WebApp -- --connection "Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=${{ secrets.DATABASE_PASSWORD }}"
-    - name: Apply database migrations for integration tests
-      env: 
-        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-      run: dotnet ef database update --project WebApp -- --connection "Host=localhost;Port=5431;Database=postgresIntegration;Username=postgres;Password=${{ secrets.DATABASE_PASSWORD }}"
-
+      
     - name: Start the server
       run: dotnet run --project WebApp &
       env:
