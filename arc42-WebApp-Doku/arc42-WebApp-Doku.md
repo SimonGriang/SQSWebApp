@@ -22,14 +22,14 @@ Die folgend aufgeführten Qualitätsziele nach ISO 25010 sind: Functional Suitab
 
 ## Stakeholder {#_stakeholder}
 
-+-----------------+-------------------------------------------+----------------------------------------------+
+## Stakeholder {#_stakeholder}
+
 | Rolle           | Kontakt                                   | Erwartungshaltung                            |
-+=================+===========================================+==============================================+
+|:=================:|:===========================================:|:==============================================:|
 | *Student *      | *simon.goettsberge@stud.th-rosenheim.de*  | *Eigener Lernerfolg*                         | 
-+-----------------+-------------------------------------------+----------------------------------------------+
-| *Dozent*        | *mario-leander.reimer@th-rosenheim.de*    | *Umsetzung einer fundierten und              |
-|                 |                                           | professionellen Software-Qualitätssicherung* |
-+-----------------+-------------------------------------------+----------------------------------------------+
+| *Dozent*        | *mario-leander.reimer@th-rosenheim.de*    | *Umsetzung einer fundierten und professionellen Software-Qualitätssicherung* |
+
+
 
 # Randbedingungen {#section-architecture-constraints}
 Die Randbedingungen dieses Projektes werden ausschließlich durch die mündlich kommunizierten Anforderungen bestimmt. Dabei gilt es eine Software zu entwerfen die gezielt entworfen wird. Dabei muss die Software eine externe API, als auch eine Datenbank verwenden. Weitere Details sind alleine dem Studenten überlassen, solange die Software, nach Einschätzung des Dozenten, angemessenen Aufwand qualitätssichernde Maßnahmen genutzt werden. 
@@ -52,7 +52,7 @@ Die durchgeführten Übersetzungen werden auf einer relationalen Datenbank gespe
 | Build System | .Net                                                                                                                         |
 |     DeepL    | DeepL ist der externe Übersetzungsdienst der für die tatsächliche Durchführung der Übersetzung verwendet wird.               |
 |   Datenbank  | Die verwendete Datenbank speichert die durchgeführten Übersetzungen ab.                                                      |
-+--------------+------------------------------------------------------------------------------------------------------------------------------+
+
 ## Technischer Kontext {#_technischer_kontext}
 
 **\<Diagramm oder Tabelle>**
@@ -72,151 +72,153 @@ Die Verwendung von PostgreSQL bietet zahlreiche Vorteile, darunter hohe Stabilit
 
 # Bausteinsicht {#section-building-block-view}
 
-## Gesamtsystem {#gesamtsystem}
+## Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
 
-![Image Description](images/KomponentenDiagramm.png)
-
-Begründung
-
-Diese Abbildung zeigt erneut das Gesamtsystem mit allen externen Komponenten. Die WebApp bildet die Anwendung und nutzt dabei eine Postgres Datenbank als auch den externen Übersetzungsdienst DeepL.
+![Gesamtsystem](images/KomponentenDiagramm.png)
 
 Enthaltene Bausteine
 
+|    Element   |                                                          Description                                                         |
+|:------------:|:----------------------------------------------------------------------------------------------------------------------------:|
+|    WebApp    | Die .Net Core MVC Web Anwedung nimmt die ausgewählten Parameter entgegen und führt darauf die Übersetzung des Textes durch.  |
+|     DeepL    | DeepL ist der externe Übersetzungsdienst der für die tatsächliche Durchführung der Übersetzung verwendet wird.               |
+|   Datenbank  | Die verwendete Datenbank speichert die durchgeführten Übersetzungen ab.                                                      |
 
 
-Wichtige Schnittstellen
-
-:   *\<Beschreibung wichtiger Schnittstellen>*
-
-### \<Name Blackbox 1> {#__name_blackbox_1}
-
-*\<Zweck/Verantwortung>*
-
-*\<Schnittstelle(n)>*
-
-*\<(Optional) Qualitäts-/Leistungsmerkmale>*
-
-*\<(Optional) Ablageort/Datei(en)>*
-
-*\<(Optional) Erfüllte Anforderungen>*
-
-*\<(optional) Offene Punkte/Probleme/Risiken>*
-
-### \<Name Blackbox 2> {#__name_blackbox_2}
-
-*\<Blackbox-Template>*
-
-### \<Name Blackbox n> {#__name_blackbox_n}
-
-*\<Blackbox-Template>*
-
-### \<Name Schnittstelle 1> {#__name_schnittstelle_1}
-
-...
-
-### \<Name Schnittstelle m> {#__name_schnittstelle_m}
+## WebApp
+Die Komponente WebApp enhät sämtliche Funktionalitäten unst stellt so das eigentliche Programm dar. Aufgabe dieser Komponente ist das Interagieren mit dem Benutzer über eine Benutzeroberfläche. Zudem ist auch die gesamte Geschäftslogik in dieser Komponente implementiert. Das Aufbereiten, Laden, Speichern und Löschen von Daten wird in dieser Komponente behandelt. Zudem werden auch die Nutzereingaben für die gewünschte Übersetzung an die DeepL API weitergereicht. Die Übersetzung wird entgegengenommen und entsprechend verarbeitet. 
 
 ## Ebene 2 {#_ebene_2}
 
-### Whitebox *\<Baustein 1>* {#_whitebox_emphasis_baustein_1_emphasis}
+![Teilkommponenten](Bausteinansicht_Ebene2.jpg)
 
-*\<Whitebox-Template>*
+Die WebApp Komponente besteht
 
-### Whitebox *\<Baustein 2>* {#_whitebox_emphasis_baustein_2_emphasis}
+| Komponente            | Aufgabe                                                                                       |
+|-----------------------|-----------------------------------------------------------------------------------------------|
+| Views                 | Stellt die Benutzerschnittstelle dar. Hier wird die Interaktion mit dem Benutzer ermöglicht. Diese Komponente ist für die Darstellung der Benutzeroberfläche verantwortlich. Sie zeigt Daten an und nimmt Benutzereingaben entgegen.   |
+| Controller            | Der Controller agiert als Vermittler zwischen der Benutzeroberfläche (View) und den Geschäftslogik-Modellen. Er verarbeitet Benutzereingaben und ruft entsprechende Aktionen auf den Modellen oder Repositories auf.      |
+| Repositories          | Diese Komponente ist für die Kommunikation mit der Datenbank zuständig. Sie führt CRUD-Operationen (Create, Read, Update, Delete) auf der Postgres-Datenbank durch.        |
+| Models                | Modelle repräsentieren die Datenstruktur und enthalten die Daten der Anwendung. Sie sind das zentrale Datenobjekt, mit dem die Anwendung arbeitet.                         |
+| TranslationService    | Dieser Dienst ermöglicht die Übersetzung von Texten durch die Anbindung an die externe DeepL API.                                   |
+| ViewModel             | Das ViewModel stellt sicher, dass die Daten korrekt zwischen der View und den Modellen gebunden sind.|
 
-*\<Whitebox-Template>*
 
-...
-
-### Whitebox *\<Baustein m>* {#_whitebox_emphasis_baustein_m_emphasis}
-
-*\<Whitebox-Template>*
 
 ## Ebene 3 {#_ebene_3}
+![Teilkommponenten](Bausteinansicht_Ebene3.jpg)
 
-### Whitebox \<\_Baustein x.1\_\> {#_whitebox_baustein_x_1}
+| Komponente                  | Aufgabe                                                                                                   |
+|-----------------------------|-----------------------------------------------------------------------------------------------------------|
+| Views                       | Stellt verschiedene Benutzeroberflächen für Details, Index, Delete und History bereit.                    |
+| HomeController              | Vermittelt zwischen der Benutzeroberfläche und den Geschäftslogik-Modellen. Verarbeitet Benutzereingaben. |
+| TranslationService          | Bietet Übersetzungsdienste durch Anbindung an die DeepL API.                                              |
+| TranslationWrapper          | Wrapper für den eigentlichen Übersetzer-Dienst (Translator), um API-Aufrufe zu kapseln.                   |
+| Translator                  | Der eigentliche Dienst, der mit der DeepL API kommuniziert und Übersetzungen durchführt.                  |
+| TranslationRepository       | Verantwortlich für CRUD-Operationen auf Translation-Entitäten in der Postgres-Datenbank.                  |
+| LanguageRepository          | Verantwortlich für CRUD-Operationen auf Language-Entitäten in der Postgres-Datenbank.                     |
+| Language                    | Repräsentiert eine Sprache mit Eigenschaften wie Name, Abkürzung und Flags für Ziel- und Ursprungssprache.|
+| Translation                 | Repräsentiert eine Übersetzung mit Eigenschaften wie Originaltext, übersetzter Text und Zeitstempel.      |
+| CreateTranslationViewModel  | Stellt die Datenbindung für die Erstellung von Übersetzungen bereit.                                      |
+| CreateTranslationViewModelHandler | Verantwortlich für die Verarbeitung und Verwaltung von Daten im CreateTranslationViewModel.         |
 
-*\<Whitebox-Template>*
 
-### Whitebox \<\_Baustein x.2\_\> {#_whitebox_baustein_x_2}
+### Whitebox Views
 
-*\<Whitebox-Template>*
+Details: Zeigt detaillierte Informationen zu einer bestimmten Entität an.
+Index: Listet eine Übersicht von Entitäten auf.
+Delete: Ermöglicht das Löschen einer Entität.
+History: Zeigt die Historie oder Änderungen von Entitäten an.
 
-### Whitebox \<\_Baustein y.1\_\> {#_whitebox_baustein_y_1}
+### Whitebox Controller
 
-*\<Whitebox-Template>*
+HomeController steuert die Navigation und Interaktionen auf der Startseite.
+Vermittelt zwischen Benutzerinteraktionen und der Geschäftslogik, indem es Anfragen an die entsprechenden Services und Repositories weiterleitet.
 
+### Whitebox TranslationService
 
+TranslationService: Der Hauptdienst für die Übersetzungslogik. Nutzt den TranslationWrapper zur Kommunikation mit externen APIs.
+TranslationWrapper: Kapselt die Logik für den Zugriff auf den Translator-Dienst, um API-Aufrufe zu vereinfachen und zu standardisieren.
+Translator: Der konkrete Dienst, der die Übersetzungen durchführt, indem er die DeepL API aufruft.
 
+### Whitebox Repositories
+
+TranslationRepository: Verwalten der Persistenz von Übersetzungsdaten (Translation-Entitäten) in der Datenbank.
+LanguageRepository: Verwalten der Persistenz von Sprachdaten (Language-Entitäten) in der Datenbank.
+
+### Whitebox Repositories
+Language: Datenmodell, das eine Sprache repräsentiert, einschließlich Name, Abkürzung und Flags zur Identifizierung, ob es sich um eine Ziel- oder Ursprungssprache handelt.
+Translation: Datenmodell, das eine Übersetzung repräsentiert, einschließlich Originaltext, übersetzter Text, Zeitstempel und Referenzen zu den zugehörigen Sprachen.
+
+### Whitebox Repositories
+CreateTranslationViewModel: Datenmodell für die Erstellung einer neuen Übersetzung. Enthält Listen von Ziel- und Ursprungssprachen sowie Informationen zur Übersetzung.
+CreateTranslationViewModelHandler: Verantwortlich für die Verwaltung und Verarbeitung der Daten im CreateTranslationViewModel, einschließlich der Interaktion mit dem LanguageRepository zur Beschaffung von Sprachdaten.
 
 # Laufzeitsicht {#section-runtime-view}
 
-## *\<Bezeichnung Laufzeitszenario 1>* {#__emphasis_bezeichnung_laufzeitszenario_1_emphasis}
+## Translation of User Text
 
--   \<hier Laufzeitdiagramm oder Ablaufbeschreibung einfügen>
+![Sequenzdiagramm Translation of Text](Sequenzdiagram_Translate.jpg)
 
--   \<hier Besonderheiten bei dem Zusammenspiel der Bausteine in diesem
-    Szenario erläutern>
+Der Prozess beginnt in der View-Schicht, die eine Anfrage zur Erstellung einer neuen Übersetzung an den Controller sendet. Der Controller nimmt die Anfrage entgegen und initiiert den Vorgang, indem er ein Datenmodell zur Erstellung der Übersetzung vorbereitet. Dieses Datenmodell wird an die Verwaltungslogik weitergeleitet, die notwendige Informationen aus den Repositories lädt. Nachdem die Verwaltungslogik die erforderlichen Informationen geholt hat, gibt sie das Modell an den Controller zurück. Der Controller übergibt das Modell an den Übersetzungsdienst, um die eigentliche Übersetzungsarbeit durchzuführen. Der Übersetzungsservice verarbeitet die eingehenden Daten und erstellt die Übersetzung.
 
-## *\<Bezeichnung Laufzeitszenario 2>* {#__emphasis_bezeichnung_laufzeitszenario_2_emphasis}
+Abschließend wird das Ergebnis der Übersetzung an die View-Schicht zurückgegeben, wo es dem Nutzer angezeigt wird.
+## Laden von einer/mehreren Übersetzung/-en
 
-...
+![Laden von einer/mehreren Übersetzung/-en](Sequenzdiagram_GetTranslations.jpg)
 
-## *\<Bezeichnung Laufzeitszenario n>* {#__emphasis_bezeichnung_laufzeitszenario_n_emphasis}
+Zuerst initiiert die View-Komponente die Aktion, indem eine Anfrage an den Controller sendet wird. Der Controller empfängt diese Anfrage und leitet sie an die Repositories weiter, dabei werden je nach Fall eine oder alle Übersetzungen aufgerufen. Sobald die Repositories die benötigte Information bereitgestellt haben, sendet sie eine Antwort an den Controller zurück. Der Controller übermittelt diese Antwort schließlich an die View, was den ursprünglichen Aufruf abschließt und die entsprechende Information an den User ausgibt. Dieses Sequenzdiagramm gilt sowohl für die Bereitstellung einer als auch mehrerer Überstetzungen, da sich der Workflow abgesehen von der Anzahl der geladenen Übersetzungen nicht unterscheidet.
 
-...
+## Löschen von Datenbankeinträgen
+
+![Laden einer Übersetzung](Sequenzdiagram_Deletion.jpg)
+
+Zunächst wird eine Anfrage von der View an den Controller gesendet, um eine Übersetzung zu laden. Der Controller übernimmt diese Anfrage und fordert dann die notwendigen Informationen vom Repository an. Nachdem der Controller die Informationen erhalten hat, initiiert er den Löschvorgang der Übersetzung im Repository. Nach erfolgreicher Löschung der Übersetzung wird eine Bestätigung an den Controller zurückgeführt.
 
 # Verteilungssicht {#section-deployment-view}
 
-## Infrastruktur Ebene 1 {#_infrastruktur_ebene_1}
-
-***\<Übersichtsdiagramm>***
-
-Begründung
-
-:   *\<Erläuternder Text>*
-
-Qualitäts- und/oder Leistungsmerkmale
-
-:   *\<Erläuternder Text>*
-
-Zuordnung von Bausteinen zu Infrastruktur
-
-:   *\<Beschreibung der Zuordnung>*
-
-## Infrastruktur Ebene 2 {#_infrastruktur_ebene_2}
-
-### *\<Infrastrukturelement 1>* {#__emphasis_infrastrukturelement_1_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-### *\<Infrastrukturelement 2>* {#__emphasis_infrastrukturelement_2_emphasis}
-
-*\<Diagramm + Erläuterungen>*
-
-...
-
-### *\<Infrastrukturelement n>* {#__emphasis_infrastrukturelement_n_emphasis}
-
-*\<Diagramm + Erläuterungen>*
+ASP.NET Core MVC-Anwendungen müssen gehostet werden, um Nutzern über das Internet oder ein Intranet zur Verfügung zu stehen. Es gibt mehrere grundsätzliche Möglichkeiten, diese Anwendungen zu hosten. Eine verbreitete Methode ist die Verwendung von Kestrel, dem integrierten plattformübergreifenden Webserver von ASP.NET Core, der sowohl für Entwicklungs- als auch Produktionsumgebungen geeignet ist. Kestrel kann eigenständig oder hinter einem Reverse-Proxy-Server wie IIS, Nginx oder Apache betrieben werden, um zusätzliche Sicherheit und Skalierbarkeit zu bieten. IIS wird oft in Windows-Umgebungen verwendet, während Nginx und Apache in Linux-Umgebungen beliebt sind. Jede dieser Optionen bietet unterschiedliche Vorteile und Konfigurationsmöglichkeiten, abhängig von den spezifischen Anforderungen und der Infrastruktur der Anwendung.
 
 # Querschnittliche Konzepte {#section-concepts}
 
-## *\<Konzept 1>* {#__emphasis_konzept_1_emphasis}
+In der ASP.NET Core MVC-Anwendung wurden mehrere wichtige Konzepte implementiert, die für die gesamte Architektur und die Qualität der Anwendung relevant sind. Diese Konzepte betreffen verschiedene Teile des Systems und sorgen für Konsistenz, Wartbarkeit und Skalierbarkeit.
 
-*\<Erklärung>*
+## MVC-Architektur
+Unsere Anwendung folgt dem Model-View-Controller (MVC) Architekturpattern. Die Trennung von Verantwortlichkeiten zwischen Modellen, Views und Controllern erleichtert die Wartung und Weiterentwicklung der Anwendung.
 
-## *\<Konzept 2>* {#__emphasis_konzept_2_emphasis}
+Controller: Die Controller sind für die Verarbeitung der Benutzereingaben verantwortlich, steuern den Anwendungsfluss und interagieren mit den Services. Ein spezifisches Beispiel ist die Nutzung eines externen Übersetzungsdienstes durch den Controller, um sprachspezifische Inhalte dynamisch zu laden.
 
-*\<Erklärung>*
+Modelle: Unsere Modelle enthalten keine Geschäftslogik und dienen ausschließlich dem Datenaustausch. Sie repräsentieren die Struktur unserer Daten und werden für die Interaktion mit der Datenbank und den Views verwendet.
 
-...
+Views: Die Views sind für die Darstellung der Daten verantwortlich. Um eine klare Trennung der Darstellung von der Logik zu gewährleisten, verwenden wir ViewModels und ViewModelHandler. ViewModels enthalten die Daten, die eine View benötigt, und ViewModelHandler sind für die Erstellung und Verwaltung dieser ViewModels zuständig.
 
-## *\<Konzept n>* {#__emphasis_konzept_n_emphasis}
+## Datenzugriff und Repositories
+Für den Zugriff auf die Datenbank nutzen wir das Repository Pattern. Repositories bieten eine Abstraktionsschicht über den Datenzugriff und ermöglichen es uns, die Datenbankoperationen zentral zu verwalten. Dies trägt zu einer sauberen Trennung der Geschäftslogik und der Datenzugriffsschicht bei und erleichtert die Wartung und das Testen der Anwendung.
 
-*\<Erklärung>*
+## Sprachverwaltung und Seeding
+Bei jedem Programmstart werden die verfügbaren Sprachen in der Datenbank mittels eines Seeding-Prozesses aktualisiert. Dies stellt sicher, dass die Anwendung stets die aktuellen Sprachdaten zur Verfügung hat und erleichtert die Verwaltung der Lokalisierung. Der Seeding-Prozess überprüft und aktualisiert die in der Datenbank gespeicherten Sprachinformationen, um sicherzustellen, dass alle unterstützten Sprachen korrekt und aktuell sind.
 
 # Architekturentscheidungen {#section-design-decisions}
+
+# ADR 2: Implementierung der Webanwendung mit ASP.Net Core MVC
+
+| **Section**   | **Description**                                                                                                                                              |
+|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Title**     | ADR 2: Implementierung der Webanwendung mit ASP.Net Core MVC                                                                                                |
+| **Context**   | Die Entscheidung betrifft die Auswahl der Entwicklungsplattform für unsere Webanwendung. Wir stehen vor verschiedenen technischen und politischen Herausforderungen. |
+|               | - **Technischer Kontext**:                                                                                                                                 |
+|               |   - ASP.Net Core MVC bietet eine moderne und flexible Plattform für die Entwicklung plattformübergreifender Webanwendungen.                                 |
+|               |   - Die Architektur von MVC (Model-View-Controller) ermöglicht eine klare Trennung von Datenmodellen, Benutzeroberfläche und Geschäftslogik.                  |
+|               |   - Der durchgängige Technologiestack von UI bis zur Datenbankanbindung minimiert Kompatibilitätsprobleme und erleichtert die Integration.                     |
+|               | - **Politische Aspekte**:                                                                                                                                  |
+|               |   - Entwickler verfügen über Erfahrung mit der MVC-Architektur, insbesondere mit Laravel, was die Einarbeitung in ASP.Net Core MVC erleichtert.               |
+|               |   - Die Verwendung der etablierten Programmiersprache C# bietet Vorteile in Bezug auf Produktivität und Codequalität.                                       |
+|               |   - Microsoft bietet umfangreiche Dokumentation, Tooling in Visual Studio IDE und Erweiterungen für Visual Studio Code, was die Entwicklung unterstützt.   |
+|               |   - C# und die Unterstützung durch Entity Framework Core und MSTest bieten eine robuste Plattform für die Entwicklung und Wartung der Anwendung.             |
+| **Decision**  | Wir entscheiden uns, die Webanwendung mit ASP.Net Core MVC zu implementieren, um von den technischen Vorteilen der Plattform und der vorhandenen Entwicklererfahrung zu profitieren. |
+| **Status**    | Akzeptiert                                                                                                                                                   |
+| **Consequences** | **Positive Konsequenzen**: <ul><li>Strukturierte Architektur durch die Nutzung von MVC.</li><li>Integrierter Technologiestack von UI bis Datenbankanbindung.</li><li>Unterstützung durch umfangreiche Microsoft-Dokumentation und Tools.</li><li>Verwendung einer etablierten Programmiersprache (C#).</li></ul><br> **Negative Konsequenzen**: <ul><li>Möglicherweise steilere Lernkurve für Entwickler ohne direkte Erfahrung mit ASP.Net Core MVC.</li><li>Abhängigkeit von der Weiterentwicklung und Unterstützung durch Microsoft.</li><br> **Neutrale Konsequenzen**: <ul><li>Keine spezifischen neutralen Konsequenzen identifiziert.</li></ul> |
+
 
 # Qualitätsanforderungen {#section-quality-scenarios}
 
