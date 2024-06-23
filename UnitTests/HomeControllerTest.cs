@@ -781,5 +781,97 @@ namespace WebApp.Tests
             // Assert
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
+
+        /// <summary>
+        /// Tests the behavior of the Delete method when the model state is not valid.
+        /// It should return a NotFoundResult.
+        /// </summary>
+        [TestMethod]
+        public void Delete_ModelStateNotValid_ReturnsNotFound()
+        {
+            // Arrange
+            _controller.ModelState.AddModelError("Key", "ErrorMessage");
+
+            // Act
+            var result = _controller.Delete(1);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        /// <summary>
+        /// Tests the behavior of the Delete method in the HomeController when the model state is not valid.
+        /// Expects the method to return a NotFoundResult.
+        /// </summary>
+        [TestMethod]
+        public void Details_ModelStateNotValid_ReturnsNotFound()
+        {
+            // Arrange
+            _controller.ModelState.AddModelError("Key", "ErrorMessage");
+
+            // Act
+            var result = _controller.Delete(1);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        /// <summary>
+        /// Tests the behavior of the DeleteConfirmed method when the model state is not valid.
+        /// Expects the method to return a NotFoundResult.
+        /// </summary>
+        [TestMethod]
+        public void DeleteConfirmed_ModelStateNotValid_ReturnsNotFound()
+        {
+            // Arrange
+            _controller.ModelState.AddModelError("Key", "ErrorMessage");
+
+            // Act
+            var result = _controller.Delete(1);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        /// <summary>
+        /// Tests the behavior of the Delete method when there is no translation found.
+        /// It verifies that the method returns a NotFoundResult.
+        /// </summary>
+        [TestMethod]
+        public void Delete_WithoutTranslation_ReturnsNotFound()
+        {
+            // Arrange
+            int id = 1;
+            Translation translation = null!;
+            _translationRepositoryMock.Setup(repo => repo.TranslationExists(id)).Returns(true);
+            _translationRepositoryMock.Setup(repo => repo.GetTranslationById(id)).Returns(translation);
+
+            // Act
+            var result = _controller.Delete(id);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+
+        }
+
+        /// <summary>
+        /// Tests the behavior of the Details method when there is no translation available.
+        /// It verifies that the method returns a NotFoundResult.
+        /// </summary>
+        [TestMethod]
+        public void Details_WithoutTranslation_ReturnsNotFound()
+        {
+            // Arrange
+            int id = 1;
+            Translation translation = null!;
+            _translationRepositoryMock.Setup(repo => repo.TranslationExists(id)).Returns(true);
+            _translationRepositoryMock.Setup(repo => repo.GetTranslationById(id)).Returns(translation);
+
+            // Act
+            var result = _controller.Delete(id);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
     }
 }
