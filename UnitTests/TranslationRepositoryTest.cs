@@ -7,12 +7,18 @@ using WebApp.Models;
 
 namespace WebApp.Tests
 {
+    /// <summary>
+    /// Represents a test class for the TranslationRepository class.
+    /// </summary>
     [TestClass]
     [TestCategory("UnitTests")]
     public class TranslationRepositoryTests
     {
         private DbContextOptions<WebAppContext> _options;
 
+        /// <summary>
+        /// Initializes the test environment by setting up an in-memory database and adding test data.
+        /// </summary>
         [TestInitialize]
         public void Initialize()
         {
@@ -32,6 +38,9 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Cleans up the test environment by deleting the in-memory database.
+        /// </summary>
         [TestCleanup]
         public void Cleanup()
         {
@@ -41,6 +50,10 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the AddTranslation method of the TranslationRepository class.
+        /// It verifies that a translation is added to the database.
+        /// </summary>
         [TestMethod]
         public void AddTranslation_ShouldAddTranslationToDatabase()
         {
@@ -54,6 +67,10 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the RemoveTranslation method of the TranslationRepository class.
+        /// It verifies that a translation is removed from the database.
+        /// </summary>
         [TestMethod]
         public void RemoveTranslation_ShouldRemoveTranslationFromDatabase()
         {
@@ -67,6 +84,10 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the GetTranslationById method of the TranslationRepository class.
+        /// It verifies that a translation is returned if it exists in the database.
+        /// </summary>
         [TestMethod]
         public void GetTranslation_ShouldReturnTranslationIfExists()
         {
@@ -81,6 +102,10 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the GetAllTranslations method of the TranslationRepository class.
+        /// It verifies that all translations are returned from the database.
+        /// </summary>
         [TestMethod]
         public void GetAllTranslations_ShouldReturnAllTranslations()
         {
@@ -106,6 +131,10 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the TranslationExists method of the TranslationRepository class.
+        /// It verifies that the method returns true if a translation exists in the database.
+        /// </summary>
         [TestMethod]
         public void TranslationExists_ShouldReturnTrueIfExists()
         {
@@ -119,6 +148,10 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the TranslationExists method of the TranslationRepository class.
+        /// It verifies that the method returns false if a translation does not exist in the database.
+        /// </summary>
         [TestMethod]
         public void TranslationExists_ShouldReturnFalseIfNotExists()
         {

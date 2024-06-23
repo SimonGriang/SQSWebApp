@@ -8,6 +8,9 @@ using WebApp.ViewModels;
 
 namespace WebApp.Tests
 {
+    /// <summary>
+    /// Represents a unit test class for the CreateTranslationViewModelHandler class.
+    /// </summary>
     [TestClass]
     [TestCategory("UnitTests")]
     public class CreateTranslationViewModelHandlerTest
@@ -22,6 +25,10 @@ namespace WebApp.Tests
             _createTranslationViewModelhandler = new CreateTranslationViewModelHandler(_languageRepositoryMock.Object);
         }
 
+        /// <summary>
+        /// Tests the CreateViewModel method of the CreateTranslationViewModelHandler class.
+        /// It verifies that the method returns a view model with the expected languages.
+        /// </summary>
         [TestMethod]
         public void CreateViewModel_ShouldReturnViewModelWithLanguages()
         {

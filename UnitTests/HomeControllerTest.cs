@@ -29,6 +29,9 @@ namespace WebApp.Tests
         private Mock<ITempDataDictionary> _tempDataMock = new Mock<ITempDataDictionary>();
 
 
+        /// <summary>
+        /// Initializes the test setup before each test method is executed.
+        /// </summary>
         [TestInitialize]
         public void Setup()
         {
@@ -44,6 +47,10 @@ namespace WebApp.Tests
 
         }
 
+        /// <summary>
+        /// Tests the behavior of the Index method in the HomeController class, 
+        /// ensuring that it returns a ViewResult with the expected model type.
+        /// </summary>
         [TestMethod]
         public void Index_ReturnsViewResult(){
             
@@ -90,6 +97,10 @@ namespace WebApp.Tests
             Assert.AreEqual(typeof(CreateTranslationViewModel), result.Model.GetType());
         }
 
+        /// <summary>
+        /// Tests the behavior of the Index method when the originLanguages parameter is null.
+        /// It verifies that the method returns a NotFoundResult.
+        /// </summary>
         [TestMethod]
         public void Index_ReturnsNotFound_WhenOriginLanguagesIsNull()
         {
@@ -104,6 +115,10 @@ namespace WebApp.Tests
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
+        /// <summary>
+        /// Tests the behavior of the Index method when the target languages are null.
+        /// It verifies that the method returns a NotFoundResult.
+        /// </summary>
         [TestMethod]
         public void Index_ReturnsNotFound_WhenTargetLanguagesIsNull()
         {
@@ -118,6 +133,12 @@ namespace WebApp.Tests
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
+        /// <summary>
+        /// Tests the behavior of the Index method when an exception is thrown.
+        /// </summary>
+        /// <remarks>
+        /// This test verifies that the Index method throws an exception and sets the appropriate error message in TempData.
+        /// </remarks>
         [TestMethod]
         public void Index_ReturnsErrorMessage_ExceptionIsThrown()
         {
@@ -135,6 +156,10 @@ namespace WebApp.Tests
             Assert.AreEqual("Ein unerwarteter Fehler ist aufgetreten: " + "Test Exception Message", _controller.TempData["ErrorMessage"]);
         }
 
+        /// <summary>
+        /// Tests the behavior of the Index method when the originLanguages list is empty.
+        /// It verifies that the method returns a NotFoundResult.
+        /// </summary>
         [TestMethod]
         public void Index_ReturnsNotFound_WhenOriginLanguagesIsEmpty()
         {
@@ -155,6 +180,10 @@ namespace WebApp.Tests
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
+        /// <summary>
+        /// Tests the behavior of the Index method when the target languages list is empty.
+        /// It verifies that the method returns a NotFoundResult.
+        /// </summary>
         [TestMethod]
         public void Index_ReturnsNotFound_WhenTargetLanguagesIsEmpty()
         {
@@ -177,6 +206,10 @@ namespace WebApp.Tests
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
+        /// <summary>
+        /// Tests the behavior of the Index method when the target view model is null.
+        /// It verifies that the method returns a NotFoundResult.
+        /// </summary>
         [TestMethod]
         public void Index_ReturnsNotFound_WhenTargetViewModelIsNull()
         {
@@ -191,6 +224,10 @@ namespace WebApp.Tests
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
+        /// <summary>
+        /// Represents an asynchronous operation that can return a value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result produced by the task.</typeparam>
         [TestMethod]
         public async Task Index_WithValidViewModel_ReturnsViewResult()
         {
@@ -235,6 +272,10 @@ namespace WebApp.Tests
             Assert.AreEqual(typeof(CreateTranslationViewModel), result.Model.GetType());
         }
 
+        /// <summary>
+        /// Represents an asynchronous operation that can return a value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result produced by the task.</typeparam>
         [TestMethod]
         public async Task Index_WithValidViewModel_ThrowsExceptionInternalError()
         {
@@ -277,6 +318,9 @@ namespace WebApp.Tests
             Assert.AreEqual("Ein unerwarteter Fehler ist aufgetreten: " + "Modelstate ist not valid or Translation is null.", _controller.TempData["ErrorMessage"]);
         }
 
+        /// <summary>
+        /// Represents an asynchronous operation that can return a value.
+        /// </summary>
         [TestMethod]
         public async Task Index_WithInvalidViewModel_ReturnsViewResultWithModelError()
         {
@@ -294,6 +338,9 @@ namespace WebApp.Tests
             Assert.IsTrue(result.ViewData.ModelState.ContainsKey(""));
         }
 
+        /// <summary>
+        /// Represents an asynchronous operation that can return a value.
+        /// </summary>
         [TestMethod]
         public async Task Index_WithNullTranslation_ReturnsViewResultWithModelError()
         {
@@ -317,6 +364,10 @@ namespace WebApp.Tests
             Assert.IsTrue(result.ViewData.ModelState.ContainsKey(""));
         }
 
+        /// <summary>
+        /// Represents an asynchronous operation that can return a value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result produced by the task.</typeparam>
         [TestMethod]
         public async Task Index_WithNullTranslationText_ReturnsViewResultWithModelError()
         {
@@ -340,6 +391,10 @@ namespace WebApp.Tests
             Assert.IsTrue(result.ViewData.ModelState.ContainsKey(""));
         }
 
+        /// <summary>
+        /// Represents an asynchronous operation that produces a result of type <typeparamref name="TResult"/>.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result produced by the task.</typeparam>
         [TestMethod]
         public async Task Index_WithValidViewModelAndModelState_ReturnsViewResultWithModelError()
         {
@@ -372,6 +427,10 @@ namespace WebApp.Tests
             Assert.IsTrue(result.ViewData.ModelState.ContainsKey(""));
         }
 
+        /// <summary>
+        /// Represents an asynchronous operation that can return a value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result produced by the task.</typeparam>
         [TestMethod]
         public async Task Index_WithValidModelState_ThrowsDeeplConnectionException()
         {
@@ -421,6 +480,10 @@ namespace WebApp.Tests
             Assert.AreEqual("Es konnte keine Verbindung zum Webservice aufgerufen werden: " + "Test Exception Message", _controller.TempData["ErrorMessage"]);
         }
 
+        /// <summary>
+        /// Represents an asynchronous operation that can return a value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result produced by the task.</typeparam>
         [TestMethod]
         public async Task Index_WithValidModelState_ThrowsDeeplQuotaExceededException()
         {
@@ -471,6 +534,10 @@ namespace WebApp.Tests
         }
 
 
+        /// <summary>
+        /// Represents an asynchronous operation that can return a value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result produced by the task.</typeparam>
         [TestMethod]    
         public async Task Index_WithValidModelState_ThrowsDeeplException()
         {
@@ -521,6 +588,9 @@ namespace WebApp.Tests
         }
 
 
+        /// <summary>
+        /// Tests the <see cref="HomeController.Error"/> method to ensure it returns a <see cref="ViewResult"/> with an <see cref="ErrorViewModel"/>.
+        /// </summary>
         [TestMethod]
         public void Error_ReturnsViewResultWithErrorViewModel()
         {
@@ -549,6 +619,9 @@ namespace WebApp.Tests
         }
 
 
+        /// <summary>
+        /// Tests the History method of the HomeController and verifies that it returns a ViewResult with translations.
+        /// </summary>
         [TestMethod]
         public void History_ReturnsViewResultWithTranslations()
         {
@@ -564,6 +637,10 @@ namespace WebApp.Tests
             Assert.AreEqual(translations, result.Model);
         }
 
+        /// <summary>
+        /// Tests the behavior of the Details method when a null id is provided.
+        /// Expects the method to return a NotFoundResult.
+        /// </summary>
         [TestMethod]
         public void Details_WithNullId_ReturnsNotFoundResult()
         {
@@ -577,6 +654,9 @@ namespace WebApp.Tests
             Assert.IsNotNull(result);
         }
 
+        /// <summary>
+        /// Tests the behavior of the Details method when an invalid ID is provided, and expects a NotFoundResult.
+        /// </summary>
         [TestMethod]
         public void Details_WithInvalidId_ReturnsNotFoundResult()
         {
@@ -591,6 +671,9 @@ namespace WebApp.Tests
             Assert.IsNotNull(result);
         }
 
+        /// <summary>
+        /// Tests the Details method of the HomeController when a valid ID is provided, and expects a ViewResult to be returned.
+        /// </summary>
         [TestMethod]
         public void Details_WithValidId_ReturnsViewResult()
         {
@@ -608,6 +691,10 @@ namespace WebApp.Tests
             Assert.IsTrue(result.ViewData.ModelState.IsValid);
         }
 
+        /// <summary>
+        /// Tests the behavior of the Delete method when a null id is provided. 
+        /// It should return a NotFoundResult.
+        /// </summary>
         [TestMethod]
         public void Delete_WithNullId_ReturnsNotFoundResult()
         {
@@ -621,6 +708,9 @@ namespace WebApp.Tests
             Assert.IsNotNull(result);
         }
 
+        /// <summary>
+        /// Tests the Delete method of the HomeController when an invalid ID is provided, and expects a NotFoundResult.
+        /// </summary>
         [TestMethod]
         public void Delete_WithInvalidId_ReturnsNotFoundResult()
         {
@@ -635,6 +725,9 @@ namespace WebApp.Tests
             Assert.IsNotNull(result);
         }
 
+        /// <summary>
+        /// Tests the Delete method of the HomeController when a valid ID is provided, and verifies that it returns a ViewResult.
+        /// </summary>
         [TestMethod]
         public void Delete_WithValidId_ReturnsViewResult()
         {
@@ -652,6 +745,9 @@ namespace WebApp.Tests
             Assert.AreEqual(translation, result.Model);
         }
 
+        /// <summary>
+        /// Tests the behavior of the DeleteConfirmed method when a valid ID is provided, and verifies that it redirects to the Index action.
+        /// </summary>
         [TestMethod]
         public void DeleteConfirmed_WithValidId_RedirectsToIndex()
         {
@@ -668,6 +764,10 @@ namespace WebApp.Tests
             Assert.AreEqual("History", result.ActionName);
         }
 
+        /// <summary>
+        /// Tests the behavior of the DeleteConfirmed method when an invalid ID is provided.
+        /// It should redirect to the index page.
+        /// </summary>
         [TestMethod]
         public void DeleteConfirmed_WithInvalidId_RedirectsToIndex()
         {

@@ -33,6 +33,10 @@ namespace WebApp.Tests
             _translationService = new TranslationService(_translatorMock.Object);
         }
 
+        /// <summary>
+        /// Represents an asynchronous operation that can return a value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result produced by the task.</typeparam>
         [TestMethod]
         public async Task TranslateTextAsync_WithValidInput_ShouldTranslateAndReturnViewModel()
         {
@@ -59,6 +63,10 @@ namespace WebApp.Tests
             Assert.AreEqual("Hallo", resultViewModel.Translation.TranslatedText);
         }
 
+        /// <summary>
+        /// Represents an asynchronous operation that can return a value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result produced by the task.</typeparam>
         [TestMethod]
         public async Task TranslateTextAsync_WithValidInputDL_ShouldTranslateAndReturnViewModel()
         {
@@ -84,6 +92,10 @@ namespace WebApp.Tests
             Assert.AreEqual("Hallo", resultViewModel.Translation.TranslatedText);
         }
 
+        /// <summary>
+        /// Asynchronously translates the text based on the provided view model.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [TestMethod]
         public async Task TranslateTextAsync_WithInvalidInputNoTranslatedLanguage_ShouldThrowArgumentNullException()
         {
@@ -102,6 +114,10 @@ namespace WebApp.Tests
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _translationService.TranslateTextAsync(viewModel));
         }
 
+        /// <summary>
+        /// Asynchronously translates the text provided in the view model.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [TestMethod]
         public async Task TranslateTextAsync_WithInvalidInputNoOriginalText_ShouldThrowArgumentNullException()
         {
@@ -120,6 +136,11 @@ namespace WebApp.Tests
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _translationService.TranslateTextAsync(viewModel));
         }
 
+        /// <summary>
+        /// Asynchronously translates the text using the provided view model.
+        /// </summary>
+        /// <param name="viewModel">The view model containing the translation details.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [TestMethod]
         public async Task TranslateTextAsync_WithInvalidInputNoOriginalLanguage_ShouldThrowArgumentNullException()
         {
@@ -138,6 +159,9 @@ namespace WebApp.Tests
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _translationService.TranslateTextAsync(viewModel));
         }
 
+        /// <summary>
+        /// Tests the TranslateTextAsync method with invalid input (no original language abbreviation) and expects an ArgumentNullException to be thrown.
+        /// </summary>
         [TestMethod]
         public async Task TranslateTextAsync_WithInvalidInputNoOriginalLanguageAbbreviation_ShouldThrowArgumentNullException()
         {
@@ -156,6 +180,11 @@ namespace WebApp.Tests
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _translationService.TranslateTextAsync(viewModel));
         }
 
+        /// <summary>
+        /// Asynchronously translates the text using the provided view model.
+        /// </summary>
+        /// <param name="viewModel">The view model containing the translation details.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         [TestMethod]
         public async Task TranslateTextAsync_WithInvalidInputNoTranslatedLanguageAbbreviation_ShouldThrowArgumentNullException()
         {
@@ -174,7 +203,11 @@ namespace WebApp.Tests
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _translationService.TranslateTextAsync(viewModel));
         }
 
-                [TestMethod]
+        /// <summary>
+        /// Tests the TranslateTextAsync method with invalid input and no translation.
+        /// Expects the method to throw an ArgumentNullException.
+        /// </summary>
+        [TestMethod]
         public async Task TranslateTextAsync_WithInvalidInputNoTranslation_ShouldThrowArgumentNullException()
         {
             // Arrange
@@ -187,6 +220,9 @@ namespace WebApp.Tests
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _translationService.TranslateTextAsync(viewModel));
         }
 
+        /// <summary>
+        /// Test method to verify that the <see cref="TranslationService.getDeeplLanguages"/> method returns all languages.
+        /// </summary>
         [TestMethod]
         public async Task getDeeplLanguages_ShouldReturnAllLanguages()
         {

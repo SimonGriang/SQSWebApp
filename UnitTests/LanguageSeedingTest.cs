@@ -12,6 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApp.Tests
 {
+    /// <summary>
+    /// Represents a unit test class for the LanguageSeeding class.
+    /// </summary>
     [TestClass]
     [TestCategory("UnitTests")]
     public class LanguageSeedingTest
@@ -20,13 +23,16 @@ namespace WebApp.Tests
         private WebAppContext _context;
         private IServiceProvider _serviceProvider;
 
+        /// <summary>
+        /// Initializes the test class before each test method is executed.
+        /// </summary>
         [TestInitialize]
         public void TestInitialize()
         {
-            // Mock für den TranslationService
+            // Mock for the TranslationService
             _translationServiceMock = new Mock<ITranslationService>();
 
-            // Setup für den TranslationService Mock
+            // Setup for the TranslationService Mock
             var languages = new List<Language>
             {
                 new Language { Name = "German", Abbreviation = "de", IsTargetLanguage = true, IsOriginLanguage = false },
@@ -36,21 +42,24 @@ namespace WebApp.Tests
             };
             _translationServiceMock.Setup(x => x.getDeeplLanguages()).ReturnsAsync(languages);
 
-            // DI-Container konfigurieren
+            // Configure DI container
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddDbContext<WebAppContext>(options =>
                 options.UseInMemoryDatabase("TestDatabase"));
             serviceCollection.AddSingleton<ITranslationService>(_translationServiceMock.Object);
             _serviceProvider = serviceCollection.BuildServiceProvider();
 
-            // Erhalte den WebAppContext aus dem ServiceProvider
+            // Get WebAppContext from the ServiceProvider
             _context = _serviceProvider.GetRequiredService<WebAppContext>();
 
-            // Datenbank bereinigen
+            // Clean up the database
             _context.Language.RemoveRange(_context.Language);
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Tests the Initialize method of the LanguageSeeding class to ensure that all languages are correctly seeded.
+        /// </summary>
         [TestMethod]
         public void Initialize_ShouldSeedLanguages()
         {
@@ -58,9 +67,12 @@ namespace WebApp.Tests
             LanguageSeeding.Initialize(_serviceProvider);
 
             // Assert
-            Assert.AreEqual(6, _context.Language.Count()); // Überprüfe, ob alle Sprachen korrekt hinzugefügt wurden
+            Assert.AreEqual(6, _context.Language.Count()); // Check if all languages were added correctly
         }
 
+        /// <summary>
+        /// Tests the Initialize method of the LanguageSeeding class to ensure that no additional languages are seeded if they already exist.
+        /// </summary>
         [TestMethod]
         public void Initialize_ShouldNotSeedLanguagesIfTheyAlreadyExist()
         {
@@ -78,9 +90,12 @@ namespace WebApp.Tests
             LanguageSeeding.Initialize(_serviceProvider);
 
             // Assert
-            Assert.AreEqual(4, _context.Language.Count()); // Überprüfe, ob keine weiteren Sprachen hinzugefügt wurden
+            Assert.AreEqual(4, _context.Language.Count()); // Check if no additional languages were added
         }
 
+        /// <summary>
+        /// Tests the Initialize method of the LanguageSeeding class to ensure that missing languages are correctly seeded if they partially exist.
+        /// </summary>
         [TestMethod]
         public void Initialize_ShouldSeedLanguagesIfTheyPartiallyExist()
         {
@@ -96,7 +111,7 @@ namespace WebApp.Tests
             LanguageSeeding.Initialize(_serviceProvider);
 
             // Assert
-            Assert.AreEqual(6, _context.Language.Count()); // Überprüfe, ob die fehlenden Sprachen hinzugefügt wurden
+            Assert.AreEqual(6, _context.Language.Count()); // Check if the missing languages were added
         }
     }
 }

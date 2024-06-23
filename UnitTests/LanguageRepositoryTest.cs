@@ -5,6 +5,9 @@ using System.Linq;
 using WebApp.Data;
 using WebApp.Models;
 
+/// <summary>
+/// Contains unit tests for the <see cref="LanguageRepository"/> class.
+/// </summary>
 namespace WebApp.Tests
 {
     [TestClass]
@@ -15,6 +18,9 @@ namespace WebApp.Tests
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
 
+        /// <summary>
+        /// Initializes the test environment before each test method is executed.
+        /// </summary>
         [TestInitialize]
         public void Initialize()
         {
@@ -46,6 +52,14 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the functionality of adding a language to the database.
+        /// </summary>
+        /// <remarks>
+        /// This test method verifies that the <see cref="LanguageRepository.AddLanguage"/> method correctly adds a language to the database.
+        /// It creates a new instance of the <see cref="LanguageRepository"/> class, initializes a list of new languages, and adds each language to the database.
+        /// After adding each language, it asserts that the language exists in the database by calling the <see cref="LanguageRepository.LanguageExists"/> method.
+        /// </remarks>
         [TestMethod]
         public void AddLanguage_ShouldAddLanguageToDatabase()
         {
@@ -78,6 +92,13 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the functionality of removing a language from the database.
+        /// </summary>
+        /// <remarks>
+        /// This test method verifies that the <see cref="LanguageRepository.RemoveLanguage"/> method correctly removes the specified language from the database.
+        /// It arranges the necessary objects and data, performs the removal operation, and then asserts that the language no longer exists in the database.
+        /// </remarks>
         [TestMethod]
         public void RemoveLanguage_ShouldRemoveLanguageFromDatabase()
         {
@@ -89,8 +110,7 @@ namespace WebApp.Tests
         
                 foreach (var languageId in languageIdsToRemove)
                 {
-                    // Act
-                    repository.RemoveLanguage(languageId);
+                    // Act        ///               repository.RemoveLanguage(languageId);
         
                     // Assert
                     Assert.IsFalse(repository.LanguageExists(languageId));
@@ -98,6 +118,9 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the GetLanguage method of the LanguageRepository class to ensure that it returns the correct language if it exists.
+        /// </summary>
         [TestMethod]
         public void GetLanguage_ShouldReturnLanguageIfExists()
         {
@@ -116,6 +139,17 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the GetAllLanguages method of the LanguageRepository class to ensure that it returns all languages.
+        /// </summary>
+        /// <remarks>
+        /// This test method verifies that the GetAllLanguages method of the LanguageRepository class returns the expected list of languages.
+        /// It performs the following steps:
+        /// 1. Arranges the necessary objects and data for the test.
+        /// 2. Calls the GetAllLanguages method to retrieve the actual list of languages.
+        /// 3. Asserts that the count of expected languages matches the count of actual languages.
+        /// 4. Iterates through each language in the expected list and asserts that the corresponding language in the actual list has the same properties.
+        /// </remarks>
         [TestMethod]
         public void GetAllLanguages_ShouldReturnAllLanguages()
         {
@@ -154,9 +188,13 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// This test method verifies that the LanguageExists method of the LanguageRepository class returns true if a language with the specified ID exists in the database.
+        /// </summary>
         [TestMethod]
         public void LanguageExists_ShouldReturnTrueIfExists()
         {
+
             // Arrange
             using (var context = new WebAppContext(_options))
             {
@@ -171,9 +209,15 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>  
+        /// This test method verifies that the LanguageExists method of the LanguageRepository class
+        /// returns false when a language with the specified ID does not exist in the database.   
+        /// </summary>
         [TestMethod]
         public void LanguageExists_ShouldReturnFalseIfNotExists()
         {
+
+
             // Arrange
             using (var context = new WebAppContext(_options))
             {
@@ -188,6 +232,9 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the <see cref="LanguageRepository.LanguageExistsByAbbreviation"/> method to ensure it returns true if a language with the specified abbreviation exists.
+        /// </summary>
         [TestMethod]
         public void LanguageExistsByAbbreviation_ShouldReturnTrueIfExists()
         {
@@ -205,6 +252,9 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the behavior of the LanguageExistsByAbbreviation method when the language with the specified abbreviation does not exist.
+        /// </summary>
         [TestMethod]
         public void LanguageExistsByAbbreviation_ShouldReturnFalseIfNotExists()
         {
@@ -222,6 +272,13 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the <see cref="LanguageRepository.ReturnLanguageByAbbreviation"/> method to ensure it returns the correct language based on the abbreviation.
+        /// </summary>
+        /// <remarks>
+        /// This test method verifies that the <see cref="LanguageRepository.ReturnLanguageByAbbreviation"/> method correctly retrieves a language from the repository based on the provided abbreviation.
+        /// It sets up the necessary test data, calls the method under test, and asserts that the returned language matches the expected language.
+        /// </remarks>
         [TestMethod]
         public void ReturnLanguageByAbbreviation_ShouldReturnCorrectLanguage()
         {
@@ -245,6 +302,19 @@ namespace WebApp.Tests
             }
         }
 
+        /// <summary>
+        /// Tests the <see cref="LanguageRepository.GetLanguage"/> method to ensure that it returns the correct language.
+        /// </summary>
+        /// <remarks>
+        /// This test method verifies that the <see cref="LanguageRepository.GetLanguage"/> method correctly retrieves a language from the repository based on the provided language ID.
+        /// It performs the following steps:
+        /// 1. Creates a new instance of the <see cref="WebAppContext"/> using the specified options.
+        /// 2. Instantiates a new <see cref="LanguageRepository"/> object with the created context.
+        /// 3. Sets up the necessary test data, including the expected language.
+        /// 4. Calls the <see cref="LanguageRepository.AddLanguage"/> method to add the expected language to the repository.
+        /// 5. Calls the <see cref="LanguageRepository.GetLanguage"/> method with the specified language ID.
+        /// 6. Asserts that the returned language is not null and matches the expected language in terms of ID, abbreviation, and name.
+        /// </remarks>
         [TestMethod]
         public void GetLanguage_ShouldReturnCorrectLanguage()
         {

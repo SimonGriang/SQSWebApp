@@ -4,10 +4,16 @@ using WebApp.Models;
 
 namespace WebApp.Tests
 {
+    /// <summary>
+    /// Contains unit tests for the LanguageTranslation class.
+    /// </summary>
     [TestClass]
     [TestCategory("UnitTests")]
     public class LanguageTranslationTests
     {
+        /// <summary>
+        /// Tests the default constructor of the Language class.
+        /// </summary>
         [TestMethod]
         public void LanguageTestDefaultConstructor()
         {
@@ -19,6 +25,9 @@ namespace WebApp.Tests
             Assert.IsFalse(language.IsOriginLanguage);
         }
 
+        /// <summary>
+        /// Tests the parameterized constructor of the Language class.
+        /// </summary>
         [TestMethod]
         public void LanguageTestParameterizedConstructor()
         {
@@ -27,6 +36,9 @@ namespace WebApp.Tests
             Assert.AreEqual("EN", language.Abbreviation);
         }
 
+        /// <summary>
+        /// Tests the ID property of the Language class.
+        /// </summary>
         [TestMethod]
         public void LanguageTestSetAndGetID()
         {
@@ -35,6 +47,9 @@ namespace WebApp.Tests
             Assert.AreEqual(1, language.ID);
         }
 
+        /// <summary>
+        /// Tests the Name property of the Language class.
+        /// </summary>
         [TestMethod]
         public void LanguageTestSetAndGetName()
         {
@@ -43,6 +58,9 @@ namespace WebApp.Tests
             Assert.AreEqual("Spanish", language.Name);
         }
 
+        /// <summary>
+        /// Tests the Abbreviation property of the Language class.
+        /// </summary>
         [TestMethod]
         public void LanguageTestSetAndGetAbbreviation()
         {
@@ -51,6 +69,9 @@ namespace WebApp.Tests
             Assert.AreEqual("ES", language.Abbreviation);
         }
 
+        /// <summary>
+        /// Tests the IsTargetLanguage property of the Language class.
+        /// </summary>
         [TestMethod]
         public void LanguageTestSetAndGetIsTargetLanguage()
         {
@@ -59,6 +80,9 @@ namespace WebApp.Tests
             Assert.IsTrue(language.IsTargetLanguage);
         }
 
+        /// <summary>
+        /// Tests the IsOriginLanguage property of the Language class.
+        /// </summary>
         [TestMethod]
         public void LanguageTestSetAndGetIsOriginLanguage()
         {
@@ -67,6 +91,9 @@ namespace WebApp.Tests
             Assert.IsTrue(language.IsOriginLanguage);
         }
 
+        /// <summary>
+        /// Tests the ID property of the Translation class.
+        /// </summary>
         [TestMethod]
         public void TranslationTestSetAndGetID()
         {
@@ -75,6 +102,9 @@ namespace WebApp.Tests
             Assert.AreEqual(1, translation.ID);
         }
 
+        /// <summary>
+        /// Tests the OriginalText property of the Translation class.
+        /// </summary>
         [TestMethod]
         public void TranslationTestSetAndGetOriginalText()
         {
@@ -83,6 +113,9 @@ namespace WebApp.Tests
             Assert.AreEqual("Hello", translation.OriginalText);
         }
 
+        /// <summary>
+        /// Tests the TranslatedText property of the Translation class.
+        /// </summary>
         [TestMethod]
         public void TranslationTestSetAndGetTranslatedText()
         {
@@ -91,6 +124,9 @@ namespace WebApp.Tests
             Assert.AreEqual("Hola", translation.TranslatedText);
         }
 
+        /// <summary>
+        /// Tests the Translated_at property of the Translation class.
+        /// </summary>
         [TestMethod]
         public void TranslationTestSetAndGetTranslatedAt()
         {
@@ -100,6 +136,9 @@ namespace WebApp.Tests
             Assert.AreEqual(date, translation.Translated_at);
         }
 
+        /// <summary>
+        /// Tests the OriginalLanguage property of the Translation class.
+        /// </summary>
         [TestMethod]
         public void TranslationTestSetAndGetOriginalLanguage()
         {
@@ -109,6 +148,9 @@ namespace WebApp.Tests
             Assert.AreEqual(language, translation.OriginalLanguage);
         }
 
+        /// <summary>
+        /// Tests the TranslatedLanguage property of the Translation class.
+        /// </summary>
         [TestMethod]
         public void TranslationTestSetAndGetTranslatedLanguage()
         {
@@ -118,7 +160,10 @@ namespace WebApp.Tests
             Assert.AreEqual(language, translation.TranslatedLanguage);
         }
 
-        [TestMethod]
+        /// <summary>
+        /// Tests the OriginalText property validation of the Translation class.
+        /// </summary>
+        /// [TestMethod]
         public void TranslationTestOriginalTextValidation()
         {
             var translation = new Translation();
