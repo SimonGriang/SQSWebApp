@@ -9,17 +9,30 @@ using DeepL.Model;
 
 namespace WebApp.Services
 {
+    /// <summary>
+    /// Service class for translating text.
+    /// </summary>
     public class TranslationService : ITranslationService
     {
         private readonly ITranslatorWrapper _translator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TranslationService"/> class.
+        /// </summary>
+        /// <param name="translatorWrapper">The translator wrapper.</param>
         public TranslationService(ITranslatorWrapper translatorWrapper)
         {
             _translator = translatorWrapper;
         }
 
+        /// <summary>
+        /// Translates the text asynchronously.
+        /// </summary>
+        /// <param name="viewModel">The view model containing the translation data.</param>
+        /// <returns>The updated view model with translated text.</returns>
         public async Task<CreateTranslationViewModel> TranslateTextAsync(CreateTranslationViewModel viewModel)
         {
+            // Check if all translation components are provided
             if (viewModel.Translation is null 
                 || viewModel.Translation.OriginalLanguage is null 
                 || viewModel.Translation.TranslatedLanguage is null 
@@ -48,13 +61,17 @@ namespace WebApp.Services
             return viewModel;
         }
 
+        /// <summary>
+        /// Retrieves the list of supported languages for translation.
+        /// </summary>
+        /// <returns>The list of supported languages.</returns>
         public async Task<List<WebApp.Models.Language>> getDeeplLanguages()
         {
             List<WebApp.Models.Language> languagesTarget = new List<WebApp.Models.Language>();
             List<WebApp.Models.Language> languagesSource = new List<WebApp.Models.Language>();
             List<WebApp.Models.Language> finallanguages = new List<WebApp.Models.Language>();
 
-
+            // Get source languages
             var sourceLanguages = await _translator.GetSourceLanguagesAsync();
             foreach (var lang in sourceLanguages)
             {
@@ -64,7 +81,7 @@ namespace WebApp.Services
                 languagesSource.Add(createlan);
             }
 
-
+            // Get target languages
             var targetLanguages = await _translator.GetTargetLanguagesAsync();
             foreach (var lang in targetLanguages)
             {
@@ -74,6 +91,7 @@ namespace WebApp.Services
                 languagesTarget.Add(createlan);
             }
 
+            // Combine source and target languages
             foreach (WebApp.Models.Language language in languagesSource)
             {
                 if (languagesTarget.Exists(l => l.Abbreviation == language.Abbreviation)){
@@ -87,6 +105,7 @@ namespace WebApp.Services
                 }
             }
 
+            // Add remaining target languages
             foreach (WebApp.Models.Language language in languagesTarget)
             {
                 if (!finallanguages.Exists(l => l.Abbreviation == language.Abbreviation)){

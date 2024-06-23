@@ -5,15 +5,26 @@ using WebApp.ViewModels;
 
 namespace WebApp.ViewModelHandler
 {
+    /// <summary>
+    /// Handles the creation of the view model for creating translations.
+    /// </summary>
     public class CreateTranslationViewModelHandler : ICreateTranslationViewModelHandler
     {
         private readonly ILanguageRepository _languageRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateTranslationViewModelHandler"/> class.
+        /// </summary>
+        /// <param name="languageRepository">The language repository.</param>
         public CreateTranslationViewModelHandler(ILanguageRepository languageRepository)
         {
             _languageRepository = languageRepository;
         }
 
+        /// <summary>
+        /// Creates the view model for creating translations.
+        /// </summary>
+        /// <returns>The created view model.</returns>
         public CreateTranslationViewModel createViewModel()
         {
             var viewModel = new CreateTranslationViewModel
@@ -37,6 +48,10 @@ namespace WebApp.ViewModelHandler
             return viewModel;
         }
 
+        /// <summary>
+        /// Processes all target languages Includes certain target languages from the properties
+        /// </summary>
+        /// <returns>The created view model.</returns>
         private static void ProcessTargetLanguage(Language lan, CreateTranslationViewModel viewModel, List<Language> targetLanguages)
         {
             if (lan.IsTargetLanguage)
@@ -56,6 +71,11 @@ namespace WebApp.ViewModelHandler
                 }
             }
         }
+
+        /// <summary>
+        /// Processes all source languages Includes certain source languages from the properties
+        /// </summary>
+        /// <returns>The created view model.</returns>
 
         private static void ProcessOriginLanguage(Language lan, CreateTranslationViewModel viewModel, List<Language> originLanguages)
         {
