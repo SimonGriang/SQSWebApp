@@ -151,7 +151,7 @@ namespace WebApp.IntegrationTests
         /// Represents an asynchronous operation that can return a value.
         /// </summary>
         /// <typeparam name="TResult">The type of the result produced by the task.</typeparam>
-        /// [TestMethod]
+        [TestMethod]
         public async Task Index_WithValidViewModel_ReturnsViewResult()
         {
             // Arrange
