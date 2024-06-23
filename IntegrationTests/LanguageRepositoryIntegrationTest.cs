@@ -30,15 +30,15 @@ namespace WebApp.IntegrationTests
             var newLanguages = new List<Language>
             {
                 new Language { ID = 1111, Name = "Portuguese", Abbreviation = "pt" },
-                new Language { ID = 1112, Name = "Dutch", Abbreviation = "nl", isOriginLanguage = false },
-                new Language { ID = 1113, Name = "Greek", isTargetLanguage = false },
-                new Language { ID = 1114, Name = "Swedish", Abbreviation = "sv", isOriginLanguage = false, isTargetLanguage = false },
+                new Language { ID = 1112, Name = "Dutch", Abbreviation = "nl", IsOriginLanguage = false },
+                new Language { ID = 1113, Name = "Greek", IsTargetLanguage = false },
+                new Language { ID = 1114, Name = "Swedish", Abbreviation = "sv", IsOriginLanguage = false, IsTargetLanguage = false },
                 new Language { ID = 1115, Name = "Danish" },
-                new Language { ID = 1116, Name = "Finnish", Abbreviation = "fi", isOriginLanguage = true },
-                new Language { ID = 1117, Name = "Norwegian", Abbreviation = "no", isTargetLanguage = true },
-                new Language { ID = 1118, Name = "Polish", Abbreviation = "pl", isOriginLanguage = true, isTargetLanguage = true },
-                new Language { ID = 1119, Name = "Hungarian", isOriginLanguage = true },
-                new Language { ID = 1120, Name = "Czech", isTargetLanguage = true }
+                new Language { ID = 1116, Name = "Finnish", Abbreviation = "fi", IsOriginLanguage = true },
+                new Language { ID = 1117, Name = "Norwegian", Abbreviation = "no", IsTargetLanguage = true },
+                new Language { ID = 1118, Name = "Polish", Abbreviation = "pl", IsOriginLanguage = true, IsTargetLanguage = true },
+                new Language { ID = 1119, Name = "Hungarian", IsOriginLanguage = true },
+                new Language { ID = 1120, Name = "Czech", IsTargetLanguage = true }
             };
 
             foreach (var newLanguage in newLanguages)
