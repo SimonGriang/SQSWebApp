@@ -5,11 +5,11 @@ Software Qualitätssicherung
 
 Durchgeführte Tests:
 
-- Integration Test
+- Integration Test (somehow LanguageRepositoryIntegrationTest/TranslationRepositoryIntegrationTest and E2E Tests in the same Pipeline lead to conflicts, that's why those two test classes are commented)
 - Unit Test
 - E2E Test
-- Lasttest 
 - Dependency Security Checks (Github Action)
+
 
 
 
