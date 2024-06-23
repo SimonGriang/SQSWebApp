@@ -9,18 +9,23 @@ Diese Markdown Datei dient der ARC42 Dokumentation für das SQS-Projekt.
 
 Dieses Dokument beschreibt die Architektur der .NET Core MVC-Anwendung, die als Übersetzer fungiert und die DEEPL-API nutzt. Zusätzlich speichert die Anwendung alle Übersetzungen in einer Datenbank. Dieses Projekt wurde im Rahmen einer Vorlesung an der Hochschule erstellt und wird von meinem Dozenten bewertet.
 
-## 1.2 Aufgabenstellung {#_aufgabenstellung}
+## 1.1 Aufgabenstellung {#_aufgabenstellung}
 
 Aufgabe it es eine Anwendung zu erstellen. Die Qualität der Software soll professionell abgesichert werden. Die wesentlichsten vorgegebenen Bedingungen für die Umsetzung sind:
 - das Verwenden einer externen API
 - das Einbinden einer Datenbank
 - das Integrieren einer Benutzeroberfläche
  
-## 1.3 Qualitätsziele {#_qualit_tsziele}
+## 1.2 Qualitätsziele {#_qualit_tsziele}
 
-Die folgend aufgeführten Qualitätsziele nach ISO 25010 sind: Functional Suitability, Security, Maintainability
+Die folgend aufgeführten Qualitätsziele nach ISO 25010 sind werden für die Qualitätssicherung der Anwendung herangezogen: 
 
-## 1.4 Stakeholder {#_stakeholder}
+**Functional Suitability:** Das System bietet Funktionen, die den angegebenen oder implizierten Bedürfnissen entsprechen.
+**Security:** Schutz der Systemelemente vor unbeabsichtigtem oder böswilligem Zugriff, Nutzung, Änderung, Zerstörung oder Offenlegung.
+**Maintainability:** Das System kann korrekt modifiziert, angepasst oder verbessert werden aufgrund von Veränderungen in der Umgebung oder Anforderungen.
+**Operability:** Das System kann von Benutzern verstanden, erlernt, verwendet und als attraktiv empfunden werden.
+
+## 1.3 Stakeholder {#_stakeholder}
 
 | Rolle           | Kontakt                                   | Erwartungshaltung                            |
 |:---------------:|:------------------------------------------:|:--------------------------------------------:|

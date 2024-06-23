@@ -53,6 +53,77 @@ namespace WebApp.Tests
             Assert.AreEqual("Bitte wählen Sie eine gültige Zielsprache aus.", result.ErrorMessage);
         }
 
+        [TestMethod]
+        public void ValidateLanguageTo_targetLanguagesNull_ReturnsError()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel
+            {
+                targetLanguages = null,
+                originLanguages = new List<Language>{
+                new Language { ID = 4, Abbreviation = "DL", IsTargetLanguage = false, IsOriginLanguage = true },
+                new Language { ID = 5, Abbreviation = "en", IsTargetLanguage = false, IsOriginLanguage = true }
+                },
+                English = 1,
+                EnglishUS = 2,
+                EnglishGB = 3,
+                German = 4,
+                DetectLanguage = 5,
+            };
+            viewModel.LanguageTo = -1;
+
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(viewModel);
+
+            // Act
+            var result = viewModel.ValidateLanguageTo(validationContext);
+
+            // Assert
+            Assert.AreNotEqual(ValidationResult.Success, result);
+            Assert.AreEqual("Keine Sprachen vorhanden, Validierung übersprungen.", result.ErrorMessage);
+        }
+
+        [TestMethod]
+        public void ValidateLanguagOrigin_OriginLanguagesNull_ReturnsError()
+        {
+            // Arrange
+            var viewModel = new CreateTranslationViewModel
+            {
+                targetLanguages = new List<Language>{
+                new Language { ID = 4, Abbreviation = "DL", IsTargetLanguage = false, IsOriginLanguage = true },
+                new Language { ID = 5, Abbreviation = "en", IsTargetLanguage = false, IsOriginLanguage = true }
+                },
+                originLanguages = null,
+                English = 1,
+                EnglishUS = 2,
+                EnglishGB = 3,
+                German = 4,
+                DetectLanguage = 5,
+            };
+            viewModel.LanguageTo = -1;
+
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(viewModel);
+
+            // Act
+            var result = viewModel.ValidateOriginLanguages(validationContext);
+
+            // Assert
+            Assert.AreNotEqual(ValidationResult.Success, result);
+            Assert.AreEqual("Keine Sprachen vorhanden, Validierung übersprungen.", result.ErrorMessage);
+        }
+
+        [TestMethod]
+        public void ValidateLanguageTo_Valid_ReturnsSuccess()
+        {
+            viewModel.LanguageFrom = 4;
+            viewModel.LanguageTo = 1;
+            var validationContext = new ValidationContext(viewModel);
+            var result = viewModel.ValidateLanguageTo(validationContext);
+
+            Assert.AreEqual(ValidationResult.Success, result);
+        }
+
 
         [TestMethod]
         public void ValidateOriginLanguages_ValidLanguage_ReturnsSuccess()
