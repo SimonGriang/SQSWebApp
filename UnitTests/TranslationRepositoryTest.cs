@@ -9,7 +9,7 @@ namespace WebApp.Tests
 {
     [TestClass]
     [TestCategory("UnitTests")]
-    public class TranslationTests
+    public class TranslationRepositoryTests
     {
         private DbContextOptions<WebAppContext> _options;
 

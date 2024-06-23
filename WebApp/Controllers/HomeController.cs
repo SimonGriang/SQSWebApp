@@ -10,6 +10,9 @@ using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
+    /// <summary>
+    /// Represents the controller for the home page and related actions.
+    /// </summary>
     public class HomeController : Controller
     {
         private readonly ITranslationService _translationService;
@@ -18,6 +21,13 @@ namespace WebApp.Controllers
         private readonly ICreateTranslationViewModelHandler _createTranslationViewModelHandler;
         private readonly String errorMessage = "ErrorMessage";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HomeController"/> class.
+        /// </summary>
+        /// <param name="translationService">The translation service.</param>
+        /// <param name="languageRepository">The language repository.</param>
+        /// <param name="translationRepository">The translation repository.</param>
+        /// <param name="createTranslationViewModelHandler">The create translation view model handler.</param>
         public HomeController(ITranslationService translationService, ILanguageRepository languageRepository, ITranslationRepository translationRepository, ICreateTranslationViewModelHandler createTranslationViewModelHandler)
         {
             _translationService = translationService;
@@ -26,23 +36,34 @@ namespace WebApp.Controllers
             _createTranslationViewModelHandler = createTranslationViewModelHandler;
         }
 
-        // GET: Startpage
+        /// <summary>
+        /// Gets the start page.
+        /// </summary>
+        /// <returns>The start page view.</returns>
         public IActionResult Index()
-        { // Exception Handling noch einfügen falls bei der Erstellung des ViewModels ein Fehler auftritt
-            try{
+        {
+            // Exception Handling noch einfügen falls bei der Erstellung des ViewModels ein Fehler auftritt
+            try
+            {
                 CreateTranslationViewModel viewModel = _createTranslationViewModelHandler.createViewModel();
                 if (viewModel is null || viewModel.originLanguages is null || viewModel.targetLanguages is null || viewModel.originLanguages.Count == 0 || viewModel.targetLanguages.Count == 0)
                 {
                     return NotFound();
                 }
                 return View(viewModel);
-            } catch (Exception exception){
+            }
+            catch (Exception exception)
+            {
                 TempData[errorMessage] = "Ein unerwarteter Fehler ist aufgetreten: " + exception.Message;
                 return View();
             }
         }
 
-        // POST: Startpage
+        /// <summary>
+        /// Handles the post request for the start page.
+        /// </summary>
+        /// <param name="returnedViewModel">The returned view model.</param>
+        /// <returns>The start page view.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(CreateTranslationViewModel returnedViewModel)
@@ -54,7 +75,6 @@ namespace WebApp.Controllers
             }
             Language? languageTo = _languageReository.GetLanguage(returnedViewModel.LanguageTo);
             Language? languageFrom = _languageReository.GetLanguage(returnedViewModel.LanguageFrom);
-
 
             CreateTranslationViewModel viewModel = _createTranslationViewModelHandler.createViewModel();
             viewModel.LanguageFrom = returnedViewModel.LanguageFrom;
@@ -73,14 +93,13 @@ namespace WebApp.Controllers
                 return View(returnedViewModel);
             }
 
-
             try
             {
                 viewModel = await _translationService.TranslateTextAsync(viewModel);
 
                 if (ModelState.IsValid && viewModel.Translation is not null)
                 {
-                        _translationRepository.AddTranslation(viewModel.Translation);
+                    _translationRepository.AddTranslation(viewModel.Translation);
                 }
                 throw new Exception("Modelstate ist not valid or Translation is null.");
             }
@@ -106,19 +125,20 @@ namespace WebApp.Controllers
             }
         }
 
-        // GET: History
+        /// <summary>
+        /// Gets the history page.
+        /// </summary>
+        /// <returns>The history page view.</returns>
         public IActionResult History()
         {
             return View(_translationRepository.GetAllTranslations());
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        // GET: Home/Details/X
+        /// <summary>
+        /// Handles the request for details of a translation.
+        /// </summary>
+        /// <param name="id">The translation ID.</param>
+        /// <returns>The details view of the translation.</returns>
         public IActionResult Details(int? id)
         {
             if (!ModelState.IsValid)
@@ -139,7 +159,11 @@ namespace WebApp.Controllers
             return View(translation);
         }
 
-        // GET: Home/Delete/5
+        /// <summary>
+        /// Handles the request to delete a translation.
+        /// </summary>
+        /// <param name="id">The translation ID.</param>
+        /// <returns>The delete view of the translation.</returns>
         public IActionResult Delete(int? id)
         {
             if (!ModelState.IsValid)
@@ -161,7 +185,11 @@ namespace WebApp.Controllers
             return View(translation);
         }
 
-        // POST: Home/Delete/5
+        /// <summary>
+        /// Handles the post request to delete a translation.
+        /// </summary>
+        /// <param name="id">The translation ID.</param>
+        /// <returns>The history page view.</returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -177,10 +205,20 @@ namespace WebApp.Controllers
                 _translationRepository.DeleteTranslation(id);
                 return RedirectToAction(nameof(History));
             }
-            else 
+            else
             {
                 return NotFound();
             }
+        }
+
+        /// <summary>
+        /// Handles the error page.
+        /// </summary>
+        /// <returns>The error page view.</returns>
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
