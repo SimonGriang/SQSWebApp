@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "..\UnitTests\U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlaywrightTests", "..\PlaywrightTests\PlaywrightTests.csproj", "{D460E707-0665-45FF-8E84-37C4BF0FE869}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "..\IntegrationTests\IntegrationTests.csproj", "{25CE5B29-9905-4A5D-ADAA-6192B022C499}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "..\IntegrationTests\IntegrationTests.csproj", "{25CE5B29-9905-4A5D-ADAA-6192B022C499}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

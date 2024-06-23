@@ -29,10 +29,10 @@ namespace WebApp.Tests
             // Setup für den TranslationService Mock
             var languages = new List<Language>
             {
-                new Language { Name = "German", Abbreviation = "de", isTargetLanguage = true, isOriginLanguage = false },
-                new Language { Name = "English", Abbreviation = "en-US", isTargetLanguage = true, isOriginLanguage = false },
-                new Language { Name = "Detect Language", Abbreviation = "DL", isTargetLanguage = false, isOriginLanguage = true },
-                new Language { Name = "English", Abbreviation = "en", isTargetLanguage = false, isOriginLanguage = true }
+                new Language { Name = "German", Abbreviation = "de", IsTargetLanguage = true, IsOriginLanguage = false },
+                new Language { Name = "English", Abbreviation = "en-US", IsTargetLanguage = true, IsOriginLanguage = false },
+                new Language { Name = "Detect Language", Abbreviation = "DL", IsTargetLanguage = false, IsOriginLanguage = true },
+                new Language { Name = "English", Abbreviation = "en", IsTargetLanguage = false, IsOriginLanguage = true }
             };
             _translationServiceMock.Setup(x => x.getDeeplLanguages()).ReturnsAsync(languages);
 
@@ -67,10 +67,10 @@ namespace WebApp.Tests
             // Arrange
             _context.Language.AddRange(new List<Language>
             {
-                new Language { Name = "German", Abbreviation = "de", isTargetLanguage = true, isOriginLanguage = false },
-                new Language { Name = "English", Abbreviation = "en-US", isTargetLanguage = true, isOriginLanguage = false },
-                new Language { Name = "Detect Language", Abbreviation = "DL", isTargetLanguage = false, isOriginLanguage = true },
-                new Language { Name = "English", Abbreviation = "en", isTargetLanguage = false, isOriginLanguage = true }
+                new Language { Name = "German", Abbreviation = "de", IsTargetLanguage = true, IsOriginLanguage = false },
+                new Language { Name = "English", Abbreviation = "en-US", IsTargetLanguage = true, IsOriginLanguage = false },
+                new Language { Name = "Detect Language", Abbreviation = "DL", IsTargetLanguage = false, IsOriginLanguage = true },
+                new Language { Name = "English", Abbreviation = "en", IsTargetLanguage = false, IsOriginLanguage = true }
             });
             _context.SaveChanges();
 
@@ -87,8 +87,8 @@ namespace WebApp.Tests
             // Arrange
             _context.Language.AddRange(new List<Language>
             {
-                new Language { Name = "German", Abbreviation = "de", isTargetLanguage = true, isOriginLanguage = false },
-                new Language { Name = "English", Abbreviation = "en-US", isTargetLanguage = true, isOriginLanguage = false }
+                new Language { Name = "German", Abbreviation = "de", IsTargetLanguage = true, IsOriginLanguage = false },
+                new Language { Name = "English", Abbreviation = "en-US", IsTargetLanguage = true, IsOriginLanguage = false }
             });
             _context.SaveChanges();
 

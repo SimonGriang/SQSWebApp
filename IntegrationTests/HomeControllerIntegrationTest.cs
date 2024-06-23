@@ -39,16 +39,16 @@ namespace WebApp.Tests
                 {
                     Abbreviation = "de",
                     ID = 1,
-                    isOriginLanguage = true,
-                    isTargetLanguage = true,
+                    IsOriginLanguage = true,
+                    IsTargetLanguage = true,
                     Name = "German"
                 },
                 new WebApp.Models.Language
                 {
                     Abbreviation = "en-US",
                     ID = 2,
-                    isOriginLanguage = false,
-                    isTargetLanguage = true,
+                    IsOriginLanguage = false,
+                    IsTargetLanguage = true,
                     Name = "English (American)"
                 }
                 ,
@@ -56,8 +56,8 @@ namespace WebApp.Tests
                 {
                     Abbreviation = "en-GB",
                     ID = 3,
-                    isOriginLanguage = false,
-                    isTargetLanguage = true,
+                    IsOriginLanguage = false,
+                    IsTargetLanguage = true,
                     Name = "English (British)"
                 }
                 ,
@@ -65,16 +65,16 @@ namespace WebApp.Tests
                 {
                     Abbreviation = "es",
                     ID = 4,
-                    isOriginLanguage = true,
-                    isTargetLanguage = true,
+                    IsOriginLanguage = true,
+                    IsTargetLanguage = true,
                     Name = "Spanish"
                 },
                 new WebApp.Models.Language
                 {
                     Abbreviation = "en",
                     ID = 5,
-                    isOriginLanguage = true,
-                    isTargetLanguage = false,
+                    IsOriginLanguage = true,
+                    IsTargetLanguage = false,
                     Name = "English"
                 },
             };
@@ -158,16 +158,16 @@ namespace WebApp.Tests
                 {
                     Abbreviation = "en",
                     ID = 5,
-                    isOriginLanguage = true,
-                    isTargetLanguage = false,
+                    IsOriginLanguage = true,
+                    IsTargetLanguage = false,
                     Name = "English"
                 });
             _languageRepositoryMock.Setup(repo => repo.GetLanguage(returnedViewModel.LanguageFrom)).Returns(new WebApp.Models.Language
                 {
                     Abbreviation = "de",
                     ID = 1,
-                    isOriginLanguage = true,
-                    isTargetLanguage = true,
+                    IsOriginLanguage = true,
+                    IsTargetLanguage = true,
                     Name = "German"
                 });
             _translatorMock.Setup(t => t.TranslateTextAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new TextResult("Hallo", "de"));
@@ -211,16 +211,16 @@ namespace WebApp.Tests
                     {
                         Abbreviation = "en",
                         ID = 5,
-                        isOriginLanguage = true,
-                        isTargetLanguage = false,
+                        IsOriginLanguage = true,
+                        IsTargetLanguage = false,
                         Name = "English"
                     },
                     TranslatedLanguage = new WebApp.Models.Language
                     {
                         Abbreviation = "de",
                         ID = 1,
-                        isOriginLanguage = true,
-                        isTargetLanguage = true,
+                        IsOriginLanguage = true,
+                        IsTargetLanguage = true,
                         Name = "German"
                     }
                 },
@@ -232,16 +232,16 @@ namespace WebApp.Tests
                     {
                         Abbreviation = "en",
                         ID = 5,
-                        isOriginLanguage = true,
-                        isTargetLanguage = false,
+                        IsOriginLanguage = true,
+                        IsTargetLanguage = false,
                         Name = "English"
                     },
                     TranslatedLanguage = new WebApp.Models.Language
                     {
                         Abbreviation = "de",
                         ID = 1,
-                        isOriginLanguage = true,
-                        isTargetLanguage = true,
+                        IsOriginLanguage = true,
+                        IsTargetLanguage = true,
                         Name = "German"
                     }
                 }

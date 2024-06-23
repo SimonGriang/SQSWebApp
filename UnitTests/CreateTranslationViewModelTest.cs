@@ -13,13 +13,13 @@ namespace WebApp.Tests
     {
         private CreateTranslationViewModel viewModel = new CreateTranslationViewModel{
             targetLanguages = new List<Language>{
-                new Language { ID = 1, Abbreviation = "de", isTargetLanguage = true, isOriginLanguage = false },
-                new Language { ID = 2, Abbreviation = "en-US", isTargetLanguage = true, isOriginLanguage = false },
-                new Language { ID = 3, Abbreviation = "en-GB", isTargetLanguage = true, isOriginLanguage = false }
+                new Language { ID = 1, Abbreviation = "de", IsTargetLanguage = true, IsOriginLanguage = false },
+                new Language { ID = 2, Abbreviation = "en-US", IsTargetLanguage = true, IsOriginLanguage = false },
+                new Language { ID = 3, Abbreviation = "en-GB", IsTargetLanguage = true, IsOriginLanguage = false }
                 },
             originLanguages= new List<Language>{
-                new Language { ID = 4, Abbreviation = "DL", isTargetLanguage = false, isOriginLanguage = true },
-                new Language { ID = 5, Abbreviation = "en", isTargetLanguage = false, isOriginLanguage = true }
+                new Language { ID = 4, Abbreviation = "DL", IsTargetLanguage = false, IsOriginLanguage = true },
+                new Language { ID = 5, Abbreviation = "en", IsTargetLanguage = false, IsOriginLanguage = true }
                 },
             English = 1,
             EnglishUS = 2,

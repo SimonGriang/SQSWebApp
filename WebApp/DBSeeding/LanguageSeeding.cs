@@ -23,16 +23,16 @@ namespace WebApp.DBSeeding
                 {
                     Name = "Detect Language",
                     Abbreviation = "DL",
-                    isOriginLanguage = true,
-                    isTargetLanguage = false
+                    IsOriginLanguage = true,
+                    IsTargetLanguage = false
                 });
 
                 allLanguages.Add(new Language
                 {
                     Name = "English",
                     Abbreviation = "en",
-                    isOriginLanguage = true,
-                    isTargetLanguage = false
+                    IsOriginLanguage = true,
+                    IsTargetLanguage = false
                 });
 
                 List<Language> languagesToAdd = new List<Language>();

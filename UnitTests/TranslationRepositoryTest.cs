@@ -24,8 +24,8 @@ namespace WebApp.Tests
             {
                 context.Translation.AddRange(new List<Translation>
                 {
-                    new Translation { ID = 1, OriginalText = "Hello", TranslatedText = "Hallo", translated_at = DateTime.Now },
-                    new Translation { ID = 2, OriginalText = "Goodbye", TranslatedText = "Auf Wiedersehen", translated_at = DateTime.Now },
+                    new Translation { ID = 1, OriginalText = "Hello", TranslatedText = "Hallo", Translated_at = DateTime.Now },
+                    new Translation { ID = 2, OriginalText = "Goodbye", TranslatedText = "Auf Wiedersehen", Translated_at = DateTime.Now },
                     // Add more translations as needed
                 });
                 context.SaveChanges();
@@ -47,7 +47,7 @@ namespace WebApp.Tests
             using (var context = new WebAppContext(_options))
             {
                 var repository = new TranslationRepository(context);
-                var newTranslation = new Translation { ID = 3, OriginalText = "Yes", TranslatedText = "Ja", translated_at = DateTime.Now };
+                var newTranslation = new Translation { ID = 3, OriginalText = "Yes", TranslatedText = "Ja", Translated_at = DateTime.Now };
 
                 repository.AddTranslation(newTranslation);
                 Assert.IsTrue(repository.TranslationExists(newTranslation.ID));
@@ -89,8 +89,8 @@ namespace WebApp.Tests
                 var repository = new TranslationRepository(context);
                 var expectedTranslations = new List<Translation>
                 {
-                    new Translation { ID = 1, OriginalText = "Hello", TranslatedText = "Hallo", translated_at = DateTime.Now },
-                    new Translation { ID = 2, OriginalText = "Goodbye", TranslatedText = "Auf Wiedersehen", translated_at = DateTime.Now },
+                    new Translation { ID = 1, OriginalText = "Hello", TranslatedText = "Hallo", Translated_at = DateTime.Now },
+                    new Translation { ID = 2, OriginalText = "Goodbye", TranslatedText = "Auf Wiedersehen", Translated_at = DateTime.Now },
                     // Add more translations as needed
                 };
 

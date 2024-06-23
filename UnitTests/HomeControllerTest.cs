@@ -54,8 +54,8 @@ namespace WebApp.Tests
                 {
                     Abbreviation = "en",
                     ID = 1,
-                    isOriginLanguage = true,
-                    isTargetLanguage = false,
+                    IsOriginLanguage = true,
+                    IsTargetLanguage = false,
                     Name = "English"
                 }
             };
@@ -66,8 +66,8 @@ namespace WebApp.Tests
                 {
                     Abbreviation = "de",
                     ID = 2,
-                    isOriginLanguage = false,
-                    isTargetLanguage = true,
+                    IsOriginLanguage = false,
+                    IsTargetLanguage = true,
                     Name = "German"
                 }
             };
@@ -142,8 +142,8 @@ namespace WebApp.Tests
             var viewModel = new CreateTranslationViewModel { originLanguages = new List<Language>(), targetLanguages = new List<Language> {new Language(){ 
                     Abbreviation = "en",
                     ID = 1,
-                    isOriginLanguage = false,
-                    isTargetLanguage = true,
+                    IsOriginLanguage = false,
+                    IsTargetLanguage = true,
                     Name = "English"
             }}};
             _createTranslationViewModelHandlerMock.Setup(x => x.createViewModel()).Returns(viewModel);
@@ -163,8 +163,8 @@ namespace WebApp.Tests
                 originLanguages = new List<Language> { new Language(){ 
                     Abbreviation = "en",
                     ID = 1,
-                    isOriginLanguage = true,
-                    isTargetLanguage = false,
+                    IsOriginLanguage = true,
+                    IsTargetLanguage = false,
                     Name = "English"
             } 
             }, targetLanguages = new List<Language>() };

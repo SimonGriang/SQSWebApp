@@ -210,9 +210,9 @@ namespace WebApp.Tests
 
             // Assert
             Assert.AreEqual(3, resultLanguages.Count); // Gesamte Anzahl der Sprachen
-            Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "en" && l.isOriginLanguage && !l.isTargetLanguage));
-            Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "de" && l.isOriginLanguage && l.isTargetLanguage));
-            Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "fr" && !l.isOriginLanguage && l.isTargetLanguage));
+            Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "en" && l.IsOriginLanguage && !l.IsTargetLanguage));
+            Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "de" && l.IsOriginLanguage && l.IsTargetLanguage));
+            Assert.IsTrue(resultLanguages.Exists(l => l.Abbreviation == "fr" && !l.IsOriginLanguage && l.IsTargetLanguage));
         }
     }
 }

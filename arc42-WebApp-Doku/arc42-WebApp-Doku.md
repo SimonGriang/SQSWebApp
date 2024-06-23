@@ -67,6 +67,8 @@ Die durchgeführten Übersetzungen werden auf einer relationalen Datenbank gespe
 
 DeepL wird aufgrund seiner überlegenen Übersetzungsqualität ausgewählt, die für die Bereitstellung genauer und natürlicher Übersetzungen entscheidend ist. Die API-Integration von DeepL ist unkompliziert und gut dokumentiert, was eine nahtlose Einbindung in unser System ermöglicht. Durch die Nutzung von DeepL können wir uns auf die Entwicklung der Anwendungslogik und Benutzeroberfläche konzentrieren, anstatt eine eigene Übersetzungsengine entwickeln zu müssen.
 
+Die Verwendung von PostgreSQL bietet zahlreiche Vorteile, darunter hohe Stabilität, Transaktionsunterstützung und eine breite Palette von erweiterten Funktionen für komplexe Datenbankanforderungen. Docker-Container mit PostgreSQL ermöglichen eine flexible und konsistente Umgebungsbereitstellung für Entwicklung, Tests und Bereitstellung, unabhängig von der lokalen Entwicklungsumgebung. Dies fördert eine konsistente Datenbankverwaltung.
+
 
 # Bausteinsicht {#section-building-block-view}
 

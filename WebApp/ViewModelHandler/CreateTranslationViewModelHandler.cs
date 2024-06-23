@@ -39,7 +39,7 @@ namespace WebApp.ViewModelHandler
 
         private void ProcessTargetLanguage(Language lan, CreateTranslationViewModel viewModel, List<Language> targetLanguages)
         {
-            if (lan.isTargetLanguage)
+            if (lan.IsTargetLanguage)
             {
                 targetLanguages.Add(lan);
                 switch (lan.Abbreviation)
@@ -59,7 +59,7 @@ namespace WebApp.ViewModelHandler
 
         private void ProcessOriginLanguage(Language lan, CreateTranslationViewModel viewModel, List<Language> originLanguages)
         {
-            if (lan.isOriginLanguage)
+            if (lan.IsOriginLanguage)
             {
                 originLanguages.Add(lan);
                 switch (lan.Abbreviation)

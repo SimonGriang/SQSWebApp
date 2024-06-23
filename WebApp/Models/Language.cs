@@ -8,8 +8,8 @@ namespace WebApp.Models
         public string Name { get; set; }
         public string? Abbreviation { get; set; }
 
-        public bool isTargetLanguage { get; set; }
-        public bool isOriginLanguage { get; set; }
+        public bool IsTargetLanguage { get; set; }
+        public bool IsOriginLanguage { get; set; }
 
         public Language()
         {

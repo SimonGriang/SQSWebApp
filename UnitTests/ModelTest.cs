@@ -15,8 +15,8 @@ namespace WebApp.Tests
             Assert.AreEqual(0, language.ID);
             Assert.AreEqual(string.Empty, language.Name);
             Assert.IsNull(language.Abbreviation);
-            Assert.IsFalse(language.isTargetLanguage);
-            Assert.IsFalse(language.isOriginLanguage);
+            Assert.IsFalse(language.IsTargetLanguage);
+            Assert.IsFalse(language.IsOriginLanguage);
         }
 
         [TestMethod]
@@ -55,16 +55,16 @@ namespace WebApp.Tests
         public void LanguageTestSetAndGetIsTargetLanguage()
         {
             var language = new Language();
-            language.isTargetLanguage = true;
-            Assert.IsTrue(language.isTargetLanguage);
+            language.IsTargetLanguage = true;
+            Assert.IsTrue(language.IsTargetLanguage);
         }
 
         [TestMethod]
         public void LanguageTestSetAndGetIsOriginLanguage()
         {
             var language = new Language();
-            language.isOriginLanguage = true;
-            Assert.IsTrue(language.isOriginLanguage);
+            language.IsOriginLanguage = true;
+            Assert.IsTrue(language.IsOriginLanguage);
         }
 
         [TestMethod]
@@ -96,8 +96,8 @@ namespace WebApp.Tests
         {
             var translation = new Translation();
             var date = DateTime.Now;
-            translation.translated_at = date;
-            Assert.AreEqual(date, translation.translated_at);
+            translation.Translated_at = date;
+            Assert.AreEqual(date, translation.Translated_at);
         }
 
         [TestMethod]

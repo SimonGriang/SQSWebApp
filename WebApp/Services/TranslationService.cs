@@ -44,7 +44,7 @@ namespace WebApp.Services
                 translatedText = await _translator.TranslateTextAsync(originalText, languageFrom.Abbreviation, languageTo.Abbreviation);
             }
             viewModel.Translation.TranslatedText = translatedText.Text;
-            viewModel.Translation.translated_at =  DateTime.UtcNow;
+            viewModel.Translation.Translated_at =  DateTime.UtcNow;
             return viewModel;
         }
 
@@ -59,8 +59,8 @@ namespace WebApp.Services
             foreach (var lang in sourceLanguages)
             {
                 WebApp.Models.Language createlan = new WebApp.Models.Language(lang.Name, lang.Code);
-                createlan.isOriginLanguage = true;
-                createlan.isTargetLanguage = false;
+                createlan.IsOriginLanguage = true;
+                createlan.IsTargetLanguage = false;
                 languagesSource.Add(createlan);
             }
 
@@ -69,20 +69,20 @@ namespace WebApp.Services
             foreach (var lang in targetLanguages)
             {
                 WebApp.Models.Language createlan = new WebApp.Models.Language(lang.Name, lang.Code);
-                createlan.isOriginLanguage = true;
-                createlan.isTargetLanguage = false;
+                createlan.IsOriginLanguage = true;
+                createlan.IsTargetLanguage = false;
                 languagesTarget.Add(createlan);
             }
 
             foreach (WebApp.Models.Language language in languagesSource)
             {
                 if (languagesTarget.Exists(l => l.Abbreviation == language.Abbreviation)){
-                    language.isTargetLanguage = true;
-                    language.isOriginLanguage = true;
+                    language.IsTargetLanguage = true;
+                    language.IsOriginLanguage = true;
                     finallanguages.Add(language);
                 } else {
-                    language.isOriginLanguage = true;
-                    language.isTargetLanguage = false;
+                    language.IsOriginLanguage = true;
+                    language.IsTargetLanguage = false;
                     finallanguages.Add(language);
                 }
             }
@@ -90,8 +90,8 @@ namespace WebApp.Services
             foreach (WebApp.Models.Language language in languagesTarget)
             {
                 if (!finallanguages.Exists(l => l.Abbreviation == language.Abbreviation)){
-                    language.isOriginLanguage = false;
-                    language.isTargetLanguage = true;
+                    language.IsOriginLanguage = false;
+                    language.IsTargetLanguage = true;
                     finallanguages.Add(language);
                 } 
             }

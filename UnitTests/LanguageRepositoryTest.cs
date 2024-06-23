@@ -23,15 +23,15 @@ namespace WebApp.Tests
                 context.Language.AddRange(new List<Language>
                 {
                     new Language { ID = 1, Name = "German", Abbreviation = "de" },
-                    new Language { ID = 2, Name = "English", Abbreviation = "en", isOriginLanguage = false },
-                    new Language { ID = 3, Name = "Spanish", isTargetLanguage = false },
-                    new Language { ID = 4, Name = "French", Abbreviation = "fr", isOriginLanguage = false, isTargetLanguage = false },
+                    new Language { ID = 2, Name = "English", Abbreviation = "en", IsOriginLanguage = false },
+                    new Language { ID = 3, Name = "Spanish", IsTargetLanguage = false },
+                    new Language { ID = 4, Name = "French", Abbreviation = "fr", IsOriginLanguage = false, IsTargetLanguage = false },
                     new Language { ID = 5, Name = "Italian" },
-                    new Language { ID = 6, Name = "Russian", Abbreviation = "ru", isOriginLanguage = true },
-                    new Language { ID = 7, Name = "Chinese", Abbreviation = "zh", isTargetLanguage = true },
-                    new Language { ID = 8, Name = "Japanese", Abbreviation = "ja", isOriginLanguage = true, isTargetLanguage = true },
-                    new Language { ID = 9, Name = "Korean", isOriginLanguage = true },
-                    new Language { ID = 10, Name = "Arabic", isTargetLanguage = true }
+                    new Language { ID = 6, Name = "Russian", Abbreviation = "ru", IsOriginLanguage = true },
+                    new Language { ID = 7, Name = "Chinese", Abbreviation = "zh", IsTargetLanguage = true },
+                    new Language { ID = 8, Name = "Japanese", Abbreviation = "ja", IsOriginLanguage = true, IsTargetLanguage = true },
+                    new Language { ID = 9, Name = "Korean", IsOriginLanguage = true },
+                    new Language { ID = 10, Name = "Arabic", IsTargetLanguage = true }
                 });
                 context.SaveChanges();
             }
@@ -56,15 +56,15 @@ namespace WebApp.Tests
                 var newLanguages = new List<Language>
                 {
                     new Language { ID = 11, Name = "Portuguese", Abbreviation = "pt" },
-                    new Language { ID = 12, Name = "Dutch", Abbreviation = "nl", isOriginLanguage = false },
-                    new Language { ID = 13, Name = "Greek", isTargetLanguage = false },
-                    new Language { ID = 14, Name = "Swedish", Abbreviation = "sv", isOriginLanguage = false, isTargetLanguage = false },
+                    new Language { ID = 12, Name = "Dutch", Abbreviation = "nl", IsOriginLanguage = false },
+                    new Language { ID = 13, Name = "Greek", IsTargetLanguage = false },
+                    new Language { ID = 14, Name = "Swedish", Abbreviation = "sv", IsOriginLanguage = false, IsTargetLanguage = false },
                     new Language { ID = 15, Name = "Danish" },
-                    new Language { ID = 16, Name = "Finnish", Abbreviation = "fi", isOriginLanguage = true },
-                    new Language { ID = 17, Name = "Norwegian", Abbreviation = "no", isTargetLanguage = true },
-                    new Language { ID = 18, Name = "Polish", Abbreviation = "pl", isOriginLanguage = true, isTargetLanguage = true },
-                    new Language { ID = 19, Name = "Hungarian", isOriginLanguage = true },
-                    new Language { ID = 20, Name = "Czech", isTargetLanguage = true }
+                    new Language { ID = 16, Name = "Finnish", Abbreviation = "fi", IsOriginLanguage = true },
+                    new Language { ID = 17, Name = "Norwegian", Abbreviation = "no", IsTargetLanguage = true },
+                    new Language { ID = 18, Name = "Polish", Abbreviation = "pl", IsOriginLanguage = true, IsTargetLanguage = true },
+                    new Language { ID = 19, Name = "Hungarian", IsOriginLanguage = true },
+                    new Language { ID = 20, Name = "Czech", IsTargetLanguage = true }
                 };
 
                 foreach (var newLanguage in newLanguages)
@@ -126,15 +126,15 @@ namespace WebApp.Tests
                 var expectedLanguages = new List<Language>
                 {
                     new Language { ID = 1, Name = "German", Abbreviation = "de" },
-                    new Language { ID = 2, Name = "English", Abbreviation = "en", isOriginLanguage = false },
-                    new Language { ID = 3, Name = "Spanish", isTargetLanguage = false },
-                    new Language { ID = 4, Name = "French", Abbreviation = "fr", isOriginLanguage = false, isTargetLanguage = false },
+                    new Language { ID = 2, Name = "English", Abbreviation = "en", IsOriginLanguage = false },
+                    new Language { ID = 3, Name = "Spanish", IsTargetLanguage = false },
+                    new Language { ID = 4, Name = "French", Abbreviation = "fr", IsOriginLanguage = false, IsTargetLanguage = false },
                     new Language { ID = 5, Name = "Italian" },
-                    new Language { ID = 6, Name = "Russian", Abbreviation = "ru", isOriginLanguage = true },
-                    new Language { ID = 7, Name = "Chinese", Abbreviation = "zh", isTargetLanguage = true },
-                    new Language { ID = 8, Name = "Japanese", Abbreviation = "ja", isOriginLanguage = true, isTargetLanguage = true },
-                    new Language { ID = 9, Name = "Korean", isOriginLanguage = true },
-                    new Language { ID = 10, Name = "Arabic", isTargetLanguage = true }
+                    new Language { ID = 6, Name = "Russian", Abbreviation = "ru", IsOriginLanguage = true },
+                    new Language { ID = 7, Name = "Chinese", Abbreviation = "zh", IsTargetLanguage = true },
+                    new Language { ID = 8, Name = "Japanese", Abbreviation = "ja", IsOriginLanguage = true, IsTargetLanguage = true },
+                    new Language { ID = 9, Name = "Korean", IsOriginLanguage = true },
+                    new Language { ID = 10, Name = "Arabic", IsTargetLanguage = true }
                 };
         
                 // Act
@@ -148,8 +148,8 @@ namespace WebApp.Tests
                     Assert.AreEqual(expectedLanguages[i].ID, actualLanguages[i].ID);
                     Assert.AreEqual(expectedLanguages[i].Name, actualLanguages[i].Name);
                     Assert.AreEqual(expectedLanguages[i].Abbreviation, actualLanguages[i].Abbreviation);
-                    Assert.AreEqual(expectedLanguages[i].isOriginLanguage, actualLanguages[i].isOriginLanguage);
-                    Assert.AreEqual(expectedLanguages[i].isTargetLanguage, actualLanguages[i].isTargetLanguage);
+                    Assert.AreEqual(expectedLanguages[i].IsOriginLanguage, actualLanguages[i].IsOriginLanguage);
+                    Assert.AreEqual(expectedLanguages[i].IsTargetLanguage, actualLanguages[i].IsTargetLanguage);
                 }
             }
         }
@@ -230,7 +230,7 @@ namespace WebApp.Tests
                 var repository = new LanguageRepository(context);
                 // Arrange
                 var abbreviation = "en";
-                var expectedLanguage = new Language { ID = 2, Name = "English", Abbreviation = "en", isOriginLanguage = false };
+                var expectedLanguage = new Language { ID = 2, Name = "English", Abbreviation = "en", IsOriginLanguage = false };
 
                 // Act
                 var result = repository.returnLanguageByAbbreviation(abbreviation);
@@ -240,8 +240,8 @@ namespace WebApp.Tests
                 Assert.AreEqual(expectedLanguage.ID, result!.ID);
                 Assert.AreEqual(expectedLanguage.Name, result.Name);
                 Assert.AreEqual(expectedLanguage.Abbreviation, result.Abbreviation);
-                Assert.AreEqual(expectedLanguage.isOriginLanguage, result.isOriginLanguage);
-                Assert.AreEqual(expectedLanguage.isTargetLanguage, result.isTargetLanguage);
+                Assert.AreEqual(expectedLanguage.IsOriginLanguage, result.IsOriginLanguage);
+                Assert.AreEqual(expectedLanguage.IsTargetLanguage, result.IsTargetLanguage);
             }
         }
 
