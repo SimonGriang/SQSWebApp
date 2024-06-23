@@ -72,17 +72,17 @@ Die Verwendung von PostgreSQL bietet zahlreiche Vorteile, darunter hohe Stabilit
 
 # Bausteinsicht {#section-building-block-view}
 
-## Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
+## Gesamtsystem {#gesamtsystem}
 
-***\<Übersichtsdiagramm>***
+![Image Description](images/KomponentenDiagramm.png)
 
 Begründung
 
-:   *\<Erläuternder Text>*
+Diese Abbildung zeigt erneut das Gesamtsystem mit allen externen Komponenten. Die WebApp bildet die Anwendung und nutzt dabei eine Postgres Datenbank als auch den externen Übersetzungsdienst DeepL.
 
 Enthaltene Bausteine
 
-:   *\<Beschreibung der enthaltenen Bausteine (Blackboxen)>*
+
 
 Wichtige Schnittstellen
 
@@ -145,6 +145,9 @@ Wichtige Schnittstellen
 ### Whitebox \<\_Baustein y.1\_\> {#_whitebox_baustein_y_1}
 
 *\<Whitebox-Template>*
+
+
+
 
 # Laufzeitsicht {#section-runtime-view}
 
