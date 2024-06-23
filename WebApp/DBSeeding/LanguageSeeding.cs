@@ -9,8 +9,15 @@ using WebApp.Services;
 
 namespace WebApp.DBSeeding
 {
+    /// <summary>
+    /// Class responsible for seeding the Language table in the database.
+    /// </summary>
     public static class LanguageSeeding
     {
+        /// <summary>
+        /// Initializes the Language table with predefined languages.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider used to access required services.</param>
         public static void Initialize(IServiceProvider serviceProvider)
         {
             using (var context = new WebAppContext(
