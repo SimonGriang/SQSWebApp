@@ -37,7 +37,7 @@ namespace WebApp.ViewModelHandler
             return viewModel;
         }
 
-        private void ProcessTargetLanguage(Language lan, CreateTranslationViewModel viewModel, List<Language> targetLanguages)
+        private static void ProcessTargetLanguage(Language lan, CreateTranslationViewModel viewModel, List<Language> targetLanguages)
         {
             if (lan.IsTargetLanguage)
             {
@@ -57,7 +57,7 @@ namespace WebApp.ViewModelHandler
             }
         }
 
-        private void ProcessOriginLanguage(Language lan, CreateTranslationViewModel viewModel, List<Language> originLanguages)
+        private static void ProcessOriginLanguage(Language lan, CreateTranslationViewModel viewModel, List<Language> originLanguages)
         {
             if (lan.IsOriginLanguage)
             {

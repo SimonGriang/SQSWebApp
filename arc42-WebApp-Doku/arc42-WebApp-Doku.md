@@ -249,7 +249,7 @@ Die Anwendung muss alle spezifizierten Anforderungen und Funktionen korrekt und 
 | Risk                                | Description                                                                                                 |
 |-------------------------------------|-------------------------------------------------------------------------------------------------------------|
 | Sicherheitslücken bei der API-Nutzung | Die Nutzung des externen Übersetzungsdienstes könnte Sicherheitslücken aufweisen, wenn die API nicht korrekt gesichert ist. |
-| Mangelnde Entwicklererfahrung        | Die mangelnde Erfahrung des Entwicklers mit der Integration und Nutzung des DeepL Übersetzungsdienstes kann zu Fehlern führen. |
+| Mangelnde Entwicklererfahrung        | Die mangelnde Erfahrung des Entwicklers mit der Integration und Nutzung des DeepL Übersetzungsdienstes kann zu Fehlern führen. Weitaus stärker wirkt sich mangelnde Erfahrung bei der Entwicklung der Anwendung mit ASP.NET aus |
 | Übersetzungskontingent zu gering     | Das verfügbare Übersetzungskontingent von DeepL könnte zu gering sein, was den Dienst unbrauchbar macht oder zusätzliche Kosten verursacht. |
 | API-Änderungen                       | Änderungen an der DeepL API könnten die Funktionalität beeinträchtigen, wenn die Anwendung nicht zeitnah angepasst wird. |
 | Datenintegrität und -sicherheit      | Es besteht das Risiko, dass die übersetzten Daten nicht sicher übertragen oder gespeichert werden, was zu Datenschutzverletzungen führen könnte. |
@@ -259,9 +259,5 @@ Die Anwendung muss alle spezifizierten Anforderungen und Funktionen korrekt und 
 
 | Risk                                  | Description                                                                                                    |
 |---------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| Erhöhte Betriebskosten                | Die Nutzung des DeepL Übersetzungsdienstes könnte zu unerwartet hohen Betriebskosten führen, insbesondere bei erhöhtem Übersetzungsbedarf. |
-| Unzufriedenheit der Benutzer          | Wenn die Übersetzungen nicht korrekt oder unvollständig sind, könnte dies zu Unzufriedenheit bei den Benutzern führen. |
-| Abhängigkeit von DeepL                 | Eine starke Abhängigkeit von DeepL kann zu Problemen führen, wenn der Dienst teurer wird oder die Geschäftsbedingungen sich ändern. |
-| Regulatorische Anforderungen           | Es besteht das Risiko, dass die Nutzung eines externen Übersetzungsdienstes regulatorische Anforderungen nicht erfüllt. |
-| Marktkonkurrenz                       | Wettbewerber könnten eigene oder alternative Lösungen entwickeln, die kostengünstiger oder leistungsfähiger sind. |
-| Vertrauensverlust bei Kunden           | Sicherheitslücken oder Datenschutzverletzungen könnten das Vertrauen der Kunden in die Anwendung beeinträchtigen. |
+| Abhängigkeit von DeepL                | Eine starke Abhängigkeit von DeepL kann zu Problemen führen, wenn der Dienst teurer wird oder die Geschäftsbedingungen sich ändern. |
+| Regulatorische Anforderungen          | Es besteht das Risiko, dass die Nutzung eines externen Übersetzungsdienstes regulatorische Anforderungen nicht erfüllt. |

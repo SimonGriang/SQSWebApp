@@ -27,7 +27,7 @@ namespace WebApp.Services
                 || viewModel.Translation.TranslatedLanguage.Abbreviation is null
                 || viewModel.Translation.OriginalLanguage.Abbreviation is null)
             {
-                throw new ArgumentNullException("Translationkomponenten sind nicht vollständig.");
+                throw new ArgumentNullException("Translation","Translationkomponenten sind nicht vollständig.");
             }
 
             TextResult translatedText;

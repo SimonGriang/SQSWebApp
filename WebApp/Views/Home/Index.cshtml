@@ -19,7 +19,7 @@
     <div class="row my-4">
         <div class="col-md-6">  
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <label>
+            <label for="languageFromDropdown">
                 Translate from:
             </label>
             <select id="languageFromDropdown" asp-for="LanguageFrom">
@@ -36,7 +36,7 @@
                 }
             </select>
             <div class="form-group">
-                <label asp-for="Translation.OriginalText" class="control-label">Original</label>
+                <label asp-for="Translation.OriginalText" class="control-label" for="OriginalTextField">Original</label>
                 <textarea asp-for="Translation.OriginalText" id="OriginalTextField" class="form-control" style="height: auto; min-height: 250px; overflow-y: auto;"></textarea>
                 <span asp-validation-for="Translation.OriginalText" class="text-danger"></span>
             </div>
@@ -44,7 +44,7 @@
 
           
         <div class="col-md-6">
-            <label>
+            <label for="languageToDropdown">
                 Translate into:
             </label>
             <select id="languageToDropdown" asp-for="LanguageTo">
@@ -61,7 +61,7 @@
                 }
             </select>
             <div class="form-group">
-                <label asp-for="Translation.TranslatedText" class="control-label">Translation</label>
+                <label asp-for="Translation.TranslatedText" class="control-label" for="TranslatedTextField">Translation</label>
                 <div asp-for="Translation.TranslatedText" id="TranslatedTextField" class="form-control"  style="height: auto; min-height: 250px; overflow-y: auto;" readonly>
                     @Model.Translation.TranslatedText
                 </div>

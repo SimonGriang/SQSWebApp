@@ -78,12 +78,9 @@ namespace WebApp.Controllers
             {
                 viewModel = await _translationService.TranslateTextAsync(viewModel);
 
-                if (ModelState.IsValid)
+                if (ModelState.IsValid && viewModel.Translation is not null)
                 {
-                    if (viewModel.Translation is not null)
-                    {
                         _translationRepository.AddTranslation(viewModel.Translation);
-                    }
                 }
                 throw new Exception("Modelstate ist not valid or Translation is null.");
             }

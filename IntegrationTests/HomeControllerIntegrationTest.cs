@@ -18,14 +18,14 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using DeepL.Model;
 
-namespace WebApp.Tests
+namespace WebApp.IntegrationTests
 {
     [TestClass]
     [TestCategory("IntegrationTests")]
     public class HomeControllerTests
     {
-        private IHost _host;
-        private IServiceScope _scope;
+        private IHost _host = new HostBuilder().Build();
+        private IServiceScope _scope = new Mock<IServiceScope>().Object;
 
         private Mock<ITranslatorWrapper> _translatorMock = new Mock<ITranslatorWrapper>();
         private Mock<ITranslationRepository> _translationRepositoryMock = new Mock<ITranslationRepository>();
@@ -79,7 +79,7 @@ namespace WebApp.Tests
                 },
             };
 
-        public HomeController _controller;
+        public HomeController _controller = new HomeController(new Mock<ITranslationService>().Object, new Mock<ILanguageRepository>().Object, new Mock<ITranslationRepository>().Object, new Mock<ICreateTranslationViewModelHandler>().Object);
 
         [TestInitialize]
         public void Setup()
