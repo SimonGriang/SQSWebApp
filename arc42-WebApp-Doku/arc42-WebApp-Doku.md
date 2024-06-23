@@ -81,7 +81,7 @@ Die Komponente WebApp enhät sämtliche Funktionalitäten unst stellt so das eig
 
 ## 5.2 Ebene 2 {#_ebene_2}
 
-![Teilkommponenten](Bausteinansicht_Ebene2.jpg)
+![Teilkommponenten](images/Bausteinansicht_Ebene2.jpg)
 
 Die WebApp Komponente besteht
 
@@ -97,7 +97,7 @@ Die WebApp Komponente besteht
 
 
 ## 5.3 Ebene 3 {#_ebene_3}
-![Teilkommponenten](Bausteinansicht_Ebene3.jpg)
+![Teilkommponenten](images/Bausteinansicht_Ebene3.jpg)
 
 | Komponente                  | Aufgabe                                                                                                   |
 |-----------------------------|-----------------------------------------------------------------------------------------------------------|
@@ -149,20 +149,20 @@ CreateTranslationViewModelHandler: Verantwortlich für die Verwaltung und Verarb
 
 ## 6.1 Translation of User Text
 
-![Sequenzdiagramm Translation of Text](Sequenzdiagram_Translate.jpg)
+![Sequenzdiagramm Translation of Text](images/Sequenzdiagram_Translate.jpg)
 
 Der Prozess beginnt in der View-Schicht, die eine Anfrage zur Erstellung einer neuen Übersetzung an den Controller sendet. Der Controller nimmt die Anfrage entgegen und initiiert den Vorgang, indem er ein Datenmodell zur Erstellung der Übersetzung vorbereitet. Dieses Datenmodell wird an die Verwaltungslogik weitergeleitet, die notwendige Informationen aus den Repositories lädt. Nachdem die Verwaltungslogik die erforderlichen Informationen geholt hat, gibt sie das Modell an den Controller zurück. Der Controller übergibt das Modell an den Übersetzungsdienst, um die eigentliche Übersetzungsarbeit durchzuführen. Der Übersetzungsservice verarbeitet die eingehenden Daten und erstellt die Übersetzung.
 
 Abschließend wird das Ergebnis der Übersetzung an die View-Schicht zurückgegeben, wo es dem Nutzer angezeigt wird.
 ## 6.2 Laden von einer/mehreren Übersetzung/-en
 
-![Laden von einer/mehreren Übersetzung/-en](Sequenzdiagram_GetTranslations.jpg)
+![Laden von einer/mehreren Übersetzung/-en](images/Sequenzdiagram_GetTranslations.jpg)
 
 Zuerst initiiert die View-Komponente die Aktion, indem eine Anfrage an den Controller sendet wird. Der Controller empfängt diese Anfrage und leitet sie an die Repositories weiter, dabei werden je nach Fall eine oder alle Übersetzungen aufgerufen. Sobald die Repositories die benötigte Information bereitgestellt haben, sendet sie eine Antwort an den Controller zurück. Der Controller übermittelt diese Antwort schließlich an die View, was den ursprünglichen Aufruf abschließt und die entsprechende Information an den User ausgibt. Dieses Sequenzdiagramm gilt sowohl für die Bereitstellung einer als auch mehrerer Überstetzungen, da sich der Workflow abgesehen von der Anzahl der geladenen Übersetzungen nicht unterscheidet.
 
 ## 6.3 Löschen von Datenbankeinträgen
 
-![Laden einer Übersetzung](Sequenzdiagram_Deletion.jpg)
+![Laden einer Übersetzung](images/Sequenzdiagram_Deletion.jpg)
 
 Zunächst wird eine Anfrage von der View an den Controller gesendet, um eine Übersetzung zu laden. Der Controller übernimmt diese Anfrage und fordert dann die notwendigen Informationen vom Repository an. Nachdem der Controller die Informationen erhalten hat, initiiert er den Löschvorgang der Übersetzung im Repository. Nach erfolgreicher Löschung der Übersetzung wird eine Bestätigung an den Controller zurückgeführt.
 
