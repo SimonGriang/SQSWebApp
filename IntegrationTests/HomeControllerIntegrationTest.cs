@@ -33,6 +33,9 @@ namespace WebApp.IntegrationTests
         private Mock<ICreateTranslationViewModelHandler> _createTranslationViewModelHandlerMock = new Mock<ICreateTranslationViewModelHandler>();
         private Mock<ITempDataDictionary> _tempDataMock = new Mock<ITempDataDictionary>();
 
+        /// <summary>
+        /// Represents a test class for the HomeController integration tests.
+        /// </summary>
         private List<WebApp.Models.Language> allLanguages = new List<WebApp.Models.Language>
             {
                 new WebApp.Models.Language
@@ -81,6 +84,9 @@ namespace WebApp.IntegrationTests
 
         public HomeController _controller = new HomeController(new Mock<ITranslationService>().Object, new Mock<ILanguageRepository>().Object, new Mock<ITranslationRepository>().Object, new Mock<ICreateTranslationViewModelHandler>().Object);
 
+        /// <summary>
+        /// Initializes the test environment before each test method is executed.
+        /// </summary>
         [TestInitialize]
         public void Setup()
         {
@@ -110,6 +116,9 @@ namespace WebApp.IntegrationTests
         }
 
 
+        /// <summary>
+        /// Tests the behavior of the Index method in the HomeController when it returns a ViewResult.
+        /// </summary>
         [TestMethod]
         public void Index_ReturnsViewResult(){
             // Arrange
@@ -136,7 +145,13 @@ namespace WebApp.IntegrationTests
             Assert.IsNotNull(viewModel.English);
             Assert.IsTrue(viewModel.English == 5);
         }
-        [TestMethod]
+
+
+        /// <summary>
+        /// Represents an asynchronous operation that can return a value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result produced by the task.</typeparam>
+        /// [TestMethod]
         public async Task Index_WithValidViewModel_ReturnsViewResult()
         {
             // Arrange
@@ -198,6 +213,17 @@ namespace WebApp.IntegrationTests
             Assert.AreEqual("Hallo", viewModel.Translation.TranslatedText);
         }
 
+        /// <summary>
+        /// Tests the <see cref="HomeController.History"/> method to ensure that it returns a <see cref="ViewResult"/> with the correct translations.
+        /// </summary>
+        /// <remarks>
+        /// This test method performs the following steps:
+        /// 1. Creates a list of translations.
+        /// 2. Sets up the mock repository to return the list of translations when the <see cref="ITranslationRepository.GetAllTranslations"/> method is called.
+        /// 3. Calls the <see cref="HomeController.History"/> method.
+        /// 4. Asserts that the result is not null and is of type <see cref="ViewResult"/>.
+        /// 5. Asserts that the model of the result is equal to the list of translations.
+        /// </remarks>
         [TestMethod]
         public void History_ReturnsViewResultWithTranslations()
         {

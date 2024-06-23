@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using WebApp.Data;
 using WebApp.Models;
@@ -336,6 +337,44 @@ namespace WebApp.Tests
                 Assert.AreEqual(expectedLanguage.Abbreviation, result.Abbreviation);
                 Assert.AreEqual(expectedLanguage.Name, result.Name);
             }
+        }
+
+        /// <summary>
+        /// Tests the validation of the OriginalText property in the Translation class.
+        /// </summary>
+        /// <remarks>
+        /// This method performs the following tests:
+        /// - Required validation: Checks if the OriginalText property is required.
+        /// - String length validation: Checks if the OriginalText property has a length between 1 and 500 characters.
+        /// - Valid case: Checks if the OriginalText property is valid when set to a valid value.
+        /// </remarks>
+        [TestMethod]
+        public void TranslationTestOriginalTextValidation()
+        {
+            var translation = new Translation();
+
+            // Test required validation
+            var context = new ValidationContext(translation) { MemberName = "OriginalText" };
+            var result = new List<ValidationResult>();
+            var isValid = Validator.TryValidateProperty(translation.OriginalText, context, result);
+            Assert.IsFalse(isValid);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("OriginalText is required", result.First().ErrorMessage);
+
+            // Test string length validation
+            translation.OriginalText = new string('a', 501);
+            result.Clear();
+            isValid = Validator.TryValidateProperty(translation.OriginalText, context, result);
+            Assert.IsFalse(isValid);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("OriginalText must be between 1 and 500 characters", result.First().ErrorMessage);
+
+            // Test valid case
+            translation.OriginalText = "Hello";
+            result.Clear();
+            isValid = Validator.TryValidateProperty(translation.OriginalText, context, result);
+            Assert.IsTrue(isValid);
+            Assert.AreEqual(0, result.Count);
         }
     }
 }

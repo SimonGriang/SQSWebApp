@@ -6,13 +6,18 @@ using WebApp.ViewModels;
 
 namespace WebApp.IntegrationTests
 {
+    /// <summary>
+    /// Integration tests for the TranslationService class.
+    /// </summary>
     [TestClass]
     [TestCategory("IntegrationTests")]
     public class TranslationServiceIntegrationTest
     {
         private static TranslationService _TranslationService = new TranslationService(new TranslatorWrapper("f2981bee-344a-4a1f-b65f-877950fa3855:fx")); 
         
-        
+        /// <summary>
+        /// Tests the TranslateTextAsync method of the TranslationService class with origin language.
+        /// </summary>
         [TestMethod]
         public async Task TranslateTextAsync_ShouldTranslateText_WithOriginLanguage()
         {
@@ -36,6 +41,9 @@ namespace WebApp.IntegrationTests
             Assert.AreEqual("Dies ist ein Test", result.Translation.TranslatedText);
         }
 
+        /// <summary>
+        /// Tests the TranslateTextAsync method of the TranslationService class without origin language.
+        /// </summary>
         [TestMethod]
         public async Task TranslateTextAsync_ShouldTranslateText_WithoutOriginLanguage()
         {
@@ -59,6 +67,9 @@ namespace WebApp.IntegrationTests
             Assert.AreEqual("Dies ist ein Test", result.Translation.TranslatedText);
         }
 
+        /// <summary>
+        /// Tests the GetDeeplLanguages method of the TranslationService class.
+        /// </summary>
         [TestMethod]
         public async Task GetDeeplLanguages_ShouldReturnLanguages()
         {
